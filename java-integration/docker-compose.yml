@@ -1,0 +1,24 @@
+services:
+  ai-service:
+    build:
+      context: ./ai-chainid          # the Python project (from the earlier response)
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build:
+      context: ./AIChainID-Backend   # your existing Spring Boot project
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      AI_SERVICE_BASE_URL: "http://ai-service:8000"
+    depends_on:
+      ai-service:
+        condition: service_healthy

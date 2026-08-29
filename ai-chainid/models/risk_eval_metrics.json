@@ -1,0 +1,41 @@
+{
+  "mae": 2.09,
+  "r2": 0.993,
+  "precision_per_class": {
+    "LOW": 0.913,
+    "MEDIUM": 0.87,
+    "HIGH": 0.983
+  },
+  "recall_per_class": {
+    "LOW": 0.91,
+    "MEDIUM": 0.863,
+    "HIGH": 0.996
+  },
+  "f1_per_class": {
+    "LOW": 0.911,
+    "MEDIUM": 0.867,
+    "HIGH": 0.989
+  },
+  "confusion_matrix": [
+    [
+      606,
+      60,
+      0
+    ],
+    [
+      58,
+      416,
+      8
+    ],
+    [
+      0,
+      2,
+      450
+    ]
+  ],
+  "confusion_matrix_labels": [
+    "LOW",
+    "MEDIUM",
+    "HIGH"
+  ]
+}
