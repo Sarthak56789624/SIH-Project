@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID - People Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#474646",
+                        "on-tertiary-container": "#868381",
+                        "on-secondary-fixed-variant": "#404754",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#c0c7d6",
+                        "on-surface": "#1c1b1b",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f7f3f2",
+                        "inverse-on-surface": "#f4f0ef",
+                        "outline-variant": "#c4c7c7",
+                        "surface-container-high": "#ebe7e6",
+                        "inverse-surface": "#313030",
+                        "tertiary": "#000000",
+                        "primary": "#000000",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-primary-container": "#858383",
+                        "on-error-container": "#93000a",
+                        "outline": "#747878",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fdf8f8",
+                        "surface": "#fdf8f8",
+                        "on-secondary-fixed": "#151c27",
+                        "on-surface-variant": "#444748",
+                        "secondary-container": "#dce2f3",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-secondary-container": "#5e6572",
+                        "background": "#fdf8f8",
+                        "surface-variant": "#e5e2e1",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-container": "#f1edec",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#dce2f3",
+                        "surface-dim": "#ddd9d8",
+                        "surface-tint": "#5f5e5e",
+                        "on-background": "#1c1b1b",
+                        "on-tertiary-fixed": "#1c1b1a",
+                        "on-tertiary-fixed-variant": "#484645",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#e6e1df",
+                        "inverse-primary": "#c8c6c5",
+                        "tertiary-container": "#1c1b1a",
+                        "primary-container": "#1c1b1b",
+                        "secondary": "#585f6c",
+                        "primary-fixed": "#e5e2e1",
+                        "tertiary-fixed-dim": "#cac6c3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px",
+                        "margin-mobile": "20px",
+                        "section-gap": "160px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "display-hero": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "body-md": ["Inter"],
+                        "display-hero-mobile": ["Geist"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-hero": ["110px", { "lineHeight": "100px", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-hero-mobile": ["56px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Thin border utility */
+        .border-thin {
+            border: 1px solid rgba(18, 18, 18, 0.1);
+        }
+        .border-b-thin {
+            border-bottom: 1px solid rgba(18, 18, 18, 0.1);
+        }
+        .border-t-thin {
+            border-top: 1px solid rgba(18, 18, 18, 0.1);
+        }
+        .border-l-thin {
+            border-left: 1px solid rgba(18, 18, 18, 0.1);
+        }
+        .border-r-thin {
+            border-right: 1px solid rgba(18, 18, 18, 0.1);
+        }
+
+        /* Detail panel animation */
+        #detail-panel {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #detail-panel.open {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col h-screen sticky top-0 left-0 overflow-y-auto bg-surface dark:bg-background border-r border-outline/10 w-64 flex-shrink-0">
+<div class="px-6 py-8">
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-on-primary-fixed">AI-ChainID</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Enterprise Access</p>
+</div>
+<div class="px-6 mb-8">
+<button class="w-full bg-primary text-on-primary font-label-sm text-label-sm py-3 px-4 rounded transition-colors hover:bg-inverse-surface flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                New Request
+            </button>
+</div>
+<div class="flex-grow">
+<ul class="flex flex-col space-y-1">
+<li>
+<a class="flex items-center gap-3 py-3 text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">fingerprint</span>
+                        Identity
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-3 text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">hub</span>
+                        Context
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-3 text-primary font-bold border-l-2 border-primary pl-4 hover:bg-surface-container-low transition-all font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">group</span>
+                        People
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-3 text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">security</span>
+                        Security
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-3 text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">policy</span>
+                        Policies
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-3 text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all font-label-sm text-label-sm" href="#">
+<span class="material-symbols-outlined">history</span>
+                        Audit
+                    </a>
+</li>
+</ul>
+</div>
+<div class="mt-auto border-t-thin p-4">
+<ul class="flex flex-col space-y-1">
+<li>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant px-4 hover:bg-surface-container-low transition-all font-label-sm text-label-sm rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 18px;">settings</span>
+                        Settings
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant px-4 hover:bg-surface-container-low transition-all font-label-sm text-label-sm rounded" href="#">
+<span class="material-symbols-outlined" style="font-size: 18px;">help_outline</span>
+                        Support
+                    </a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col h-full overflow-hidden relative">
+<!-- Header -->
+<header class="flex-shrink-0 px-8 py-10 border-b-thin bg-surface-container-lowest z-10 flex justify-between items-end">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">People</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2 max-w-2xl">Manage employee identities, roles and organizational access.</p>
+</div>
+<div>
+<button class="bg-primary text-on-primary font-label-sm text-label-sm py-3 px-6 rounded transition-colors hover:bg-inverse-surface flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+                    Add employee
+                </button>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-grow overflow-y-auto p-8 bg-background">
+<div class="max-w-[1400px] mx-auto">
+<!-- Table Container -->
+<div class="border-thin bg-surface-container-lowest rounded overflow-hidden">
+<!-- Table Actions/Filters -->
+<div class="flex justify-between items-center p-4 border-b-thin bg-surface-container-low">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" style="font-size: 18px;">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border-thin rounded font-body-md text-body-md text-on-surface focus:outline-none focus:border-on-surface focus:ring-0 transition-colors placeholder:text-outline" placeholder="Search employees..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="border-thin bg-surface-container-lowest px-4 py-2 rounded font-label-sm text-label-sm text-on-surface hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 16px;">filter_list</span>
+                                Filter
+                            </button>
+</div>
+</div>
+<!-- Table -->
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b-thin bg-surface-bright">
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 px-6 font-medium">Employee</th>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 px-6 font-medium">Role</th>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 px-6 font-medium">Department</th>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 px-6 font-medium">DID</th>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 px-6 font-medium">Status</th>
+<th class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider py-4 px-6 font-medium text-right">Last Verified</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface divide-y border-outline/10 cursor-pointer" id="employee-table-body">
+<!-- Row 1 (Target for demo) -->
+<tr class="hover:bg-surface-container-low transition-colors group" onclick="openDetailPanel('Rahul Sharma')">
+<td class="py-4 px-6 flex items-center gap-3">
+<img class="w-10 h-10 rounded-full border-thin object-cover" data-alt="A minimalist, professional headshot of a young male software engineer in a modern, well-lit startup office setting. High key lighting, clean background, sharp focus, technical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8uV_KVQDL8KvTaAZuUlZjbRfsNy1GXo94lmveauJOEM4M5R0PUbiJMGFH_r2iU_G-uaWTD7L16o8vtC-c8akKx1nZgYGYG-EUU7hi_-qtZ-zq3XeJjR9fE8X9BeofjbBSIktWog9bnDa25nISgdo3NnKMIh06X1O8VibUkud9N9SfKkXpbLeA9AGD_aBkJV6q4vpNolnH5oU70DmfVMWsk6rhbe8K0yGfZl9K_vJ4BF-hwaCtlpVe"/>
+<div>
+<div class="font-medium">Rahul Sharma</div>
+<div class="text-[13px] text-on-surface-variant">rahul.s@ai-chainid.com</div>
+</div>
+</td>
+<td class="py-4 px-6">Senior Engineer</td>
+<td class="py-4 px-6">Engineering</td>
+<td class="py-4 px-6 font-mono text-[13px] text-on-surface-variant">8F72A91</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-1 rounded bg-green-100 text-green-800 font-label-sm text-label-sm border border-green-200">
+                                        Active
+                                    </span>
+</td>
+<td class="py-4 px-6 text-right text-on-surface-variant">2 hours ago</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group" onclick="openDetailPanel('Elena Rostova')">
+<td class="py-4 px-6 flex items-center gap-3">
+<img class="w-10 h-10 rounded-full border-thin object-cover" data-alt="A clean, professional portrait of a female product manager in a sleek tech office. Soft natural lighting, minimal background, confident expression, corporate startup style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXF2iGAhviAFs_48BKFxU42V7GK3c61LY_r642Q0JqgQfS1N3Oeh3paVaIZhy2ug6S6t76x0ypumzGgMgkHVdKWbnQAMx9LzaFlTTXKvu-11efHiRy-deeB7Gt93ZiPUImxEp9qNldIzCNTmAzCfSCoC_9j9ZgmUig_mS_Wb-iOpojA01t8q011AxDpj_rhBlYN99daFAD-a1Y05K7qnj61lOiVhBdH-_VQmAwEGtEG5MbNeCImA32"/>
+<div>
+<div class="font-medium">Elena Rostova</div>
+<div class="text-[13px] text-on-surface-variant">elena.r@ai-chainid.com</div>
+</div>
+</td>
+<td class="py-4 px-6">Product Lead</td>
+<td class="py-4 px-6">Product</td>
+<td class="py-4 px-6 font-mono text-[13px] text-on-surface-variant">3B99C24</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-1 rounded bg-green-100 text-green-800 font-label-sm text-label-sm border border-green-200">
+                                        Active
+                                    </span>
+</td>
+<td class="py-4 px-6 text-right text-on-surface-variant">1 day ago</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group" onclick="openDetailPanel('Marcus Thorne')">
+<td class="py-4 px-6 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border-thin bg-surface-container-highest flex items-center justify-center font-medium text-on-surface">MT</div>
+<div>
+<div class="font-medium">Marcus Thorne</div>
+<div class="text-[13px] text-on-surface-variant">marcus.t@ai-chainid.com</div>
+</div>
+</td>
+<td class="py-4 px-6">Security Analyst</td>
+<td class="py-4 px-6">Security</td>
+<td class="py-4 px-6 font-mono text-[13px] text-on-surface-variant">Pending...</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-1 rounded bg-amber-100 text-amber-800 font-label-sm text-label-sm border border-amber-200">
+                                        Pending
+                                    </span>
+</td>
+<td class="py-4 px-6 text-right text-on-surface-variant">-</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors group" onclick="openDetailPanel('Sarah Jenkins')">
+<td class="py-4 px-6 flex items-center gap-3">
+<img class="w-10 h-10 rounded-full border-thin object-cover" data-alt="A professional corporate headshot of a woman with short hair in a bright, modern office with glass walls. Minimalist aesthetic, crisp focus, tech company atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCphX-HuAVvzMloOtS34YxNfaAaa7-XI3xM9tq9joYiHv_fCTeauu14hMRFzw6hUjz5F2VW9LtPu6lalXUHqvyfUW5CINO2HFGNPi4G0FsIZ_UQ41HdXMcEMxTNz8cuU513Wp2IbCIj8xD-gemDCTOHfAaiZbWfF7WYvYP35MxF2H5yFbpWldn-YMyLznssrxpm7zpBN189MKygxVxXoJRqL7x32YSEbxT7S6n4YM2KOTbQULBhLBVE"/>
+<div>
+<div class="font-medium">Sarah Jenkins</div>
+<div class="text-[13px] text-on-surface-variant">sarah.j@ai-chainid.com</div>
+</div>
+</td>
+<td class="py-4 px-6">DevOps Engineer</td>
+<td class="py-4 px-6">Infrastructure</td>
+<td class="py-4 px-6 font-mono text-[13px] text-on-surface-variant">7F11E55</td>
+<td class="py-4 px-6">
+<span class="inline-flex items-center px-2 py-1 rounded bg-green-100 text-green-800 font-label-sm text-label-sm border border-green-200">
+                                        Active
+                                    </span>
+</td>
+<td class="py-4 px-6 text-right text-on-surface-variant">3 days ago</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination -->
+<div class="border-t-thin bg-surface-container-lowest p-4 flex items-center justify-between">
+<span class="font-body-md text-body-md text-on-surface-variant">Showing 1 to 4 of 124 employees</span>
+<div class="flex gap-1">
+<button class="w-8 h-8 flex items-center justify-center border-thin rounded text-on-surface-variant hover:bg-surface-container-low disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined" style="font-size: 18px;">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border-thin rounded bg-surface-variant text-on-surface font-medium text-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center border-thin rounded text-on-surface-variant hover:bg-surface-container-low text-sm">2</button>
+<button class="w-8 h-8 flex items-center justify-center border-thin rounded text-on-surface-variant hover:bg-surface-container-low text-sm">3</button>
+<span class="w-8 h-8 flex items-center justify-center text-on-surface-variant text-sm">...</span>
+<button class="w-8 h-8 flex items-center justify-center border-thin rounded text-on-surface-variant hover:bg-surface-container-low">
+<span class="material-symbols-outlined" style="font-size: 18px;">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Detail Panel (Off-canvas) -->
+<div class="absolute top-0 right-0 h-full w-full sm:w-[480px] bg-surface-container-lowest border-l-thin shadow-2xl z-50 flex flex-col" id="detail-panel">
+<!-- Panel Header -->
+<div class="flex justify-between items-center p-6 border-b-thin bg-surface-container-low">
+<h3 class="font-headline-md text-headline-md text-on-surface text-[24px]">Identity Details</h3>
+<button class="text-on-surface-variant hover:text-on-surface transition-colors p-1 rounded hover:bg-surface-variant" onclick="closeDetailPanel()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Panel Content -->
+<div class="flex-grow overflow-y-auto p-8 bg-background space-y-10">
+<!-- Profile Header -->
+<div class="flex items-start gap-5">
+<img class="w-20 h-20 rounded-full border-thin object-cover" data-alt="A minimalist, professional headshot of a young male software engineer in a modern, well-lit startup office setting. High key lighting, clean background, sharp focus, technical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC99dC2KOMJtN2f3GqH8r9DJI90jKMJGpqSc7UDMAeRsOEXiu1uhijilojeH7ut7Oh8KLz1hJLdXTTZm_eUUnXNGGOn_-Vu9bHZ_3R_HccCKCC1HkrAqUGSEHFIn7cUBfBJjcQXN2pXV9FT2qmgH_xw4Myf54DwYj0r1sSULvDR5k0B14T1Crm_ReVbneEitzTHEKybCNaajAX9QGUuIe2mCelO_nUe0hIfFqGI_JjqGhVuQego1qhe"/>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface text-[20px] mb-1">Rahul Sharma</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-3">Senior Engineer • Engineering</p>
+<span class="inline-flex items-center px-2 py-1 rounded bg-green-100 text-green-800 font-label-sm text-label-sm border border-green-200">
+                            Status: Active
+                        </span>
+</div>
+</div>
+<!-- Decentralized ID Section -->
+<div>
+<h5 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-4">Decentralized Identifier (DID)</h5>
+<div class="bg-surface-container-lowest border-thin rounded p-4 flex justify-between items-center group">
+<code class="font-mono text-sm text-on-surface break-all w-5/6">did:ai:chain:8F72A91c3E4b5D6a7F8e9D0c1B2a3F4e5D6</code>
+<button class="text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity hover:text-on-surface">
+<span class="material-symbols-outlined" style="font-size: 18px;">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Issued Credentials -->
+<div>
+<h5 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-4">Issued Credentials</h5>
+<div class="space-y-3">
+<div class="border-thin bg-surface-container-lowest p-4 rounded flex gap-4 items-start">
+<div class="w-10 h-10 rounded bg-blue-50 flex items-center justify-center flex-shrink-0 border border-blue-100 text-blue-600">
+<span class="material-symbols-outlined filled">verified</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-1">
+<div class="font-medium text-on-surface">Developer Credential</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Valid</span>
+</div>
+<div class="text-[13px] text-on-surface-variant">Issued by: Core Engineering CA</div>
+<div class="text-[12px] text-outline mt-2">Expires: 2025-10-15</div>
+</div>
+</div>
+<div class="border-thin bg-surface-container-lowest p-4 rounded flex gap-4 items-start">
+<div class="w-10 h-10 rounded bg-purple-50 flex items-center justify-center flex-shrink-0 border border-purple-100 text-purple-600">
+<span class="material-symbols-outlined filled">shield</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start mb-1">
+<div class="font-medium text-on-surface">Security Training L3</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Valid</span>
+</div>
+<div class="text-[13px] text-on-surface-variant">Issued by: InfoSec Compliance</div>
+<div class="text-[12px] text-outline mt-2">Expires: 2024-12-01</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Permissions -->
+<div>
+<h5 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-4">Active System Permissions</h5>
+<div class="border-thin bg-surface-container-lowest rounded overflow-hidden">
+<div class="px-4 py-3 border-b-thin flex justify-between items-center hover:bg-surface-container-low transition-colors">
+<span class="text-sm font-medium">Production Clusters (AWS)</span>
+<span class="material-symbols-outlined text-green-600" style="font-size: 18px;">check_circle</span>
+</div>
+<div class="px-4 py-3 border-b-thin flex justify-between items-center hover:bg-surface-container-low transition-colors">
+<span class="text-sm font-medium">Customer PII Database</span>
+<span class="material-symbols-outlined text-red-600" style="font-size: 18px;">cancel</span>
+</div>
+<div class="px-4 py-3 flex justify-between items-center hover:bg-surface-container-low transition-colors">
+<span class="text-sm font-medium">Code Repositories (Write)</span>
+<span class="material-symbols-outlined text-green-600" style="font-size: 18px;">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Panel Footer Actions -->
+<div class="p-6 border-t-thin bg-surface-container-low flex gap-3 justify-end">
+<button class="px-4 py-2 border-thin rounded text-on-surface font-label-sm text-label-sm hover:bg-surface-container-highest transition-colors">
+                    Revoke Access
+                </button>
+<button class="px-4 py-2 bg-primary text-on-primary rounded font-label-sm text-label-sm hover:bg-inverse-surface transition-colors">
+                    Update Role
+                </button>
+</div>
+</div>
+<!-- Overlay for panel -->
+<div class="absolute inset-0 bg-black/20 backdrop-blur-sm z-40 hidden transition-opacity opacity-0" id="panel-overlay" onclick="closeDetailPanel()"></div>
+</main>
+<script>
+        const detailPanel = document.getElementById('detail-panel');
+        const panelOverlay = document.getElementById('panel-overlay');
+
+        function openDetailPanel(employeeName) {
+            // In a real app, you'd fetch data based on the name/ID.
+            // For this static demo, we just open the panel.
+            panelOverlay.classList.remove('hidden');
+            // Small delay to allow display block to apply before animating opacity
+            setTimeout(() => {
+                panelOverlay.classList.remove('opacity-0');
+                detailPanel.classList.add('open');
+            }, 10);
+        }
+
+        function closeDetailPanel() {
+            detailPanel.classList.remove('open');
+            panelOverlay.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                panelOverlay.classList.add('hidden');
+            }, 300); // match transition duration
+        }
+    </script>
+</body></html>

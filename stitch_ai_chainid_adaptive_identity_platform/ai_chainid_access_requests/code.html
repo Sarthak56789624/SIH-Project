@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID - Access Requests</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#474646",
+                        "on-tertiary-container": "#868381",
+                        "on-secondary-fixed-variant": "#404754",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#c0c7d6",
+                        "on-surface": "#1c1b1b",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f7f3f2",
+                        "inverse-on-surface": "#f4f0ef",
+                        "outline-variant": "#c4c7c7",
+                        "surface-container-high": "#ebe7e6",
+                        "inverse-surface": "#313030",
+                        "tertiary": "#000000",
+                        "primary": "#000000",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-primary-container": "#858383",
+                        "on-error-container": "#93000a",
+                        "outline": "#747878",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fdf8f8",
+                        "surface": "#fdf8f8",
+                        "on-secondary-fixed": "#151c27",
+                        "on-surface-variant": "#444748",
+                        "secondary-container": "#dce2f3",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-secondary-container": "#5e6572",
+                        "background": "#fdf8f8",
+                        "surface-variant": "#e5e2e1",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface-container": "#f1edec",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed": "#dce2f3",
+                        "surface-dim": "#ddd9d8",
+                        "surface-tint": "#5f5e5e",
+                        "on-background": "#1c1b1b",
+                        "on-tertiary-fixed": "#1c1b1a",
+                        "on-tertiary-fixed-variant": "#484645",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#e6e1df",
+                        "inverse-primary": "#c8c6c5",
+                        "tertiary-container": "#1c1b1a",
+                        "primary-container": "#1c1b1b",
+                        "secondary": "#585f6c",
+                        "primary-fixed": "#e5e2e1",
+                        "tertiary-fixed-dim": "#cac6c3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px",
+                        "margin-mobile": "20px",
+                        "section-gap": "160px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "display-hero": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "body-md": ["Inter"],
+                        "display-hero-mobile": ["Geist"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-hero": ["110px", { "lineHeight": "100px", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-hero-mobile": ["56px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #F9F8F6; }
+        .border-thin { border: 1px solid rgba(18, 18, 18, 0.1); }
+        .hover-bg-shift:hover { background-color: #F2F1EF; }
+    </style>
+</head>
+<body class="font-body-md text-on-background flex bg-background">
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col h-screen sticky top-0 left-0 overflow-y-auto bg-surface border-r border-outline/10 w-64 p-4 z-40 shrink-0">
+<div class="mb-8 px-4 mt-4">
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary">AI-ChainID</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Enterprise Access</p>
+</div>
+<button class="bg-primary text-on-primary font-label-sm text-label-sm py-3 px-4 rounded mb-8 w-full text-left flex items-center justify-between transition-colors hover:opacity-90">
+            New Request
+            <span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+</button>
+<ul class="flex flex-col gap-2 flex-grow">
+<li>
+<a class="flex items-center gap-3 py-2 px-4 rounded text-on-surface-variant hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">fingerprint</span>
+<span class="font-label-sm text-label-sm">Identity</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 px-4 rounded text-primary font-bold border-l-2 border-primary bg-surface-container-low scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="font-label-sm text-label-sm">Context</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 px-4 rounded text-on-surface-variant hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="font-label-sm text-label-sm">Security</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 px-4 rounded text-on-surface-variant hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">policy</span>
+<span class="font-label-sm text-label-sm">Policies</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 px-4 rounded text-on-surface-variant hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-sm text-label-sm">Audit</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto border-t border-outline/10 pt-4">
+<ul class="flex flex-col gap-2">
+<li>
+<a class="flex items-center gap-3 py-2 px-4 rounded text-on-surface-variant hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 px-4 rounded text-on-surface-variant hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-1 min-w-0">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 md:py-24">
+<header class="mb-16 md:mb-section-gap max-w-3xl">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-4">Access Requests</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Review requests using identity, context and AI risk analysis.</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter relative">
+<!-- Request List (Cols 1-8) -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- High Risk Item -->
+<article class="bg-surface border-thin rounded p-6 md:p-10 hover-bg-shift transition-colors duration-200">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center border-thin overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="A minimalist, monochromatic portrait illustration of a male tech professional named Amit Kumar. The style is flat, high-contrast, and editorial, using only stark black, white, and subtle grays. The background is pure white." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1A8GLTf1r0352x2sUMjUSOATKSILyf3bAqM2nWwAxqc9x6tj2lVzi7qVbBiVV6Fr19vK1VvMphFcNRDdPCgThnPpbtYaY-3C8R-llmBZJtWb6MYrlIGW32QAhiR5q5nAMiad9jfMjJSlm0I0tW7Cd_MG4IZq9FR8YDunjKppTBmJflr-p8w6wkRYdj_KnfQtNY9trxvnjuJr6pEKIPhPdABCM68cd0TmyNUFCb91YUCRK_P2uBtM0"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Amit Kumar</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Requesting: Production Server</p>
+</div>
+</div>
+<div class="bg-error/10 border border-error/20 px-3 py-1.5 rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-error" style="font-size: 16px;">warning</span>
+<span class="font-label-sm text-label-sm text-error">Risk Score: 91/100</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+<div class="border-thin p-4 rounded">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Risk Factor 1</p>
+<p class="font-body-md text-body-md">Role mismatch</p>
+</div>
+<div class="border-thin p-4 rounded">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Risk Factor 2</p>
+<p class="font-body-md text-body-md">Unusual location</p>
+</div>
+</div>
+<div class="flex justify-end border-t border-outline/10 pt-6">
+<button class="bg-primary text-on-primary font-label-sm text-label-sm py-2 px-6 rounded transition-colors hover:bg-surface-tint" onclick="toggleSidePanel('amit')">
+                                Review Details
+                            </button>
+</div>
+</article>
+<!-- Low Risk Item -->
+<article class="bg-surface border-thin rounded p-6 md:p-10 hover-bg-shift transition-colors duration-200">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center border-thin overflow-hidden">
+<img class="object-cover w-full h-full" data-alt="A minimalist, monochromatic portrait illustration of a male tech professional named Rahul Sharma. The style is flat, high-contrast, and editorial, using only stark black, white, and subtle grays. The background is pure white." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzMtUF24UZt9Qsd7vvQVc-ur8U8LIC1xFcWbyrO8oJBGR7mhp9SdHFhgv2HeBTvgdiSnMIzs8ESzDBJ1q3-5kCTCQyVVbi2ypJuAdQo18jWHVK7Zpbgnh_ybBlWWHA2JgFJa8pIfin66FdMOzOpLdQRvuQMYMUAKkD9pMc6aAHhz4sRE7Rjecuc-72MZP1Z8hsX_R_89dvCtq9mdz3TM2moZv7J_rqZbZBXUDZ9Gev2pn1RIDVg2Ah"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Rahul Sharma</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Requesting: AWS Development</p>
+</div>
+</div>
+<div class="bg-surface-container px-3 py-1.5 rounded flex items-center gap-2 border-thin">
+<span class="material-symbols-outlined text-primary" style="font-size: 16px;">verified</span>
+<span class="font-label-sm text-label-sm text-primary">Risk Score: 08/100</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+<div class="border-thin p-4 rounded col-span-1 md:col-span-2">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Identity Status</p>
+<p class="font-body-md text-body-md flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span>
+                                    Verified Device &amp; Location
+                                </p>
+</div>
+</div>
+<div class="flex justify-end border-t border-outline/10 pt-6 gap-3">
+<button class="border-thin text-primary font-label-sm text-label-sm py-2 px-6 rounded transition-colors hover:bg-surface-container-low">
+                                Approve Auto
+                            </button>
+<button class="bg-primary text-on-primary font-label-sm text-label-sm py-2 px-6 rounded transition-colors hover:bg-surface-tint" onclick="toggleSidePanel('rahul')">
+                                Review
+                            </button>
+</div>
+</article>
+</div>
+<!-- Spacer for right side panel on desktop if needed, though we'll use fixed positioning for the panel -->
+<div class="hidden lg:block lg:col-span-4">
+<div class="sticky top-24 p-8 border-thin rounded bg-surface-container-lowest">
+<h4 class="font-headline-md text-headline-md mb-4">Review Queue</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Select a request from the timeline to view detailed AI context and risk analysis.</p>
+<div class="h-px w-full bg-outline/10 my-6"></div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined" style="font-size: 16px;">info</span>
+<span>2 Pending Requests</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col md:flex-row justify-between items-center border-t border-outline/10 mt-section-gap bg-surface">
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 md:mb-0">© 2024 AI-ChainID. All rights reserved.</p>
+<ul class="flex gap-6">
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline decoration-1 underline-offset-4" href="#">Privacy</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline decoration-1 underline-offset-4" href="#">Security</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline decoration-1 underline-offset-4" href="#">Compliance</a></li>
+<li><a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary underline decoration-1 underline-offset-4" href="#">Terms</a></li>
+</ul>
+</footer>
+</main>
+<!-- Side Panel (Hidden by default) -->
+<div class="fixed inset-y-0 right-0 w-full max-w-md bg-surface border-l border-outline/10 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto" id="sidePanel">
+<div class="p-6 md:p-8">
+<div class="flex justify-between items-center mb-8 pb-4 border-b border-outline/10">
+<h3 class="font-headline-md text-headline-md text-primary">AI Recommendation</h3>
+<button class="text-on-surface-variant hover:text-primary p-2" onclick="toggleSidePanel()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="space-y-8" id="panelContent">
+<!-- Content injected via JS -->
+</div>
+</div>
+</div>
+<!-- Overlay -->
+<div class="fixed inset-0 bg-primary/20 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 z-40" id="panelOverlay" onclick="toggleSidePanel()"></div>
+<script>
+        const amitData = `
+            <div class="bg-error/5 border border-error/20 p-6 rounded mb-8">
+                <h4 class="font-headline-md text-headline-md text-error mb-2">Deny Access</h4>
+                <p class="font-body-md text-body-md text-on-surface-variant">High probability of unauthorized intent or compromised credentials.</p>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <h5 class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Contextual Anomalies</h5>
+                    <ul class="space-y-3">
+                        <li class="flex gap-3 items-start font-body-md text-body-md">
+                            <span class="material-symbols-outlined text-error mt-0.5" style="font-size: 18px;">location_off</span>
+                            Request originating from IP outside standard operational zones.
+                        </li>
+                        <li class="flex gap-3 items-start font-body-md text-body-md">
+                            <span class="material-symbols-outlined text-error mt-0.5" style="font-size: 18px;">badge</span>
+                            Role 'Marketing' does not align with 'Production Server' access patterns.
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="border-t border-outline/10 pt-6">
+                     <h5 class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-4">Required Actions</h5>
+                     <button class="w-full bg-surface-container-lowest border border-error text-error font-label-sm text-label-sm py-3 px-4 rounded mb-3 hover:bg-error/5 transition-colors">Reject Request</button>
+                     <button class="w-full bg-primary text-on-primary font-label-sm text-label-sm py-3 px-4 rounded hover:bg-surface-tint transition-colors">Require MFA & Manager Approval</button>
+                </div>
+            </div>
+        `;
+
+        const rahulData = `
+             <div class="bg-primary/5 border-thin p-6 rounded mb-8">
+                <h4 class="font-headline-md text-headline-md text-primary mb-2">Approve Access</h4>
+                <p class="font-body-md text-body-md text-on-surface-variant">Routine request conforming to established identity baselines.</p>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <h5 class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Verification Factors</h5>
+                    <ul class="space-y-3">
+                        <li class="flex gap-3 items-start font-body-md text-body-md">
+                            <span class="material-symbols-outlined text-primary mt-0.5" style="font-size: 18px;">devices</span>
+                            Known corporate device (MacBook Pro).
+                        </li>
+                        <li class="flex gap-3 items-start font-body-md text-body-md">
+                            <span class="material-symbols-outlined text-primary mt-0.5" style="font-size: 18px;">schedule</span>
+                            Time of request aligns with typical working hours.
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="border-t border-outline/10 pt-6">
+                     <button class="w-full bg-primary text-on-primary font-label-sm text-label-sm py-3 px-4 rounded hover:bg-surface-tint transition-colors">Grant Access</button>
+                </div>
+            </div>
+        `;
+
+        let panelOpen = false;
+
+        function toggleSidePanel(user = null) {
+            const panel = document.getElementById('sidePanel');
+            const overlay = document.getElementById('panelOverlay');
+            const content = document.getElementById('panelContent');
+
+            if (!panelOpen && user) {
+                if (user === 'amit') {
+                    content.innerHTML = amitData;
+                } else if (user === 'rahul') {
+                    content.innerHTML = rahulData;
+                }
+                
+                panel.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                panelOpen = true;
+                document.body.style.overflow = 'hidden';
+            } else {
+                panel.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                panelOpen = false;
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
+</body></html>

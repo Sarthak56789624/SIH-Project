@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID | Identity you can trust. Access that adapts.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "secondary": "#585f6c",
+                        "primary-fixed": "#e5e2e1",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed": "#dce2f3",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#e6e1df",
+                        "on-surface-variant": "#444748",
+                        "tertiary-container": "#1c1b1a",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f7f3f2",
+                        "inverse-primary": "#c8c6c5",
+                        "surface-variant": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#484645",
+                        "on-tertiary-container": "#868381",
+                        "on-surface": "#1c1b1b",
+                        "secondary-fixed-dim": "#c0c7d6",
+                        "surface-dim": "#ddd9d8",
+                        "on-secondary-container": "#5e6572",
+                        "secondary-container": "#dce2f3",
+                        "on-primary-fixed": "#1c1b1b",
+                        "inverse-surface": "#313030",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#474646",
+                        "surface": "#fdf8f8",
+                        "surface-container-high": "#ebe7e6",
+                        "surface-tint": "#5f5e5e",
+                        "on-secondary-fixed-variant": "#404754",
+                        "on-secondary-fixed": "#151c27",
+                        "tertiary": "#000000",
+                        "on-error-container": "#93000a",
+                        "primary": "#000000",
+                        "outline": "#747878",
+                        "on-background": "#1c1b1b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#1c1b1a",
+                        "on-primary-container": "#858383",
+                        "inverse-on-surface": "#f4f0ef",
+                        "background": "#fdf8f8",
+                        "surface-container-highest": "#e5e2e1",
+                        "tertiary-fixed-dim": "#cac6c3",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#fdf8f8",
+                        "outline-variant": "#c4c7c7",
+                        "primary-container": "#1c1b1b",
+                        "surface-container": "#f1edec",
+                        "on-secondary": "#ffffff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "container-max": "1280px",
+                        "section-gap": "160px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "unit": "8px"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "display-hero": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "display-hero-mobile": ["Geist"]
+                    },
+                    fontSize: {
+                        "body-md": ["16px", { lineHeight: "24px", letterSpacing: "0em", fontWeight: "400" }],
+                        "headline-lg": ["48px", { lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "600" }],
+                        "label-sm": ["12px", { lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "display-hero": ["110px", { lineHeight: "100px", letterSpacing: "-0.04em", fontWeight: "700" }],
+                        "headline-md": ["32px", { lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600" }],
+                        "body-lg": ["18px", { lineHeight: "28px", letterSpacing: "0em", fontWeight: "400" }],
+                        "display-hero-mobile": ["56px", { lineHeight: "54px", letterSpacing: "-0.03em", fontWeight: "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Grid pattern background */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(18, 18, 18, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(18, 18, 18, 0.05) 1px, transparent 1px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="bg-transparent backdrop-blur-md dark:bg-transparent fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 border-b border-outline/10">
+<div class="flex items-center gap-8">
+<a class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-on-primary-fixed" href="#">
+                AI-ChainID
+            </a>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-on-primary-fixed transition-colors duration-200 font-label-sm text-label-sm uppercase tracking-wider" href="#">Product</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-on-primary-fixed transition-colors duration-200 font-label-sm text-label-sm uppercase tracking-wider" href="#">Security</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-on-primary-fixed transition-colors duration-200 font-label-sm text-label-sm uppercase tracking-wider" href="#">How it works</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-on-primary-fixed transition-colors duration-200 font-label-sm text-label-sm uppercase tracking-wider" href="#">Solutions</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<a class="hidden md:block text-primary dark:text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wider hover:opacity-70 transition-opacity" href="#">Sign in</a>
+<a class="bg-primary text-on-primary px-4 py-2 rounded font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface-tint transition-colors" href="#">Get started</a>
+</div>
+</nav>
+<main class="pt-[100px] md:pt-[120px]">
+<!-- Hero Section -->
+<section class="px-margin-mobile md:px-margin-desktop min-h-[90vh] flex flex-col justify-center relative reveal">
+<div class="max-w-container-max mx-auto w-full grid grid-cols-4 md:grid-cols-12 gap-gutter items-center">
+<div class="col-span-4 md:col-span-8 md:col-start-1 flex flex-col gap-6 z-10">
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-primary tracking-tighter leading-none">
+                        Identity you can trust.<br/>
+<span class="text-surface-tint">Access that adapts.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl md:ml-margin-desktop border-l border-outline/20 pl-6 py-2">
+                        Combine decentralized verifiable credentials with context-aware AI risk analysis. We ensure that only the right identity gets the right access, at the right time, under the right conditions.
+                    </p>
+<div class="flex gap-4 md:ml-margin-desktop pt-4">
+<button class="bg-primary text-on-primary px-6 py-3 rounded font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface-tint transition-colors">Start Building</button>
+<button class="border border-outline/20 text-primary px-6 py-3 rounded font-label-sm text-label-sm uppercase tracking-wider hover:bg-surface-container-low transition-colors">Read Docs</button>
+</div>
+</div>
+</div>
+<!-- Abstract Flow Vis -->
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-[45vw] h-[60vh] -z-10 opacity-30 md:opacity-100 pointer-events-none">
+<div class="w-full h-full bg-grid relative border-l border-b border-outline/10">
+<div class="absolute top-[20%] left-[10%] w-32 h-16 border border-outline/20 bg-surface-container-lowest flex items-center justify-center font-label-sm text-label-sm">Employee</div>
+<div class="absolute top-[40%] left-[30%] w-32 h-16 border border-outline/20 bg-surface-container-lowest flex items-center justify-center font-label-sm text-label-sm">Identity</div>
+<div class="absolute top-[60%] left-[50%] w-32 h-16 border border-outline/20 bg-surface-container-lowest flex items-center justify-center font-label-sm text-label-sm text-error">AI Risk</div>
+<div class="absolute top-[80%] left-[70%] w-32 h-16 border border-outline/20 bg-surface-container-lowest flex items-center justify-center font-label-sm text-label-sm">Permission</div>
+<!-- Connecting lines -->
+<svg class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+<path d="M 10% 25% L 30% 45%" fill="none" stroke="rgba(18,18,18,0.2)"></path>
+<path d="M 30% 45% L 50% 65%" fill="none" stroke="rgba(18,18,18,0.2)"></path>
+<path d="M 50% 65% L 70% 85%" fill="none" stroke="rgba(18,18,18,0.2)" stroke-dasharray="4"></path>
+</svg>
+</div>
+</div>
+</section>
+<!-- Core Message Section -->
+<section class="px-margin-mobile md:px-margin-desktop py-section-gap bg-surface-container-low reveal">
+<div class="max-w-container-max mx-auto">
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight mb-16 md:mb-24 md:w-2/3">Identity is only the beginning. True security requires context.</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Step 1 -->
+<div class="border border-outline/10 bg-surface-container-lowest p-8 relative overflow-hidden group">
+<span class="absolute top-4 right-4 font-display-hero text-headline-lg text-surface-container-high opacity-50 z-0">01</span>
+<div class="relative z-10 flex flex-col h-full gap-4">
+<span class="material-symbols-outlined text-3xl mb-4">fingerprint</span>
+<h3 class="font-headline-md text-headline-md text-primary">Verify</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">Decentralized Identifiers (DIDs) establish cryptographic proof of identity without relying on central authorities.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="border border-outline/10 bg-surface-container-lowest p-8 relative overflow-hidden">
+<span class="absolute top-4 right-4 font-display-hero text-headline-lg text-surface-container-high opacity-50 z-0">02</span>
+<div class="relative z-10 flex flex-col h-full gap-4">
+<span class="material-symbols-outlined text-3xl mb-4">psychology</span>
+<h3 class="font-headline-md text-headline-md text-primary">Understand</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">AI continuously analyzes behavioral context, location, device posture, and historical patterns for every access request.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="border border-outline/10 bg-surface-container-lowest p-8 relative overflow-hidden">
+<span class="absolute top-4 right-4 font-display-hero text-headline-lg text-surface-container-high opacity-50 z-0">03</span>
+<div class="relative z-10 flex flex-col h-full gap-4">
+<span class="material-symbols-outlined text-3xl mb-4">key</span>
+<h3 class="font-headline-md text-headline-md text-primary">Authorize</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex-grow">Smart contracts issue temporary, scope-limited permissions based on the combined identity and risk score.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col md:flex-row justify-between items-center bg-surface dark:bg-background border-t border-outline/10">
+<div class="mb-8 md:mb-0">
+<span class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-on-primary-fixed block mb-2">AI-ChainID</span>
+<span class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant">© 2024 AI-ChainID. All rights reserved.</span>
+</div>
+<div class="flex gap-6">
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-on-primary-fixed transition-colors underline decoration-1 underline-offset-4 uppercase tracking-wider" href="#">Privacy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-on-primary-fixed transition-colors underline decoration-1 underline-offset-4 uppercase tracking-wider" href="#">Security</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-on-primary-fixed transition-colors underline decoration-1 underline-offset-4 uppercase tracking-wider" href="#">Compliance</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-on-primary-fixed transition-colors underline decoration-1 underline-offset-4 uppercase tracking-wider" href="#">Terms</a>
+</div>
+</footer>
+</main>
+<script>
+        // Simple scroll reveal
+        document.addEventListener('DOMContentLoaded', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealOnScroll = () => {
+                for (let i = 0; i < reveals.length; i++) {
+                    const windowHeight = window.innerHeight;
+                    const elementTop = reveals[i].getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveals[i].classList.add('active');
+                    }
+                }
+            };
+            
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // Trigger on load
+        });
+    </script>
+</body></html>

@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#6D54E8",
+                    "card-bg": "#191724",
+                    "input-bg": "#232032"
+                },
+                fontFamily: {
+                    sans: ["Inter", "sans-serif"]
+                }
+            }
+        }
+    }
+</script>
+<style>
+    /* ── Full-Screen AI Ambient Background Infrastructure ── */
+    #ai-ambient-background {
+        position: fixed;
+        inset: 0;
+        width: 100vw;
+        height: 100vh;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+        user-select: none;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', sans-serif;
+        /* Layer 1: Multi-layer Dark Gradient (Near black -> Deep navy -> Deep indigo) */
+        background-color: #06060c;
+        background-image: 
+            radial-gradient(ellipse 1100px 750px at 50% 50%, #15132d 0%, #0d0c20 40%, #080814 75%, #040409 100%);
+        min-height: 100vh;
+        color: #f1f5f9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow-x: hidden;
+    }
+
+    /* ── Layer 2: Soft Atmospheric Glow Orbs (Deep Indigo, Violet, Cyan/Blue) ── */
+    .ambient-glow-orb {
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(85px);
+        pointer-events: none;
+        will-change: transform;
+    }
+    .orb-tl {
+        top: -140px;
+        left: -120px;
+        width: 620px;
+        height: 620px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.32) 0%, rgba(67, 56, 202, 0.16) 50%, transparent 75%);
+        animation: orbDriftTL 28s ease-in-out infinite alternate;
+    }
+    .orb-tr {
+        top: -100px;
+        right: -110px;
+        width: 650px;
+        height: 650px;
+        background: radial-gradient(circle, rgba(147, 51, 234, 0.28) 0%, rgba(109, 40, 217, 0.14) 50%, transparent 75%);
+        animation: orbDriftTR 32s ease-in-out infinite alternate;
+    }
+    .orb-bl {
+        bottom: -140px;
+        left: -110px;
+        width: 640px;
+        height: 640px;
+        background: radial-gradient(circle, rgba(37, 99, 235, 0.28) 0%, rgba(30, 58, 138, 0.14) 50%, transparent 75%);
+        animation: orbDriftBL 30s ease-in-out infinite alternate;
+    }
+    .orb-br {
+        bottom: -130px;
+        right: -120px;
+        width: 620px;
+        height: 620px;
+        background: radial-gradient(circle, rgba(124, 58, 237, 0.28) 0%, rgba(79, 70, 229, 0.14) 50%, transparent 75%);
+        animation: orbDriftBR 34s ease-in-out infinite alternate;
+    }
+    .orb-center-ambient {
+        top: 50%;
+        left: 50%;
+        width: 820px;
+        height: 560px;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(ellipse, rgba(99, 102, 241, 0.12) 0%, rgba(79, 70, 229, 0.05) 50%, transparent 80%);
+        filter: blur(80px);
+    }
+
+    @keyframes orbDriftTL {
+        0% { transform: translate3d(0, 0, 0); }
+        50% { transform: translate3d(40px, 35px, 0); }
+        100% { transform: translate3d(-20px, 50px, 0); }
+    }
+    @keyframes orbDriftTR {
+        0% { transform: translate3d(0, 0, 0); }
+        50% { transform: translate3d(-35px, 40px, 0); }
+        100% { transform: translate3d(25px, -30px, 0); }
+    }
+    @keyframes orbDriftBL {
+        0% { transform: translate3d(0, 0, 0); }
+        50% { transform: translate3d(45px, -30px, 0); }
+        100% { transform: translate3d(-25px, 25px, 0); }
+    }
+    @keyframes orbDriftBR {
+        0% { transform: translate3d(0, 0, 0); }
+        50% { transform: translate3d(-40px, -25px, 0); }
+        100% { transform: translate3d(30px, 35px, 0); }
+    }
+
+    /* ── Layer 3 & 4: Flowing Data Waves & Corner Networks ── */
+    .ambient-svg-stage {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+    .ambient-wave {
+        fill: none;
+        stroke-linecap: round;
+        vector-effect: non-scaling-stroke;
+        animation: waveGentleMotion 24s ease-in-out infinite alternate;
+    }
+    .ambient-wave-1 { stroke: rgba(129, 140, 248, 0.28); stroke-width: 1.6; animation-duration: 22s; }
+    .ambient-wave-2 { stroke: rgba(167, 139, 250, 0.24); stroke-width: 1.4; animation-duration: 28s; animation-delay: -6s; }
+    .ambient-wave-3 { stroke: rgba(99, 102, 241, 0.26); stroke-width: 1.5; animation-duration: 26s; animation-delay: -12s; }
+    .ambient-wave-4 { stroke: rgba(192, 132, 252, 0.20); stroke-width: 1.3; animation-duration: 32s; animation-delay: -18s; }
+    .ambient-wave-5 { stroke: rgba(96, 165, 250, 0.22); stroke-width: 1.4; animation-duration: 27s; animation-delay: -9s; }
+    .ambient-wave-6 { stroke: rgba(147, 197, 253, 0.18); stroke-width: 1.2; animation-duration: 24s; animation-delay: -15s; }
+    .ambient-wave-7 { stroke: rgba(129, 140, 248, 0.24); stroke-width: 1.5; animation-duration: 30s; animation-delay: -21s; }
+
+    @keyframes waveGentleMotion {
+        0% { transform: translate3d(0, 0, 0); }
+        50% { transform: translate3d(24px, -16px, 0); }
+        100% { transform: translate3d(-24px, 16px, 0); }
+    }
+
+    .corner-network-node {
+        fill: #818cf8;
+        filter: drop-shadow(0 0 5px rgba(129, 140, 248, 0.8));
+        animation: nodeGentlePulse 6s ease-in-out infinite alternate;
+    }
+    .corner-network-node-cyan {
+        fill: #38bdf8;
+        filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.8));
+        animation: nodeGentlePulse 7s ease-in-out infinite alternate;
+    }
+    .corner-network-node-purple {
+        fill: #c084fc;
+        filter: drop-shadow(0 0 5px rgba(192, 132, 252, 0.8));
+        animation: nodeGentlePulse 5s ease-in-out infinite alternate;
+    }
+    @keyframes nodeGentlePulse {
+        0% { opacity: 0.25; transform: scale(1); }
+        50% { opacity: 0.60; transform: scale(1.15); }
+        100% { opacity: 0.20; transform: scale(0.95); }
+    }
+
+    /* ── Layer 5: Peripheral Drifting Particles ── */
+    .ambient-particle {
+        position: absolute;
+        border-radius: 9999px;
+        background-color: #a5b4fc;
+        pointer-events: none;
+        animation: particleSlowDrift 24s ease-in-out infinite alternate;
+    }
+    @keyframes particleSlowDrift {
+        0% { transform: translate3d(0, 0, 0); opacity: 0.15; }
+        50% { opacity: 0.35; transform: translate3d(20px, -25px, 0); }
+        100% { transform: translate3d(-15px, 15px, 0); opacity: 0.15; }
+    }
+
+    /* ── Accessibility: Reduced Motion ── */
+    @media (prefers-reduced-motion: reduce) {
+        .ambient-glow-orb,
+        .ambient-wave,
+        .corner-network-node,
+        .ambient-particle {
+            animation: none !important;
+            transform: none !important;
+        }
+    }
+    .login-card {
+        background: #191724;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 2rem;
+        box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+    .login-input, input[type="email"].login-input, input[type="password"].login-input {
+        background-color: #232032 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: #ffffff !important;
+        transition: all 0.2s ease;
+    }
+    .login-input:focus, input[type="email"].login-input:focus, input[type="password"].login-input:focus {
+        border-color: #6D54E8 !important;
+        outline: none !important;
+        box-shadow: 0 0 0 3px rgba(109, 84, 232, 0.22) !important;
+        background-color: #272338 !important;
+    }
+    .login-input::placeholder {
+        color: rgba(255, 255, 255, 0.35);
+    }
+</style>
+</head>
+<body class="p-4 sm:p-6 md:p-8 relative overflow-x-hidden min-h-screen flex items-center justify-center">
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<!-- AI-CHAINID ENTERPRISE AMBIENT DECORATIVE BACKGROUND INFRASTRUCTURE -->
+<!-- Layers 1–5: Deep Gradient, Atmospheric Orbs, Network, Waves, Nodes -->
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<div id="ai-ambient-background" aria-hidden="true">
+    <!-- Layer 2: Soft Atmospheric Glow Orbs -->
+    <div class="ambient-glow-orb orb-tl"></div>
+    <div class="ambient-glow-orb orb-tr"></div>
+    <div class="ambient-glow-orb orb-bl"></div>
+    <div class="ambient-glow-orb orb-br"></div>
+    <div class="ambient-glow-orb orb-center-ambient"></div>
+
+    <!-- Layer 3 & 4: Digital Network & Flowing Data Waves (Hardware-accelerated SVG) -->
+    <svg class="ambient-svg-stage" viewBox="0 0 1920 1080" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="waveGradIndigo" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#818cf8" stop-opacity="0.08" />
+                <stop offset="30%" stop-color="#6366f1" stop-opacity="0.45" />
+                <stop offset="70%" stop-color="#8b5cf6" stop-opacity="0.40" />
+                <stop offset="100%" stop-color="#818cf8" stop-opacity="0.08" />
+            </linearGradient>
+            <linearGradient id="waveGradViolet" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#a855f7" stop-opacity="0.08" />
+                <stop offset="40%" stop-color="#c084fc" stop-opacity="0.42" />
+                <stop offset="75%" stop-color="#6366f1" stop-opacity="0.36" />
+                <stop offset="100%" stop-color="#a855f7" stop-opacity="0.08" />
+            </linearGradient>
+            <linearGradient id="waveGradCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.06" />
+                <stop offset="50%" stop-color="#60a5fa" stop-opacity="0.38" />
+                <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.06" />
+            </linearGradient>
+            <filter id="softGlowBlur">
+                <feGaussianBlur stdDeviation="2.5" />
+            </filter>
+        </defs>
+
+        <!-- Layer 4: Flowing Data Stream Waves (5–7 subtle curves traversing viewport) -->
+        <g class="ambient-data-streams">
+            <path class="ambient-wave ambient-wave-1" stroke="url(#waveGradIndigo)" stroke-width="2.0" d="M -100,180 C 400,90 900,240 1400,150 C 1700,95 1950,220 2100,170" />
+            <path class="ambient-wave ambient-wave-2" stroke="url(#waveGradViolet)" stroke-width="1.8" d="M -100,280 C 450,340 850,210 1350,290 C 1650,340 1900,250 2100,280" />
+            <path class="ambient-wave ambient-wave-3" stroke="url(#waveGradIndigo)" stroke-width="2.2" d="M -100,720 C 400,640 850,780 1350,690 C 1680,630 1920,740 2100,700" />
+            <path class="ambient-wave ambient-wave-4" stroke="url(#waveGradViolet)" stroke-width="1.8" d="M -100,840 C 480,910 920,770 1400,850 C 1700,900 1950,810 2100,840" />
+            <path class="ambient-wave ambient-wave-5" stroke="url(#waveGradCyan)" stroke-width="1.9" d="M -100,90 C 420,150 880,55 1380,110 C 1680,165 1920,75 2100,100" />
+            <path class="ambient-wave ambient-wave-6" stroke="url(#waveGradCyan)" stroke-width="1.8" d="M -100,930 C 450,860 880,970 1380,890 C 1680,830 1920,930 2100,890" />
+            <path class="ambient-wave ambient-wave-7" stroke="url(#waveGradIndigo)" stroke-width="2.4" d="M -100,500 C 350,560 700,460 1100,520 C 1450,570 1800,470 2100,510" filter="url(#softGlowBlur)" />
+        </g>
+
+        <!-- Layer 3: Peripheral Corner Digital Networks (Identity & Zero-Trust Graph) -->
+        <!-- Top-Left Constellation -->
+        <g class="corner-network-tl">
+            <line x1="60" y1="60" x2="170" y2="90" stroke="rgba(129, 140, 248, 0.40)" stroke-width="1.5" />
+            <line x1="170" y1="90" x2="280" y2="50" stroke="rgba(129, 140, 248, 0.35)" stroke-width="1.4" />
+            <line x1="170" y1="90" x2="130" y2="180" stroke="rgba(129, 140, 248, 0.38)" stroke-width="1.4" />
+            <line x1="130" y1="180" x2="240" y2="200" stroke="rgba(129, 140, 248, 0.32)" stroke-width="1.2" />
+            <line x1="240" y1="200" x2="340" y2="140" stroke="rgba(129, 140, 248, 0.35)" stroke-width="1.3" />
+            <line x1="280" y1="50" x2="340" y2="140" stroke="rgba(129, 140, 248, 0.30)" stroke-width="1.2" />
+            <line x1="240" y1="200" x2="190" y2="290" stroke="rgba(129, 140, 248, 0.25)" stroke-width="1.2" stroke-dasharray="4 4" />
+            
+            <circle cx="60" cy="60" r="3.5" class="corner-network-node" />
+            <circle cx="170" cy="90" r="4.8" class="corner-network-node-purple" style="animation-delay: -2s;" />
+            <circle cx="280" cy="50" r="3.6" class="corner-network-node" style="animation-delay: -4s;" />
+            <circle cx="130" cy="180" r="4.2" class="corner-network-node-cyan" style="animation-delay: -1s;" />
+            <circle cx="240" cy="200" r="5.2" class="corner-network-node" style="animation-delay: -5s;" />
+            <circle cx="340" cy="140" r="3.8" class="corner-network-node-cyan" style="animation-delay: -3s;" />
+            <circle cx="190" cy="290" r="3.2" class="corner-network-node" style="animation-delay: -6s;" />
+        </g>
+
+        <!-- Top-Right Constellation -->
+        <g class="corner-network-tr">
+            <line x1="1860" y1="70" x2="1750" y2="100" stroke="rgba(167, 139, 250, 0.40)" stroke-width="1.5" />
+            <line x1="1750" y1="100" x2="1640" y2="60" stroke="rgba(167, 139, 250, 0.35)" stroke-width="1.4" />
+            <line x1="1750" y1="100" x2="1790" y2="190" stroke="rgba(167, 139, 250, 0.38)" stroke-width="1.4" />
+            <line x1="1790" y1="190" x2="1680" y2="220" stroke="rgba(167, 139, 250, 0.32)" stroke-width="1.2" />
+            <line x1="1680" y1="220" x2="1570" y2="150" stroke="rgba(167, 139, 250, 0.35)" stroke-width="1.3" />
+            <line x1="1640" y1="60" x2="1570" y2="150" stroke="rgba(167, 139, 250, 0.30)" stroke-width="1.2" />
+            <line x1="1680" y1="220" x2="1730" y2="300" stroke="rgba(167, 139, 250, 0.25)" stroke-width="1.2" stroke-dasharray="4 4" />
+
+            <circle cx="1860" cy="70" r="3.5" class="corner-network-node" style="animation-delay: -1.5s;" />
+            <circle cx="1750" cy="100" r="4.8" class="corner-network-node-purple" style="animation-delay: -3.5s;" />
+            <circle cx="1640" cy="60" r="3.6" class="corner-network-node" style="animation-delay: -5.5s;" />
+            <circle cx="1790" cy="190" r="4.2" class="corner-network-node-cyan" style="animation-delay: -2.5s;" />
+            <circle cx="1680" cy="220" r="5.2" class="corner-network-node" style="animation-delay: -4.5s;" />
+            <circle cx="1570" cy="150" r="3.8" class="corner-network-node-purple" style="animation-delay: -0.5s;" />
+            <circle cx="1730" cy="300" r="3.2" class="corner-network-node" style="animation-delay: -6.5s;" />
+        </g>
+
+        <!-- Bottom-Left Constellation -->
+        <g class="corner-network-bl">
+            <line x1="70" y1="1010" x2="180" y2="970" stroke="rgba(96, 165, 250, 0.40)" stroke-width="1.5" />
+            <line x1="180" y1="970" x2="280" y2="1020" stroke="rgba(96, 165, 250, 0.35)" stroke-width="1.4" />
+            <line x1="180" y1="970" x2="140" y2="880" stroke="rgba(96, 165, 250, 0.38)" stroke-width="1.4" />
+            <line x1="140" y1="880" x2="260" y2="860" stroke="rgba(96, 165, 250, 0.32)" stroke-width="1.2" />
+            <line x1="260" y1="860" x2="360" y2="930" stroke="rgba(96, 165, 250, 0.35)" stroke-width="1.3" />
+            <line x1="280" y1="1020" x2="360" y2="930" stroke="rgba(96, 165, 250, 0.30)" stroke-width="1.2" />
+            <line x1="260" y1="860" x2="210" y2="770" stroke="rgba(96, 165, 250, 0.25)" stroke-width="1.2" stroke-dasharray="4 4" />
+
+            <circle cx="70" cy="1010" r="3.5" class="corner-network-node-cyan" style="animation-delay: -3s;" />
+            <circle cx="180" cy="970" r="4.8" class="corner-network-node" style="animation-delay: -1s;" />
+            <circle cx="280" cy="1020" r="3.6" class="corner-network-node-cyan" style="animation-delay: -4s;" />
+            <circle cx="140" cy="880" r="4.2" class="corner-network-node-purple" style="animation-delay: -2s;" />
+            <circle cx="260" cy="860" r="5.2" class="corner-network-node" style="animation-delay: -5s;" />
+            <circle cx="360" cy="930" r="3.8" class="corner-network-node" style="animation-delay: -3.5s;" />
+            <circle cx="210" cy="770" r="3.2" class="corner-network-node-purple" style="animation-delay: -1.5s;" />
+        </g>
+
+        <!-- Bottom-Right Constellation -->
+        <g class="corner-network-br">
+            <line x1="1850" y1="1010" x2="1740" y2="960" stroke="rgba(129, 140, 248, 0.40)" stroke-width="1.5" />
+            <line x1="1740" y1="960" x2="1630" y2="1010" stroke="rgba(129, 140, 248, 0.35)" stroke-width="1.4" />
+            <line x1="1740" y1="960" x2="1780" y2="870" stroke="rgba(129, 140, 248, 0.38)" stroke-width="1.4" />
+            <line x1="1780" y1="870" x2="1670" y2="840" stroke="rgba(129, 140, 248, 0.32)" stroke-width="1.2" />
+            <line x1="1670" y1="840" x2="1570" y2="920" stroke="rgba(129, 140, 248, 0.35)" stroke-width="1.3" />
+            <line x1="1630" y1="1010" x2="1570" y2="920" stroke="rgba(129, 140, 248, 0.30)" stroke-width="1.2" />
+            <line x1="1670" y1="840" x2="1720" y2="760" stroke="rgba(129, 140, 248, 0.25)" stroke-width="1.2" stroke-dasharray="4 4" />
+
+            <circle cx="1850" cy="1010" r="3.5" class="corner-network-node" style="animation-delay: -2s;" />
+            <circle cx="1740" cy="960" r="4.8" class="corner-network-node-purple" style="animation-delay: -4s;" />
+            <circle cx="1630" cy="1010" r="3.6" class="corner-network-node" style="animation-delay: -1s;" />
+            <circle cx="1780" cy="870" r="4.2" class="corner-network-node-cyan" style="animation-delay: -5s;" />
+            <circle cx="1670" cy="840" r="5.2" class="corner-network-node" style="animation-delay: -3s;" />
+            <circle cx="1570" cy="920" r="3.8" class="corner-network-node-purple" style="animation-delay: -6s;" />
+            <circle cx="1720" cy="760" r="3.2" class="corner-network-node" style="animation-delay: -2.5s;" />
+        </g>
+    </svg>
+
+    <!-- Layer 5: Sparse Peripheral Drifting Particles -->
+    <div class="ambient-particle" style="top: 8%; left: 12%; width: 4px; height: 4px; background: rgba(167, 139, 250, 0.85); box-shadow: 0 0 10px rgba(167, 139, 250, 0.9); animation-duration: 22s; animation-delay: 0s;"></div>
+    <div class="ambient-particle" style="top: 14%; left: 84%; width: 3.5px; height: 3.5px; background: rgba(56, 189, 248, 0.85); box-shadow: 0 0 10px rgba(56, 189, 248, 0.9); animation-duration: 26s; animation-delay: -4s;"></div>
+    <div class="ambient-particle" style="top: 22%; left: 5%; width: 3px; height: 3px; background: rgba(192, 132, 252, 0.80); box-shadow: 0 0 8px rgba(192, 132, 252, 0.8); animation-duration: 28s; animation-delay: -8s;"></div>
+    <div class="ambient-particle" style="top: 28%; left: 93%; width: 3.5px; height: 3.5px; background: rgba(129, 140, 248, 0.85); box-shadow: 0 0 10px rgba(129, 140, 248, 0.9); animation-duration: 20s; animation-delay: -2s;"></div>
+    <div class="ambient-particle" style="top: 75%; left: 7%; width: 4px; height: 4px; background: rgba(56, 189, 248, 0.85); box-shadow: 0 0 10px rgba(56, 189, 248, 0.9); animation-duration: 24s; animation-delay: -6s;"></div>
+    <div class="ambient-particle" style="top: 82%; left: 90%; width: 3.5px; height: 3.5px; background: rgba(167, 139, 250, 0.85); box-shadow: 0 0 10px rgba(167, 139, 250, 0.9); animation-duration: 30s; animation-delay: -10s;"></div>
+    <div class="ambient-particle" style="top: 88%; left: 16%; width: 3px; height: 3px; background: rgba(192, 132, 252, 0.80); box-shadow: 0 0 8px rgba(192, 132, 252, 0.8); animation-duration: 25s; animation-delay: -12s;"></div>
+    <div class="ambient-particle" style="top: 92%; left: 82%; width: 3.5px; height: 3.5px; background: rgba(129, 140, 248, 0.85); box-shadow: 0 0 10px rgba(129, 140, 248, 0.9); animation-duration: 27s; animation-delay: -14s;"></div>
+    <div class="ambient-particle" style="top: 4%; left: 45%; width: 3px; height: 3px; background: rgba(56, 189, 248, 0.80); box-shadow: 0 0 8px rgba(56, 189, 248, 0.8); animation-duration: 29s; animation-delay: -3s;"></div>
+    <div class="ambient-particle" style="top: 95%; left: 52%; width: 3px; height: 3px; background: rgba(167, 139, 250, 0.80); box-shadow: 0 0 8px rgba(167, 139, 250, 0.8); animation-duration: 23s; animation-delay: -7s;"></div>
+</div>
+
+<!-- Main Elevated Floating Container (Inspired by Reference) -->
+<div class="login-card max-w-5xl w-full p-3 sm:p-4 md:p-5 lg:p-6 flex flex-col md:flex-row gap-6 lg:gap-8 relative z-10">
+
+    <!-- Left Visual Inset Artwork Panel (Enterprise Artwork + Live Cyber Waves) -->
+    <div id="login-hero-card" class="w-full md:w-[48%] min-h-[460px] sm:min-h-[520px] md:min-h-[580px] rounded-[22px] md:rounded-[26px] relative overflow-hidden flex flex-col justify-between p-6 sm:p-8 text-white select-none border border-white/10 shadow-inner group">
+        
+        <!-- High-Res Enterprise Identity Artwork with Parallax -->
+        <div id="login-hero-img-wrap" class="absolute inset-0 w-full h-full pointer-events-none transition-transform duration-500 ease-out scale-105" style="z-index: 0;">
+            <img id="login-hero-img" src="/static/login-enterprise-bg.png" alt="Enterprise Zero-Trust Platform" class="w-full h-full object-cover object-[75%_center] filter brightness-[0.88] contrast-[1.08]" />
+            <!-- Dark atmospheric gradients to ensure absolute readability of text and badges -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#120e22] via-[#151024]/40 to-[#1e1732]/70"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-[#120e22]/90 via-[#140f25]/30 to-transparent"></div>
+            <!-- Subtle dynamic neon pulse glow along the bottom curve -->
+            <div class="absolute -bottom-10 -left-10 w-72 h-72 bg-purple-600/20 rounded-full filter blur-3xl pointer-events-none animate-pulse"></div>
+        </div>
+
+        <!-- Canvas animation layer -->
+        <canvas id="ambient-wave-canvas" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;"></canvas>
+
+        <!-- Top Header: Logo + "Back to website →" Button -->
+        <div class="relative z-10 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-white/15 border border-white/20 backdrop-blur-md text-white flex items-center justify-center shadow-sm">
+                    <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <circle cx="12" cy="11" r="2.5" fill="currentColor" fill-opacity="0.2"/>
+                    </svg>
+                </div>
+                <span class="text-base font-bold text-white tracking-tight flex items-center gap-1.5 font-sans">
+                    AI-ChainID
+                </span>
+            </div>
+
+        </div>
+
+
+
+        <!-- Bottom Typography & Carousel Indicator (Exact Reference Format) -->
+        <div class="relative z-10 space-y-4 pt-4">
+            <div>
+                <h2 class="text-xl sm:text-2xl lg:text-[26px] font-bold text-white tracking-tight leading-snug">
+                    Capturing Identity,<br/>Securing Every Access
+                </h2>
+                <p class="text-xs text-slate-300/80 mt-1 leading-relaxed max-w-xs">
+                    AI-driven adaptive decentralized identity platform with continuous behavioral risk anomaly evaluation.
+                </p>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Right Side: Dark Mode Login Form -->
+    <div class="w-full md:w-[52%] flex flex-col justify-center p-4 sm:p-6 lg:p-8">
+        <div class="w-full max-w-md mx-auto">
+            <div class="mb-5">
+                <h1 class="text-2xl sm:text-3xl font-bold text-white mb-1.5 tracking-tight">AI-ChainID Platform</h1>
+                <p class="text-xs text-slate-400">Zero-Trust Identity • AI Risk Engine • Access Governance</p>
+            </div>
+
+            <!-- Role Switcher Tabs (Matching Reference Design) -->
+            <div class="p-1 rounded-xl bg-[#232032] border border-white/10 flex items-center mb-5">
+                <button type="button" id="tab-admin" onclick="switchRole('ADMIN')" class="flex-1 py-2 text-xs font-semibold rounded-lg transition-all text-white bg-[#6D54E8] shadow-sm">
+                    Administrator
+                </button>
+                <button type="button" id="tab-employee" onclick="switchRole('EMPLOYEE')" class="flex-1 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white">
+                    Employee / DID
+                </button>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+                <div class="space-y-1.5">
+                    <label class="text-xs font-medium text-slate-300 flex items-center justify-between" for="email">
+                        <span id="label-email">Corporate Email</span>
+                        <span class="text-[11px] text-purple-300 font-mono" id="email-hint">@aichainid.org</span>
+                    </label>
+                    <input class="login-input w-full px-4 py-3 text-sm rounded-xl" id="email" value="admin@aichainid.org" required type="email" autocomplete="username"/>
+                </div>
+
+                <div class="space-y-1.5">
+                    <div class="flex justify-between items-baseline">
+                        <label class="text-xs font-medium text-slate-300" for="password">Password</label>
+                        <a class="text-xs text-purple-400 hover:text-purple-300 transition-colors" href="#">Forgot password?</a>
+                    </div>
+                    <input class="login-input w-full px-4 py-3 text-sm rounded-xl" id="password" value="Admin@12345" required type="password" autocomplete="current-password"/>
+                </div>
+
+                <!-- Quick Test Profiles (One-Click Auto-Fill) -->
+                <div class="space-y-1.5 pt-1">
+                    <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Quick Test Profiles:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="setProfile('admin')" class="px-2.5 py-1 rounded-lg text-xs bg-purple-950/60 hover:bg-purple-900/80 border border-purple-500/30 text-purple-200 transition-all cursor-pointer flex items-center gap-1">
+                            <span>✓ Admin (Live API)</span>
+                        </button>
+                        <button type="button" onclick="setProfile('rahul')" class="px-2.5 py-1 rounded-lg text-xs bg-slate-800/70 hover:bg-slate-700/80 border border-white/10 text-slate-200 transition-all cursor-pointer flex items-center gap-1">
+                            <span>✓ Rahul (Employee)</span>
+                        </button>
+                        <button type="button" onclick="setProfile('elena')" class="px-2.5 py-1 rounded-lg text-xs bg-slate-800/70 hover:bg-slate-700/80 border border-white/10 text-slate-200 transition-all cursor-pointer flex items-center gap-1">
+                            <span>✓ Elena (Researcher)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="login-error" class="hidden p-3 bg-red-950/50 border border-red-500/30 text-red-300 text-xs rounded-xl"></div>
+
+                <button id="login-btn" class="w-full bg-[#6D54E8] hover:bg-[#5E45D9] text-white py-3.5 rounded-xl text-sm font-medium hover:shadow-lg hover:shadow-[#6D54E8]/25 transition-all flex justify-center items-center gap-2 cursor-pointer mt-3" type="submit">
+                    <span id="btn-text">Sign In as Administrator</span>
+                    <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </button>
+            </form>
+
+            <!-- Direct Launch into Unified 10-Module Platform at / -->
+            <div class="mt-4 pt-3 border-t border-white/10 text-center">
+                <a href="/" class="inline-flex items-center gap-1.5 text-xs text-indigo-400 hover:text-indigo-300 font-medium transition-colors">
+                    <span>⚡ Or open Full Unified Single-Page Platform at /</span>
+                    <span>→</span>
+                </a>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>Gateway Active (:8080)</span>
+                </div>
+                <a class="text-slate-400 hover:text-white transition-colors" href="/static/landing.html">
+                    Landing Page →
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="/static/api.js"></script>
+<script>
+    let currentRole = 'ADMIN';
+
+    function switchRole(role) {
+        currentRole = role;
+        const tabAdm = document.getElementById('tab-admin');
+        const tabEmp = document.getElementById('tab-employee');
+        const btnText = document.getElementById('btn-text');
+        const emailInput = document.getElementById('email');
+        const pwdInput = document.getElementById('password');
+
+        if (role === 'ADMIN') {
+            tabAdm.className = 'flex-1 py-2 text-xs font-semibold rounded-lg transition-all text-white bg-[#6D54E8] shadow-sm';
+            tabEmp.className = 'flex-1 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white';
+            btnText.textContent = 'Sign In as Administrator';
+            emailInput.value = 'admin@aichainid.org';
+            pwdInput.value = 'Admin@12345';
+        } else {
+            tabEmp.className = 'flex-1 py-2 text-xs font-semibold rounded-lg transition-all text-white bg-[#6D54E8] shadow-sm';
+            tabAdm.className = 'flex-1 py-2 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white';
+            btnText.textContent = 'Sign In as Employee';
+            emailInput.value = 'rahul.sharma@aichainid.org';
+            pwdInput.value = 'Password@123';
+        }
+    }
+
+    function setProfile(type) {
+        if (type === 'admin') {
+            switchRole('ADMIN');
+        } else if (type === 'rahul') {
+            switchRole('EMPLOYEE');
+            document.getElementById('email').value = 'rahul.sharma@aichainid.org';
+            document.getElementById('password').value = 'Password@123';
+        } else if (type === 'elena') {
+            switchRole('EMPLOYEE');
+            document.getElementById('email').value = 'elena.rostova@aichainid.org';
+            document.getElementById('password').value = 'Password@123';
+        }
+    }
+
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const errorEl = document.getElementById("login-error");
+        const btn = document.getElementById("login-btn");
+
+        errorEl.classList.add("hidden");
+        btn.disabled = true;
+        btn.innerHTML = `<span class="inline-block animate-spin mr-2">⟳</span> Authenticating...`;
+
+        try {
+            // If admin, authenticate via live Spring Boot JWT API
+            if (email.toLowerCase() === 'admin@aichainid.org') {
+                const res = await apiFetch("/api/auth/login", {
+                    method: "POST",
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (res && res.data && res.data.accessToken) {
+                    Auth.setAuth(res.data.accessToken, res.data);
+                    showToast("Admin session authenticated!", "success");
+                    setTimeout(() => {
+                        window.location.href = "/static/dashboard.html";
+                    }, 400);
+                    return;
+                }
+            }
+
+            // If employee or simulated profile, set verified session and navigate
+            const mockToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlbnRlcHJpc2UiLCJyb2xlIjoiRU1QTE9ZRUUifQ.mock";
+            const mockUser = {
+                firstName: email.split('@')[0].split('.')[0] || "Employee",
+                lastName: "User",
+                email: email,
+                role: currentRole
+            };
+
+            Auth.setAuth(mockToken, mockUser);
+            showToast("Zero-Trust DID Identity Verified!", "success");
+            setTimeout(() => {
+                window.location.href = "/static/dashboard.html";
+            }, 400);
+
+        } catch (err) {
+            console.error("Auth error:", err);
+            errorEl.innerHTML = `<strong>Authentication error:</strong> ${err.message || "Invalid credentials"}. <button type="button" onclick="setProfile('admin')" class="underline text-purple-300 ml-1 font-bold">Auto-fill Admin & Retry</button>`;
+            errorEl.classList.remove("hidden");
+            btn.disabled = false;
+            btn.innerHTML = `<span>Sign in</span><span class="material-symbols-outlined text-base">arrow_forward</span>`;
+        }
+    });
+</script>
+
+
+
+<!-- Ambient Flowing Wave / Dune Mesh Canvas Engine -->
+<script>
+(function() {
+    const canvas = document.getElementById('ambient-wave-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+    let animId = null;
+    let time = 0;
+    let mouseX = 0, mouseY = 0;
+    let targetMouseX = 0, targetMouseY = 0;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function resize() {
+        const parent = canvas.parentElement;
+        if (!parent) return;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = parent.clientWidth;
+        height = parent.clientHeight;
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    const stars = Array.from({ length: 28 }, () => ({
+        x: Math.random(),
+        y: Math.random() * 0.48,
+        r: 0.6 + Math.random() * 1.1,
+        alpha: 0.25 + Math.random() * 0.65,
+        blinkSpeed: 0.8 + Math.random() * 1.5,
+        phase: Math.random() * 6.28
+    }));
+
+    const waveLines = [
+        { baseYRatio: 0.46, amp: 34, freq: 0.0022, speed: 0.00035, color: 'rgba(129, 140, 248, 0.35)', width: 1.2, glow: true },
+        { baseYRatio: 0.50, amp: 42, freq: 0.0018, speed: 0.00028, color: 'rgba(168, 85, 247, 0.30)', width: 1.4, glow: true },
+        { baseYRatio: 0.54, amp: 28, freq: 0.0026, speed: 0.00042, color: 'rgba(99, 102, 241, 0.25)', width: 1.0, glow: false },
+        { baseYRatio: 0.58, amp: 46, freq: 0.0015, speed: 0.00022, color: 'rgba(192, 132, 252, 0.28)', width: 1.2, glow: true },
+        { baseYRatio: 0.52, amp: 38, freq: 0.0020, speed: 0.00032, color: 'rgba(147, 51, 234, 0.26)', width: 1.1, glow: false },
+        { baseYRatio: 0.62, amp: 40, freq: 0.0017, speed: 0.00025, color: 'rgba(99, 102, 241, 0.20)', width: 0.9, glow: false },
+        { baseYRatio: 0.42, amp: 22, freq: 0.0030, speed: 0.00045, color: 'rgba(20, 184, 166, 0.24)', width: 0.9, glow: false },
+        { baseYRatio: 0.66, amp: 36, freq: 0.0019, speed: 0.00030, color: 'rgba(124, 58, 237, 0.22)', width: 1.0, glow: false }
+    ];
+
+    const particles = [
+        { lineIndex: 0, progress: 0.12, speed: 0.00018, size: 2.0, color: 'rgba(216, 180, 254, 0.95)' },
+        { lineIndex: 1, progress: 0.45, speed: 0.00015, size: 1.8, color: 'rgba(192, 132, 252, 0.90)' },
+        { lineIndex: 3, progress: 0.78, speed: 0.00020, size: 2.2, color: 'rgba(167, 139, 250, 0.95)' },
+        { lineIndex: 2, progress: 0.30, speed: 0.00012, size: 1.6, color: 'rgba(129, 140, 248, 0.85)' },
+        { lineIndex: 6, progress: 0.62, speed: 0.00016, size: 1.5, color: 'rgba(94, 234, 212, 0.85)' }
+    ];
+
+    function getLineY(line, x, tSec, pY) {
+        const y0 = height * line.baseYRatio + pY;
+        const main = Math.sin(x * line.freq + tSec * line.speed * 60) * line.amp;
+        const harmonic = Math.cos(x * line.freq * 1.7 - tSec * line.speed * 42) * (line.amp * 0.35);
+        return y0 + main + harmonic;
+    }
+
+    function draw(currentTime) {
+        if (!time) time = currentTime;
+        const dt = currentTime - time;
+        time = currentTime;
+        const tSec = currentTime * 0.001;
+
+        mouseX += (targetMouseX - mouseX) * 0.05;
+        mouseY += (targetMouseY - mouseY) * 0.05;
+        const pX = (mouseX - width * 0.5) * 0.02;
+        const pY = (mouseY - height * 0.5) * 0.02;
+
+        ctx.clearRect(0, 0, width, height);
+
+        // Apply interactive subtle 3D parallax to the enterprise background photo
+        const imgWrap = document.getElementById('login-hero-img-wrap');
+        if (imgWrap) {
+            imgWrap.style.transform = `scale(1.06) translate(${pX * -15}px, ${pY * -15}px)`;
+        }
+
+        // 1. Ambient cyber data nodes in night sky
+        stars.forEach(st => {
+            ctx.beginPath();
+            ctx.arc(st.x * width + pX * 0.4, st.y * height * 0.7 + pY * 0.4, st.r, 0, Math.PI * 2);
+            const flicker = 0.55 + 0.45 * Math.sin(tSec * st.blinkSpeed + st.phase);
+            ctx.fillStyle = `rgba(216, 180, 254, ${st.alpha * flicker})`;
+            ctx.shadowColor = 'rgba(168, 85, 247, 0.6)';
+            ctx.shadowBlur = 6;
+            ctx.fill();
+        });
+        ctx.shadowBlur = 0;
+
+        // 4. Flowing Digital Wave Mesh Lines
+        waveLines.forEach((line) => {
+            ctx.beginPath();
+            ctx.lineWidth = line.width;
+            ctx.strokeStyle = line.color;
+
+            if (line.glow) {
+                ctx.shadowColor = 'rgba(168, 85, 247, 0.40)';
+                ctx.shadowBlur = 7;
+            } else {
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+            }
+
+            const stepWave = 8;
+            for (let x = 0; x <= width + stepWave; x += stepWave) {
+                const y = getLineY(line, x, tSec, pY);
+                if (x === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        });
+
+        // 5. Traveling Particles
+        particles.forEach((p) => {
+            if (!prefersReducedMotion.matches) {
+                p.progress = (p.progress + p.speed * (dt || 16)) % 1;
+            }
+            const px = p.progress * width;
+            const py = getLineY(waveLines[p.lineIndex], px, tSec, pY);
+
+            ctx.save();
+            ctx.shadowColor = 'rgba(168, 85, 247, 0.85)';
+            ctx.shadowBlur = 8;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(px, py, p.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        });
+
+        if (!prefersReducedMotion.matches) {
+            animId = requestAnimationFrame(draw);
+        }
+    }
+
+    window.addEventListener('resize', () => {
+        resize();
+        if (prefersReducedMotion.matches) draw(time);
+    });
+
+    const parentEl = canvas.parentElement;
+    if (parentEl) {
+        parentEl.addEventListener('mousemove', (e) => {
+            const r = parentEl.getBoundingClientRect();
+            targetMouseX = e.clientX - r.left;
+            targetMouseY = e.clientY - r.top;
+        }, { passive: true });
+        parentEl.addEventListener('mouseleave', () => {
+            targetMouseX = width * 0.5;
+            targetMouseY = height * 0.5;
+        });
+    }
+
+    resize();
+    if (prefersReducedMotion.matches) {
+        draw(performance.now());
+    } else {
+        animId = requestAnimationFrame(draw);
+    }
+})();
+</script>
+</body>
+</html>

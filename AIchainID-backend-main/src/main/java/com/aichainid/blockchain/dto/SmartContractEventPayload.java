@@ -1,0 +1,21 @@
+package com.aichainid.blockchain.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Map;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SmartContractEventPayload {
+
+    private String eventType;
+    private String entityType;
+    private Long entityId;
+    private String recordHash;
+    private Map<String, Object> metadata;
+}

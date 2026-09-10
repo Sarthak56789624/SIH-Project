@@ -1,0 +1,12 @@
+package com.aichainid.risk.entity;
+
+public enum RiskFactor {
+    UNUSUAL_TIME,
+    UNKNOWN_DEVICE,
+    UNUSUAL_LOCATION,
+    HIGH_RESOURCE_SENSITIVITY,
+    ABNORMAL_BEHAVIOR,
+    EXCESSIVE_ACCESS,
+    NO_VALID_CREDENTIAL,
+    INSUFFICIENT_ROLE_PRIVILEGE
+}

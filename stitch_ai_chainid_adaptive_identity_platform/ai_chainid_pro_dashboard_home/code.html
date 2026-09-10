@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID - Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#585f6c",
+                        "primary-fixed": "#e5e2e1",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed": "#dce2f3",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#e6e1df",
+                        "on-surface-variant": "#444748",
+                        "tertiary-container": "#1c1b1a",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f7f3f2",
+                        "inverse-primary": "#c8c6c5",
+                        "surface-variant": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#484645",
+                        "on-tertiary-container": "#868381",
+                        "on-surface": "#1c1b1b",
+                        "secondary-fixed-dim": "#c0c7d6",
+                        "surface-dim": "#ddd9d8",
+                        "on-secondary-container": "#5e6572",
+                        "secondary-container": "#dce2f3",
+                        "on-primary-fixed": "#1c1b1b",
+                        "inverse-surface": "#313030",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#474646",
+                        "surface": "#fdf8f8",
+                        "surface-container-high": "#ebe7e6",
+                        "surface-tint": "#5f5e5e",
+                        "on-secondary-fixed-variant": "#404754",
+                        "on-secondary-fixed": "#151c27",
+                        "tertiary": "#000000",
+                        "on-error-container": "#93000a",
+                        "primary": "#000000",
+                        "outline": "#747878",
+                        "on-background": "#1c1b1b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#1c1b1a",
+                        "on-primary-container": "#858383",
+                        "inverse-on-surface": "#f4f0ef",
+                        "background": "#fdf8f8",
+                        "surface-container-highest": "#e5e2e1",
+                        "tertiary-fixed-dim": "#cac6c3",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#fdf8f8",
+                        "outline-variant": "#c4c7c7",
+                        "primary-container": "#1c1b1b",
+                        "surface-container": "#f1edec",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "section-gap": "160px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "display-hero": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "display-hero-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "headline-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-hero": ["110px", { "lineHeight": "100px", "letterSpacing": "-0.04em", "fontWeight": "700" }],
+                        "headline-md": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "display-hero-mobile": ["56px", { "lineHeight": "54px", "letterSpacing": "-0.03em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F9F8F6; color: #121212; }
+        .card-border { border: 1px solid rgba(18, 18, 18, 0.1); }
+        .interactive-hover:hover { background-color: #F2F1EF; transition: background-color 0.2s ease; }
+        /* Panel Animation */
+        #review-panel { transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        #review-panel.open { transform: translateX(0); }
+        #overlay { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        #overlay.open { opacity: 1; pointer-events: auto; }
+    </style>
+</head>
+<body class="font-body-md text-body-md flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col h-screen sticky top-0 left-0 overflow-y-auto bg-surface dark:bg-background border-r border-outline/10 docked left h-full w-64 z-40 shrink-0">
+<div class="px-margin-desktop py-6">
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary dark:text-on-primary-fixed">AI-ChainID</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Enterprise Access</p>
+</div>
+<div class="px-6 pb-6">
+<button class="w-full bg-primary text-on-primary py-2 px-4 rounded font-label-sm text-label-sm font-medium hover:bg-opacity-90 transition-opacity">New Request</button>
+</div>
+<ul class="flex-1 flex flex-col gap-1 px-4 mt-4">
+<li>
+<a class="flex items-center gap-3 py-2 text-primary dark:text-on-primary-fixed font-bold border-l-2 border-primary pl-4 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-sm text-label-sm">Overview</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant dark:text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">fingerprint</span>
+<span class="font-label-sm text-label-sm">Identity</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant dark:text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="font-label-sm text-label-sm">Context</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant dark:text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="font-label-sm text-label-sm">Security</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant dark:text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">policy</span>
+<span class="font-label-sm text-label-sm">Policies</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant dark:text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-sm text-label-sm">Audit</span>
+</a>
+</li>
+</ul>
+<div class="px-4 py-6 border-t border-outline/10">
+<ul class="flex flex-col gap-1">
+<li>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant dark:text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant dark:text-on-surface-variant pl-4 hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</a>
+</li>
+</ul>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#F9F8F6] relative z-0">
+<!-- TopAppBar -->
+<header class="h-16 border-b border-outline/10 bg-transparent backdrop-blur-md dark:bg-transparent flex items-center justify-between px-margin-desktop shrink-0 z-30">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span>Ureka Labs</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary font-medium">Overview</span>
+</div>
+<div class="flex-1 max-w-md mx-8 hidden md:block">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-white card-border rounded pl-10 pr-4 py-2 font-body-md text-body-md focus:outline-none focus:border-primary transition-colors text-sm" placeholder="Search people, resources or activity..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="relative text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A highly detailed professional headshot of a modern executive named Alex Mehta. The portrait features clean, high-key lighting indicative of a bright, modern light-mode office setting. The styling relies on a sophisticated palette of deep blacks and pristine whites, emphasizing a calm, authoritative presence. The subject is in focus against a clean, minimalist background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN1qJtfhViy_E_-3v1KjzPoGZFmcgVcMUARLtGyokUhw_VwtL5TOBHH0VbwZKL5p_5MzvdkEpJWD5HBR2XECMRJ8mFnG7pbWd8ZUDW2kh2J7blmN-t7YCKR5K9OTH4jVn7Vr-1VRosf3XknPvQSWGK4PcqILjs9gaxYQIbvFn_2tZOMr_Ugr6z_9AQdrcJYQbzSpzOaNtFNabROfAp1NyPkv-aQyBt0ZlBRYPZy1hYmZ-BXEnQZaP4"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto px-margin-desktop py-12 relative z-10">
+<div class="max-w-[container-max] mx-auto">
+<!-- Section 1: Header -->
+<section class="mb-12">
+<h2 class="font-headline-lg text-headline-lg text-primary tracking-tight mb-2">Good morning, Alex.</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Ureka Labs. Here's what needs your attention today.</p>
+</section>
+<!-- 12-Column Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Main Content Column (Col 1-8) -->
+<div class="col-span-1 md:col-span-8 flex flex-col gap-8">
+<!-- Section 2: Organization Status Panel -->
+<div class="bg-white card-border rounded-lg p-8">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<span class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+<h3 class="font-headline-md text-headline-md text-primary">Everything is operating normally</h3>
+</div>
+<div class="flex gap-6 text-on-surface-variant font-label-sm text-label-sm">
+<span>48 people</span>
+<span>126 active permissions</span>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<div class="p-4 bg-[#F9F8F6] rounded card-border flex flex-col gap-2">
+<div class="flex items-center justify-between text-primary">
+<span class="font-label-sm text-label-sm font-bold">Identity</span>
+<span class="material-symbols-outlined text-[16px] text-green-600">check_circle</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-green-500 w-full"></div></div>
+</div>
+<div class="p-4 bg-[#F9F8F6] rounded card-border flex flex-col gap-2">
+<div class="flex items-center justify-between text-primary">
+<span class="font-label-sm text-label-sm font-bold">Access</span>
+<span class="material-symbols-outlined text-[16px] text-green-600">check_circle</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-green-500 w-full"></div></div>
+</div>
+<div class="p-4 bg-[#F9F8F6] rounded card-border flex flex-col gap-2">
+<div class="flex items-center justify-between text-primary">
+<span class="font-label-sm text-label-sm font-bold">Security</span>
+<span class="material-symbols-outlined text-[16px] text-green-600">check_circle</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-green-500 w-full"></div></div>
+</div>
+<div class="p-4 bg-[#F9F8F6] rounded card-border flex flex-col gap-2">
+<div class="flex items-center justify-between text-primary">
+<span class="font-label-sm text-label-sm font-bold">Audit</span>
+<span class="material-symbols-outlined text-[16px] text-green-600">check_circle</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden"><div class="h-full bg-green-500 w-full"></div></div>
+</div>
+</div>
+</div>
+<!-- Section 3: Needs Your Attention -->
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Needs Your Attention</h4>
+<div class="bg-white card-border rounded-lg p-8 relative overflow-hidden">
+<!-- Subtle red indicator line -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="px-2 py-1 bg-error/10 text-error font-label-sm text-label-sm rounded">High Risk: 91/100</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Production Server Access</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Amit Kumar</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Intern, Engineering</p>
+<div class="flex gap-4 mt-4 text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">warning</span> Role mismatch</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">devices</span> Unknown device</div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">location_on</span> Unusual location</div>
+</div>
+</div>
+<button class="bg-primary text-white px-6 py-3 rounded font-label-sm text-label-sm font-medium flex items-center gap-2 hover:bg-opacity-90 transition-opacity whitespace-nowrap" onclick="document.getElementById('review-panel').classList.add('open'); document.getElementById('overlay').classList.add('open');">
+                                        Review request
+                                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Section 4: Today's Access -->
+<div>
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Today's Access Snapshot</h4>
+<div class="flex flex-wrap gap-4">
+<div class="flex-1 min-w-[120px] bg-white card-border rounded p-4">
+<div class="font-headline-md text-headline-md text-primary">128</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Total Requests</div>
+</div>
+<div class="flex-1 min-w-[120px] bg-white card-border rounded p-4">
+<div class="font-headline-md text-headline-md text-primary">118</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Granted</div>
+</div>
+<div class="flex-1 min-w-[120px] bg-white card-border rounded p-4 border-l-2 border-l-amber-500">
+<div class="font-headline-md text-headline-md text-primary">7</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Review</div>
+</div>
+<div class="flex-1 min-w-[120px] bg-white card-border rounded p-4 border-l-2 border-l-error">
+<div class="font-headline-md text-headline-md text-primary">3</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Blocked</div>
+</div>
+</div>
+</div>
+</div> <!-- End Col 1-8 -->
+<!-- Side Column (Col 9-12) -->
+<div class="col-span-1 md:col-span-4 flex flex-col gap-8">
+<!-- Section 7: Quick Actions -->
+<div class="bg-white card-border rounded-lg p-6">
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Quick Actions</h4>
+<div class="flex flex-col gap-2">
+<button class="w-full text-left p-3 flex items-center gap-3 rounded interactive-hover font-label-sm text-label-sm text-primary font-medium">
+<span class="material-symbols-outlined text-[18px]">person_add</span> Invite employee
+                                </button>
+<button class="w-full text-left p-3 flex items-center gap-3 rounded interactive-hover font-label-sm text-label-sm text-primary font-medium">
+<span class="material-symbols-outlined text-[18px]">fact_check</span> Review requests
+                                </button>
+<button class="w-full text-left p-3 flex items-center gap-3 rounded interactive-hover font-label-sm text-label-sm text-primary font-medium">
+<span class="material-symbols-outlined text-[18px]">group</span> View people
+                                </button>
+<button class="w-full text-left p-3 flex items-center gap-3 rounded interactive-hover font-label-sm text-label-sm text-primary font-medium">
+<span class="material-symbols-outlined text-[18px]">manage_search</span> View audit trail
+                                </button>
+</div>
+</div>
+<!-- Section 6: Expiring Soon -->
+<div class="bg-white card-border rounded-lg p-6">
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Expiring Soon</h4>
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center pb-4 border-b border-outline/10 last:border-0 last:pb-0">
+<div>
+<div class="font-label-sm text-label-sm font-bold text-primary">Rahul Sharma</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">AWS Production</div>
+</div>
+<div class="text-right">
+<span class="px-2 py-1 bg-amber-500/10 text-amber-700 font-label-sm text-label-sm rounded">24m</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 5: Recent Activity -->
+<div class="bg-white card-border rounded-lg p-6">
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Recent Activity</h4>
+<div class="relative border-l border-outline/20 ml-2 pl-6 flex flex-col gap-6">
+<div class="relative">
+<div class="absolute -left-[29px] top-1 w-2 h-2 bg-green-500 rounded-full"></div>
+<p class="font-body-md text-body-md text-primary text-sm mb-1"><span class="font-medium">Rahul Sharma</span> authenticated successfully.</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">2 mins ago</span>
+</div>
+<div class="relative">
+<div class="absolute -left-[29px] top-1 w-2 h-2 bg-primary rounded-full"></div>
+<p class="font-body-md text-body-md text-primary text-sm mb-1"><span class="font-medium">Priya Shah</span> was granted access to Design Repo.</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">15 mins ago</span>
+</div>
+<div class="relative">
+<div class="absolute -left-[29px] top-1 w-2 h-2 bg-error rounded-full"></div>
+<p class="font-body-md text-body-md text-primary text-sm mb-1"><span class="font-medium">Amit Kumar</span> request blocked by policy.</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">1 hr ago</span>
+</div>
+</div>
+</div>
+</div> <!-- End Col 9-12 -->
+</div> <!-- End Grid -->
+</div>
+<!-- Footer space -->
+<div class="h-section-gap"></div>
+</div>
+</main>
+<!-- Overlay & Detail Panel -->
+<div class="fixed inset-0 bg-black/20 backdrop-blur-sm z-50" id="overlay" onclick="document.getElementById('review-panel').classList.remove('open'); this.classList.remove('open');"></div>
+<aside class="fixed right-0 top-0 bottom-0 w-full max-w-md bg-white card-border shadow-2xl z-50 flex flex-col" id="review-panel">
+<div class="p-6 border-b border-outline/10 flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary text-xl">Review Request</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors" onclick="document.getElementById('review-panel').classList.remove('open'); document.getElementById('overlay').classList.remove('open');">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+<div>
+<div class="px-2 py-1 bg-error/10 text-error font-label-sm text-label-sm rounded inline-block mb-4">Risk Score: 91/100</div>
+<h4 class="font-headline-md text-headline-md text-primary mb-1">Amit Kumar</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Requesting: Production Server Access</p>
+</div>
+<div class="bg-[#F9F8F6] p-4 rounded card-border flex flex-col gap-3">
+<h5 class="font-label-sm text-label-sm text-primary font-bold">Risk Factors</h5>
+<div class="flex items-start gap-2 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[16px] text-error mt-0.5">warning</span>
+<div>Role mismatch: Intern trying to access Prod.</div>
+</div>
+<div class="flex items-start gap-2 text-on-surface-variant text-sm">
+<span class="material-symbols-outlined text-[16px] text-amber-500 mt-0.5">devices</span>
+<div>Unknown device signature detected.</div>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-outline/10 flex gap-4 bg-[#F9F8F6]">
+<button class="flex-1 bg-transparent border border-outline/20 text-primary py-2 rounded font-label-sm text-label-sm font-medium hover:bg-white transition-colors">Deny</button>
+<button class="flex-1 bg-primary text-white py-2 rounded font-label-sm text-label-sm font-medium hover:bg-opacity-90 transition-opacity">Approve</button>
+</div>
+</aside>
+</body></html>

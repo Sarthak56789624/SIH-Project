@@ -27,3 +27,6 @@ ENV/
 .idea/
 .vscode/
 *.log
+target/
+**/target/
+*.class

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html class="scroll-smooth dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID | Zero-Trust Adaptive Identity &amp; Access Governance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#6D54E8",
+                    "primary-hover": "#7C64F5",
+                    "secondary": "#0EA5A0",
+                    "background": "#0d0b14",
+                    "surface": "#151320",
+                    "surface-card": "#181626",
+                    "surface-container": "#1e1b2e",
+                    "on-surface": "#f1f5f9",
+                    "on-surface-variant": "#a4a1b5"
+                },
+                fontFamily: {
+                    "body-md": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "headline-lg": ["Geist", "sans-serif"],
+                    "headline-md": ["Geist", "sans-serif"],
+                    "display-hero": ["Geist", "sans-serif"]
+                }
+            }
+        }
+    };
+</script>
+<style>
+    body {
+        background-color: #0d0b14;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+    }
+    .card-dark {
+        background: #181626;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .card-dark:hover {
+        border-color: rgba(109, 84, 232, 0.4);
+    }
+    .bg-grid {
+        background-size: 40px 40px;
+        background-image: 
+            linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    }
+    .glow-radial {
+        background: radial-gradient(circle at 50% 30%, rgba(109, 84, 232, 0.18) 0%, transparent 60%);
+    }
+
+    /* Light Mode Overrides */
+    html:not(.dark) body {
+        background-color: #F8FAFC !important;
+        color: #0F172A !important;
+    }
+    html:not(.dark) nav {
+        background-color: rgba(255, 255, 255, 0.85) !important;
+        border-color: #E2E8F0 !important;
+    }
+    html:not(.dark) .card-dark {
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05) !important;
+    }
+    html:not(.dark) .card-dark:hover {
+        border-color: #6D54E8 !important;
+    }
+    html:not(.dark) .box-dark {
+        background: #F1F5F9 !important;
+        color: #0F172A !important;
+    }
+    html:not(.dark) .text-white {
+        color: #0F172A !important;
+    }
+    html:not(.dark) .text-\[\#a4a1b5\] {
+        color: #475569 !important;
+    }
+    html:not(.dark) .bg-\[\#12101e\]\/60 {
+        background-color: #F1F5F9 !important;
+    }
+    html:not(.dark) footer {
+        background-color: #FFFFFF !important;
+        border-color: #E2E8F0 !important;
+    }
+</style>
+</head>
+<body class="bg-[#0d0b14] text-[#f1f5f9] antialiased selection:bg-[#6D54E8] selection:text-white overflow-x-hidden">
+
+<!-- TopNavBar -->
+<nav class="bg-[#13111e]/80 backdrop-blur-md fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-12 py-4 border-b border-[#29263a]">
+    <div class="flex items-center gap-8">
+        <a class="flex items-center gap-2.5" href="#">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#6D54E8] to-[#0EA5A0] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#6D54E8]/30">
+                AI
+            </div>
+            <span class="font-display-hero text-xl font-bold tracking-tight text-white">AI-ChainID</span>
+        </a>
+        <div class="hidden md:flex items-center gap-6 text-xs font-semibold text-[#a4a1b5]">
+            <a class="hover:text-white transition-colors" href="/static/dashboard.html">Overview</a>
+            <a class="hover:text-white transition-colors" href="/static/people.html">People & DID</a>
+            <a class="hover:text-white transition-colors" href="/static/access-requests.html">Access Requests</a>
+            <a class="hover:text-white transition-colors" href="/static/security.html">AI Security</a>
+            <a class="hover:text-white transition-colors" href="/static/temp-access.html">Temp Access</a>
+            <a class="hover:text-white transition-colors" href="/swagger-ui/index.html" target="_blank">Swagger API</a>
+        </div>
+    </div>
+    <div class="flex items-center gap-3">
+        <!-- Theme Toggle -->
+        <button onclick="toggleLandingTheme()" id="btn-theme-toggle" title="Toggle Theme" class="flex items-center justify-center w-8 h-8 rounded-lg border border-[#29263a] bg-white/5 hover:bg-white/10 text-amber-400 transition-colors cursor-pointer">
+            <span id="theme-toggle-icon" class="material-symbols-outlined text-[18px]">light_mode</span>
+        </button>
+        <a class="text-xs font-semibold text-[#a4a1b5] hover:text-white transition-colors px-3 py-2" href="/static/login.html">Sign In</a>
+        <a class="bg-[#6D54E8] hover:bg-[#7c64f5] text-white px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-md shadow-[#6D54E8]/25" href="/static/login.html">Launch Platform</a>
+    </div>
+</nav>
+
+<main class="pt-[90px] md:pt-[110px] relative glow-radial">
+    <!-- Hero Section -->
+    <section class="px-6 md:px-12 min-h-[85vh] flex flex-col justify-center relative">
+        <div class="max-w-[1360px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <div class="lg:col-span-8 flex flex-col gap-6 z-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6D54E8]/15 border border-[#6D54E8]/30 text-[#a594fd] text-xs font-semibold w-max">
+                    <span class="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+                    <span>Continuous Zero-Trust Architecture</span>
+                </div>
+
+                <h1 class="font-display-hero text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.1]">
+                    Identity you can trust.<br/>
+                    <span class="bg-gradient-to-r from-[#6D54E8] via-[#a594fd] to-[#0EA5A0] bg-clip-text text-transparent">Access that adapts.</span>
+                </h1>
+
+                <p class="text-base sm:text-lg text-[#a4a1b5] max-w-2xl border-l-2 border-[#6D54E8]/40 pl-5 py-1">
+                    Unify decentralized verifiable credentials (DIDs) with autonomous machine learning risk intelligence. Grant Just-In-Time access evaluated in milliseconds by Random Forest classifiers and Isolation Forest anomaly detectors.
+                </p>
+
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <button onclick="window.location.href='/static/login.html'" class="bg-[#6D54E8] hover:bg-[#7c64f5] text-white px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all shadow-lg shadow-[#6D54E8]/30 cursor-pointer flex items-center gap-2">
+                        <span>Access Platform</span>
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                    <button onclick="window.location.href='/swagger-ui/index.html'" class="border border-[#343047] bg-[#1e1b2e] hover:bg-[#252237] text-white px-6 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all cursor-pointer">
+                        Swagger OpenAPI Docs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Flow Visual Card -->
+            <div class="lg:col-span-4 w-full">
+                <div class="card-dark rounded-2xl p-6 relative overflow-hidden bg-grid">
+                    <div class="text-xs font-bold text-[#a4a1b5] uppercase tracking-wider mb-4 flex items-center justify-between">
+                        <span>Security Pipeline</span>
+                        <span class="text-[#10b981] flex items-center gap-1 font-mono text-[11px]"><span class="w-1.5 h-1.5 rounded-full bg-[#10b981]"></span>Online</span>
+                    </div>
+                    
+                    <div class="space-y-3 relative z-10 text-xs">
+                        <div class="p-3 box-dark rounded-lg flex items-center justify-between">
+                            <span class="font-semibold text-white">1. Decentralized ID (DID)</span>
+                            <span class="material-symbols-outlined text-[#10b981] text-[18px]">verified</span>
+                        </div>
+                        <div class="p-3 box-dark rounded-lg flex items-center justify-between">
+                            <span class="font-semibold text-white">2. Credential Proofs</span>
+                            <span class="material-symbols-outlined text-[#10b981] text-[18px]">lock</span>
+                        </div>
+                        <div class="p-3 box-dark rounded-lg flex items-center justify-between border-l-2 border-l-[#6D54E8]">
+                            <span class="font-semibold text-white">3. ML Permission Engine</span>
+                            <span class="text-[#6D54E8] font-bold">RandomForest</span>
+                        </div>
+                        <div class="p-3 box-dark rounded-lg flex items-center justify-between border-l-2 border-l-[#0EA5A0]">
+                            <span class="font-semibold text-white">4. Continuous Risk Radar</span>
+                            <span class="text-[#0EA5A0] font-bold">IsolationForest</span>
+                        </div>
+                        <div class="p-3 box-dark rounded-lg flex items-center justify-between border-l-2 border-l-[#10b981]">
+                            <span class="font-semibold text-white">5. Immutable Blockchain Log</span>
+                            <span class="text-[#10b981] font-mono text-[11px]">Block #5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Core Value Section -->
+    <section class="px-6 md:px-12 py-20 border-t border-[#29263a] bg-[#12101e]/60">
+        <div class="max-w-[1360px] mx-auto">
+            <h2 class="text-2xl sm:text-4xl font-bold text-white tracking-tight mb-12 max-w-2xl">
+                Identity is only the foundation. Continuous context guarantees zero-trust.
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card-dark p-6 rounded-2xl">
+                    <div class="w-12 h-12 rounded-xl bg-[#6D54E8]/20 border border-[#6D54E8]/40 flex items-center justify-center text-[#a594fd] mb-5">
+                        <span class="material-symbols-outlined text-[24px]">fingerprint</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">1. Verify Identity</h3>
+                    <p class="text-xs text-[#a4a1b5] leading-relaxed">
+                        Decentralized Identifiers (DIDs) establish cryptographic self-sovereign proof without centralized points of failure.
+                    </p>
+                </div>
+
+                <div class="card-dark p-6 rounded-2xl">
+                    <div class="w-12 h-12 rounded-xl bg-[#0EA5A0]/20 border border-[#0EA5A0]/40 flex items-center justify-center text-[#0EA5A0] mb-5">
+                        <span class="material-symbols-outlined text-[24px]">psychology</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">2. Analyze Context</h3>
+                    <p class="text-xs text-[#a4a1b5] leading-relaxed">
+                        Machine learning engines continuously examine time, device fingerprints, velocity, and role alignment for every event.
+                    </p>
+                </div>
+
+                <div class="card-dark p-6 rounded-2xl">
+                    <div class="w-12 h-12 rounded-xl bg-[#10b981]/20 border border-[#10b981]/40 flex items-center justify-center text-[#10b981] mb-5">
+                        <span class="material-symbols-outlined text-[24px]">key</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">3. Adaptive Grant</h3>
+                    <p class="text-xs text-[#a4a1b5] leading-relaxed">
+                        Smart contracts issue short-lived JIT authorization leases with automated cryptographic expiry.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="w-full px-6 md:px-12 py-8 border-t border-[#29263a] bg-[#0d0b14] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-[#777389]">
+        <div>
+            <span class="font-bold text-white mr-2">AI-ChainID</span>
+            <span>© 2026 Enterprise Zero-Trust Identity Platform.</span>
+        </div>
+        <div class="flex gap-6">
+            <a class="hover:text-white transition-colors" href="/swagger-ui/index.html">API Reference</a>
+            <a class="hover:text-white transition-colors" href="/static/login.html">Login</a>
+        </div>
+    </footer>
+</main>
+
+<script>
+    function applyLandingTheme(theme) {
+        const root = document.documentElement;
+        const icon = document.getElementById('theme-toggle-icon');
+        if (theme === 'light') {
+            root.classList.remove('dark');
+            if (icon) {
+                icon.textContent = 'dark_mode';
+                icon.classList.remove('text-amber-400');
+                icon.classList.add('text-indigo-600');
+            }
+        } else {
+            root.classList.add('dark');
+            if (icon) {
+                icon.textContent = 'light_mode';
+                icon.classList.remove('text-indigo-600');
+                icon.classList.add('text-amber-400');
+            }
+        }
+        localStorage.setItem('aichainid_theme_preference', theme);
+    }
+
+    function toggleLandingTheme() {
+        const isDark = document.documentElement.classList.contains('dark');
+        applyLandingTheme(isDark ? 'light' : 'dark');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const saved = localStorage.getItem('aichainid_theme_preference') || 'dark';
+        applyLandingTheme(saved);
+    });
+</script>
+</body>
+</html>
