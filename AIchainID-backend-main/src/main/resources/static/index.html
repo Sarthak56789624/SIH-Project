@@ -1035,6 +1035,29 @@
               <input type="password" id="admin-pwd" value="Admin@12345" required class="login-input w-full px-4 py-2.5 rounded-xl border border-white/10 text-xs focus:border-[#6D54E8] transition-all"/>
             </div>
 
+            <!-- Quick Admin & Department Lead Profiles -->
+            <div class="pt-1">
+              <label class="block text-[10px] font-bold text-[#6B6880] uppercase tracking-wider mb-1.5">Quick Governance Profiles:</label>
+              <div class="grid grid-cols-2 gap-1.5 text-[11px]">
+                <button type="button" onclick="fillAdminDemo('super')" class="px-2.5 py-1.5 rounded-lg bg-[#221F33] hover:bg-[#2C2742] hover:text-purple-300 border border-purple-500/30 text-[#a89bff] transition-colors text-left flex items-center gap-1.5 cursor-pointer">
+                  <span class="w-1.5 h-1.5 rounded-full bg-purple-400"></span>
+                  <span class="truncate">👑 Main Admin (All)</span>
+                </button>
+                <button type="button" onclick="fillAdminDemo('eng')" class="px-2.5 py-1.5 rounded-lg bg-[#221F33] hover:bg-[#2C2742] hover:text-indigo-300 border border-white/10 text-slate-300 transition-colors text-left flex items-center gap-1.5 cursor-pointer">
+                  <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+                  <span class="truncate">⚙️ Engineering Lead</span>
+                </button>
+                <button type="button" onclick="fillAdminDemo('biomed')" class="px-2.5 py-1.5 rounded-lg bg-[#221F33] hover:bg-[#2C2742] hover:text-teal-300 border border-white/10 text-slate-300 transition-colors text-left flex items-center gap-1.5 cursor-pointer">
+                  <span class="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+                  <span class="truncate">🧬 Biomedical Lead</span>
+                </button>
+                <button type="button" onclick="fillAdminDemo('infra')" class="px-2.5 py-1.5 rounded-lg bg-[#221F33] hover:bg-[#2C2742] hover:text-amber-300 border border-white/10 text-slate-300 transition-colors text-left flex items-center gap-1.5 cursor-pointer">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  <span class="truncate">☁️ Infrastructure Lead</span>
+                </button>
+              </div>
+            </div>
+
             <!-- Admin Live Threat Alert Banner on Invalid Login -->
             <div id="admin-login-risk-banner" class="hidden p-3 rounded-xl bg-rose-950/50 border border-rose-800/60 text-xs space-y-1.5 transition-all">
               <div class="flex items-center justify-between">
@@ -1238,7 +1261,7 @@
           </div>
 
           <!-- Group 3: Monitoring -->
-          <div class="pt-1">
+          <div class="pt-1" id="nav-group-monitoring">
             <div class="relative flex items-center gap-2 mb-1.5">
               <span class="group-junction-dot absolute rounded-full bg-[#6C5CE7]" style="left: -16px; width: 7px; height: 7px; box-shadow: 0 0 0 2px #11101B;"></span>
               <p class="rail-hide-collapsed px-1 text-[10px] font-bold tracking-wider text-[#777389] uppercase">Monitoring</p>
@@ -1406,13 +1429,39 @@
         <div id="view-adm-dashboard" class="tab-view active space-y-6">
           <div class="view-header-banner flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="text-xl font-bold text-[#F5F5F7]">Executive Governance Dashboard</h2>
-              <p class="text-xs text-[#A4A1B5] mt-0.5">High-level telemetry across identities, permissions, AI risk evaluations, and blockchain anchoring.</p>
+              <h2 id="dash-view-title" class="text-xl font-bold text-[#F5F5F7]">Executive Governance Dashboard</h2>
+              <p id="dash-view-subtitle" class="text-xs text-[#A4A1B5] mt-0.5">High-level telemetry across identities, permissions, AI risk evaluations, and blockchain anchoring.</p>
             </div>
             <button onclick="switchAdminTab('adm-approvals')" class="px-3 py-1.5 bg-[#6C5CE7] hover:bg-[#7C5CFF] text-white rounded text-xs font-semibold transition-colors shadow-sm shadow-[#6C5CE7]/30 flex items-center gap-1.5">
               <span>View Access Requests Queue</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </button>
+          </div>
+
+          <!-- Department Scope & Division Filter Bar -->
+          <div id="adm-dept-scope-bar" class="p-3 rounded-xl bg-[#141220] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-[#221F33] border border-purple-500/30 flex items-center justify-center text-purple-300">
+                <i data-lucide="building-2" class="w-4 h-4"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-white" id="adm-scope-title">Administrative Scope: Global Platform</span>
+                  <span id="adm-scope-badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-950/60 text-purple-300 border border-purple-800/60">SUPER ADMIN</span>
+                </div>
+                <p id="adm-scope-desc" class="text-[11px] text-[#A4A1B5] mt-0.5">Showing all sub-divisions, assets, and authorization queues.</p>
+              </div>
+            </div>
+            <!-- Main Admin Department Switcher Dropdown (Only interactive when Super Admin) -->
+            <div id="adm-dept-filter-wrap" class="flex items-center gap-2 self-start sm:self-auto">
+              <span class="text-[11px] text-[#6B6880] font-medium">Filter Sub-Division:</span>
+              <select id="adm-dept-filter-select" onchange="changeAdminDeptFilter(this.value)" class="px-3 py-1.5 rounded-lg border border-[#343047] text-xs font-semibold bg-[#181622] text-[#F5F5F7] focus:border-[#6D54E8] cursor-pointer">
+                <option value="ALL">🏢 All Departments (Full Org)</option>
+                <option value="Engineering">⚙️ Engineering Department</option>
+                <option value="Biomedical">🧬 Biomedical Research</option>
+                <option value="Infrastructure">☁️ Infrastructure & Cloud</option>
+              </select>
+            </div>
           </div>
 
           <!-- KPI Cards — Dark -->
@@ -1584,12 +1633,47 @@
 
           <!-- Existing Employees Table -->
           <div class="surface-card p-5 space-y-3">
-            <div class="flex items-center justify-between border-b border-[#E7E9F0] pb-3">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[#E7E9F0] pb-3">
               <div class="flex items-center gap-2">
                 <i data-lucide="users" class="w-4 h-4 text-indigo-600"></i>
                 <h3 class="text-xs font-bold text-[#F5F5F7]">Active Onboarded Employees & Encrypted PII</h3>
               </div>
-              <span class="text-[11px] text-[#8A87A0] font-medium" id="adm-emp-table-count">Enrolled Identities</span>
+              
+              <!-- Anti-Clustering Toolbar: Search, Status Filter & Export to Excel -->
+              <div class="flex flex-wrap items-center gap-2">
+                <!-- Status Pills -->
+                <div class="flex items-center gap-1 p-0.5 bg-[#1C1928] rounded-md border border-[#29263A] text-[11px]" id="emp-status-tabs">
+                  <button type="button" onclick="setEmpStatusFilter('ALL')" id="tab-emp-ALL" class="px-2 py-0.5 rounded font-semibold transition-colors bg-[#29263A] text-[#F5F5F7]">
+                    All
+                  </button>
+                  <button type="button" onclick="setEmpStatusFilter('ACTIVE')" id="tab-emp-ACTIVE" class="px-2 py-0.5 rounded font-medium text-[#8A87A0] hover:text-[#E8E6F0] transition-colors">
+                    Active
+                  </button>
+                  <button type="button" onclick="setEmpStatusFilter('REVOKED')" id="tab-emp-REVOKED" class="px-2 py-0.5 rounded font-medium text-[#8A87A0] hover:text-[#E8E6F0] transition-colors">
+                    Revoked
+                  </button>
+                </div>
+
+                <!-- Live Search -->
+                <div class="relative w-44 sm:w-52">
+                  <i data-lucide="search" class="w-3.5 h-3.5 text-[#6B6880] absolute left-2.5 top-2.5 pointer-events-none"></i>
+                  <input type="text" id="emp-search-input" oninput="onEmpSearchInput(this.value)" placeholder="Search name, email, DID..." class="w-full pl-8 pr-3 py-1.5 rounded-md border border-[#343047] text-xs focus:border-indigo-600 bg-[#181622] text-[#F5F5F7] placeholder:text-[#6B6880]"/>
+                </div>
+
+                <!-- Export to Excel / CSV Button -->
+                <button type="button" onclick="exportEmployeesToExcel()" title="Export filtered employees to Excel / CSV" class="px-2.5 py-1.5 bg-[#1C1928] hover:bg-[#252237] text-emerald-400 border border-emerald-500/40 rounded-md font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-2xs">
+                  <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="8" y1="13" x2="16" y2="13"></line>
+                    <line x1="8" y1="17" x2="16" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                  <span>Export Excel</span>
+                </button>
+
+                <span class="text-[11px] text-[#8A87A0] font-medium ml-1 hidden sm:inline" id="adm-emp-table-count">Enrolled Identities</span>
+              </div>
             </div>
 
             <div class="overflow-x-auto">
@@ -1630,6 +1714,35 @@
                   <!-- Injected dynamically via renderAdminEmployeesTable() -->
                 </tbody>
               </table>
+            </div>
+
+            <!-- Anti-Clustering Pagination Footer -->
+            <div id="emp-pagination-bar" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#E7E9F0] text-xs text-[#8A87A0]">
+              <div class="flex items-center gap-2">
+                <span>Showing <strong id="emp-page-start" class="text-[#F5F5F7] font-mono">1</strong> to <strong id="emp-page-end" class="text-[#F5F5F7] font-mono">5</strong> of <strong id="emp-page-total" class="text-[#F5F5F7] font-mono">5</strong> profiles</span>
+                <span class="text-[#343047]">•</span>
+                <div class="flex items-center gap-1.5">
+                  <span>Page size:</span>
+                  <select id="emp-page-size" onchange="changeEmpPageSize(this.value)" class="px-2 py-0.5 rounded bg-[#181622] border border-[#343047] text-[#F5F5F7] text-[11px] focus:border-indigo-600">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-1.5" id="emp-page-nav">
+                <button type="button" onclick="changeEmpPage(-1)" id="emp-btn-prev" class="px-2.5 py-1 rounded bg-[#181622] border border-[#343047] text-[#C4C0D5] hover:bg-[#252237] disabled:opacity-40 disabled:pointer-events-none transition-colors text-xs flex items-center gap-1">
+                  <span>‹</span> Prev
+                </button>
+                <div id="emp-page-numbers" class="flex items-center gap-1">
+                  <!-- Injected page buttons -->
+                </div>
+                <button type="button" onclick="changeEmpPage(1)" id="emp-btn-next" class="px-2.5 py-1 rounded bg-[#181622] border border-[#343047] text-[#C4C0D5] hover:bg-[#252237] disabled:opacity-40 disabled:pointer-events-none transition-colors text-xs flex items-center gap-1">
+                  Next <span>›</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1919,12 +2032,12 @@
 
           <div class="surface-card p-6 space-y-5">
             <!-- Queue Top Bar -->
-            <div class="flex items-center justify-between border-b border-[#E7E9F0] pb-3">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-[#E7E9F0] pb-3">
               <div class="flex items-center gap-2">
                 <i data-lucide="list-checks" class="w-4 h-4 text-indigo-600"></i>
                 <h3 class="text-xs font-bold text-[#F5F5F7]">Pending Requests Submitted by Employees</h3>
               </div>
-              <div class="flex items-center gap-3">
+              <div class="flex items-center gap-2 flex-wrap">
                 <button type="button" onclick="resetDemoAccessRequests()" class="text-[11px] text-[#6B6880] hover:text-indigo-600 font-medium transition-colors cursor-pointer flex items-center gap-1">
                   <i data-lucide="rotate-ccw" class="w-3 h-3"></i>
                   <span>Reset Demo Queue</span>
@@ -1933,9 +2046,76 @@
               </div>
             </div>
 
+            <!-- Queue Filter Toolbar: Risk Filter, Live Search & Export to Excel -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-1">
+              <!-- Risk Tier Filter Pills -->
+              <div class="flex items-center gap-1 p-0.5 bg-[#1C1928] rounded-md border border-[#29263A] text-[11px]" id="req-risk-tabs">
+                <button type="button" onclick="setReqRiskFilter('ALL')" id="tab-req-ALL" class="px-2 py-0.5 rounded font-semibold transition-colors bg-[#29263A] text-[#F5F5F7]">
+                  All
+                </button>
+                <button type="button" onclick="setReqRiskFilter('HIGH')" id="tab-req-HIGH" class="px-2 py-0.5 rounded font-medium text-red-400 hover:text-red-300 transition-colors">
+                  High Risk
+                </button>
+                <button type="button" onclick="setReqRiskFilter('REVIEW')" id="tab-req-REVIEW" class="px-2 py-0.5 rounded font-medium text-indigo-400 hover:text-indigo-300 transition-colors">
+                  Review
+                </button>
+                <button type="button" onclick="setReqRiskFilter('LOW')" id="tab-req-LOW" class="px-2 py-0.5 rounded font-medium text-slate-400 hover:text-[#E8E6F0] transition-colors">
+                  Low Risk
+                </button>
+              </div>
+
+              <!-- Live Search & Export -->
+              <div class="flex items-center gap-2">
+                <div class="relative w-44 sm:w-52">
+                  <i data-lucide="search" class="w-3.5 h-3.5 text-[#6B6880] absolute left-2.5 top-2.5 pointer-events-none"></i>
+                  <input type="text" id="req-search-input" oninput="onReqSearchInput(this.value)" placeholder="Search requester, resource, scope..." class="w-full pl-8 pr-3 py-1.5 rounded-md border border-[#343047] text-xs focus:border-indigo-600 bg-[#181622] text-[#F5F5F7] placeholder:text-[#6B6880]"/>
+                </div>
+
+                <!-- Export Requests to Excel Button -->
+                <button type="button" onclick="exportRequestsToExcel()" title="Export pending access requests to Excel / CSV" class="px-2.5 py-1.5 bg-[#1C1928] hover:bg-[#252237] text-emerald-400 border border-emerald-500/40 rounded-md font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-2xs shrink-0">
+                  <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="8" y1="13" x2="16" y2="13"></line>
+                    <line x1="8" y1="17" x2="16" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                  <span class="hidden sm:inline">Export Excel</span>
+                </button>
+              </div>
+            </div>
+
             <!-- Dynamic Requests List Container -->
             <div class="space-y-3" id="adm-queue-list">
               <!-- Requests rendered here -->
+            </div>
+
+            <!-- Anti-Clustering Requests Pagination Footer -->
+            <div id="req-pagination-bar" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 text-xs text-[#8A87A0]">
+              <div class="flex items-center gap-2">
+                <span>Showing <strong id="req-page-start" class="text-[#F5F5F7] font-mono">1</strong> to <strong id="req-page-end" class="text-[#F5F5F7] font-mono">3</strong> of <strong id="req-page-total" class="text-[#F5F5F7] font-mono">3</strong> requests</span>
+                <span class="text-[#343047]">•</span>
+                <div class="flex items-center gap-1.5">
+                  <span>Page size:</span>
+                  <select id="req-page-size" onchange="changeReqPageSize(this.value)" class="px-2 py-0.5 rounded bg-[#181622] border border-[#343047] text-[#F5F5F7] text-[11px] focus:border-indigo-600">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-1.5" id="req-page-nav">
+                <button type="button" onclick="changeReqPage(-1)" id="req-btn-prev" class="px-2.5 py-1 rounded bg-[#181622] border border-[#343047] text-[#C4C0D5] hover:bg-[#252237] disabled:opacity-40 disabled:pointer-events-none transition-colors text-xs flex items-center gap-1">
+                  <span>‹</span> Prev
+                </button>
+                <div id="req-page-numbers" class="flex items-center gap-1">
+                  <!-- Injected page buttons -->
+                </div>
+                <button type="button" onclick="changeReqPage(1)" id="req-btn-next" class="px-2.5 py-1 rounded bg-[#181622] border border-[#343047] text-[#C4C0D5] hover:bg-[#252237] disabled:opacity-40 disabled:pointer-events-none transition-colors text-xs flex items-center gap-1">
+                  Next <span>›</span>
+                </button>
+              </div>
             </div>
 
             <!-- STRUCTURED DECISION RECEIPT CARD (Appears upon Approval / Rejection) -->
@@ -2101,10 +2281,18 @@
               </div>
               
               <form onsubmit="handleAdminAssignAsset(event)" class="space-y-4 text-xs">
-                <!-- Target Employee -->
+                <!-- Target Employee with Live Quick-Filter -->
                 <div>
-                  <label class="block text-[11px] font-semibold text-[#C4C0D5] mb-1">Target Employee Profile *</label>
-                  <select id="adm-asset-assignee" required class="w-full px-3 py-2 rounded-md border border-[#343047] text-xs focus:border-indigo-600 bg-[#181622]">
+                  <div class="flex items-center justify-between mb-1">
+                    <label class="block text-[11px] font-semibold text-[#C4C0D5]">Target Employee Profile *</label>
+                    <span id="assignee-filter-count" class="text-[10px] text-[#6B6880] font-mono"></span>
+                  </div>
+                  <!-- Quick employee search input -->
+                  <div class="relative mb-1.5">
+                    <i data-lucide="search" class="w-3 h-3 text-[#6B6880] absolute left-2.5 top-2 pointer-events-none"></i>
+                    <input type="text" id="adm-asset-assignee-filter" oninput="filterAssigneeDropdown(this.value)" placeholder="Quick search staff..." class="w-full pl-7 pr-2.5 py-1 rounded bg-[#13111E] border border-[#343047] text-[11px] text-[#F5F5F7] placeholder:text-[#6B6880] focus:border-indigo-600"/>
+                  </div>
+                  <select id="adm-asset-assignee" required class="w-full px-3 py-2 rounded-md border border-[#343047] text-xs focus:border-indigo-600 bg-[#181622] text-[#F5F5F7]">
                     <!-- Populated dynamically via initAdminAssetsScreen() -->
                   </select>
                   <p class="text-[10px] text-[#6B6880] mt-1">Ownership rights and serial hashes will bind to this employee's DID.</p>
@@ -2215,10 +2403,24 @@
                   </button>
                 </div>
 
-                <!-- Live Search Input -->
-                <div class="relative min-w-[180px] sm:w-56">
-                  <i data-lucide="search" class="w-3.5 h-3.5 text-[#6B6880] absolute left-2.5 top-2.5 pointer-events-none"></i>
-                  <input type="text" id="asset-search-input" oninput="renderAdminAssetsTable()" placeholder="Filter assets or staff..." class="w-full pl-8 pr-3 py-1.5 rounded-md border border-[#343047] text-xs focus:border-indigo-600 bg-[#181622] placeholder:text-[#6B6880]"/>
+                <!-- Right side controls: Live Search & Export Excel -->
+                <div class="flex items-center gap-2">
+                  <div class="relative min-w-[150px] sm:w-48">
+                    <i data-lucide="search" class="w-3.5 h-3.5 text-[#6B6880] absolute left-2.5 top-2.5 pointer-events-none"></i>
+                    <input type="text" id="asset-search-input" oninput="onAssetSearchInput(this.value)" placeholder="Filter assets or staff..." class="w-full pl-8 pr-3 py-1.5 rounded-md border border-[#343047] text-xs focus:border-indigo-600 bg-[#181622] text-[#F5F5F7] placeholder:text-[#6B6880]"/>
+                  </div>
+
+                  <!-- Export to Excel Button -->
+                  <button type="button" onclick="exportAssetsToExcel()" title="Export filtered assets to Excel / CSV" class="px-2.5 py-1.5 bg-[#1C1928] hover:bg-[#252237] text-emerald-400 border border-emerald-500/40 rounded-md font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-2xs shrink-0">
+                    <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="8" y1="13" x2="16" y2="13"></line>
+                      <line x1="8" y1="17" x2="16" y2="17"></line>
+                      <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span class="hidden sm:inline">Export Excel</span>
+                  </button>
                 </div>
               </div>
 
@@ -2237,6 +2439,34 @@
                   </tbody>
                 </table>
               </div>
+
+              <!-- Anti-Clustering Asset Pagination Footer -->
+              <div id="asset-pagination-bar" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 text-xs text-[#8A87A0]">
+                <div class="flex items-center gap-2">
+                  <span>Showing <strong id="asset-page-start" class="text-[#F5F5F7] font-mono">1</strong> to <strong id="asset-page-end" class="text-[#F5F5F7] font-mono">5</strong> of <strong id="asset-page-total" class="text-[#F5F5F7] font-mono">5</strong> assets</span>
+                  <span class="text-[#343047]">•</span>
+                  <div class="flex items-center gap-1.5">
+                    <span>Page size:</span>
+                    <select id="asset-page-size" onchange="changeAssetPageSize(this.value)" class="px-2 py-0.5 rounded bg-[#181622] border border-[#343047] text-[#F5F5F7] text-[11px] focus:border-indigo-600">
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-1.5" id="asset-page-nav">
+                  <button type="button" onclick="changeAssetPage(-1)" id="asset-btn-prev" class="px-2.5 py-1 rounded bg-[#181622] border border-[#343047] text-[#C4C0D5] hover:bg-[#252237] disabled:opacity-40 disabled:pointer-events-none transition-colors text-xs flex items-center gap-1">
+                    <span>‹</span> Prev
+                  </button>
+                  <div id="asset-page-numbers" class="flex items-center gap-1">
+                    <!-- Injected asset page buttons -->
+                  </div>
+                  <button type="button" onclick="changeAssetPage(1)" id="asset-btn-next" class="px-2.5 py-1 rounded bg-[#181622] border border-[#343047] text-[#C4C0D5] hover:bg-[#252237] disabled:opacity-40 disabled:pointer-events-none transition-colors text-xs flex items-center gap-1">
+                    Next <span>›</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2246,13 +2476,36 @@
         <!-- ============================================================= -->
         <div id="view-adm-monitoring" class="tab-view space-y-5">
 
-          <!-- Header Bar -->
-          <div class="flex items-center justify-between">
+          <!-- Header Bar with Telemetry Export Action -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div>
-              <h2 class="text-xl font-bold text-[#F5F5F7]">Continuous AI Security Monitoring</h2>
-              <p class="text-xs text-[#8A87A0] mt-0.5">IsolationForest + RandomForest evaluates every access event in real-time across all corporate identities.</p>
+              <div class="flex items-center gap-2">
+                <h2 class="text-xl font-bold text-[#F5F5F7]">Continuous AI Security Monitoring</h2>
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">Active Learning</span>
+              </div>
+              <p class="text-xs text-[#8A87A0] mt-0.5">Captures employee behavioral telemetry & evaluates IsolationForest + RandomForest in real-time.</p>
             </div>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <!-- Generate Telemetry Batch Button -->
+              <button type="button" onclick="generateBatchTelemetry()" title="Simulate 24-hour behavioral telemetry footprint from all enrolled employee profiles" class="px-2.5 py-1.5 bg-[#1C1928] hover:bg-[#252237] text-indigo-400 border border-indigo-500/40 rounded-md font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-2xs">
+                <svg class="w-3.5 h-3.5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                </svg>
+                <span>Generate Batch Telemetry</span>
+              </button>
+
+              <!-- Export AI Training Dataset Button -->
+              <button type="button" onclick="exportAiTrainingDataset()" title="Export real employee behavioral activities formatted to retrain the AI Risk Model" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-md font-semibold text-xs transition-colors flex items-center gap-1.5 shadow-sm">
+                <svg class="w-3.5 h-3.5 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="8" y1="13" x2="16" y2="13"></line>
+                  <line x1="8" y1="17" x2="16" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+                <span>Export AI Training Dataset (Excel/CSV)</span>
+              </button>
+
               <div id="mon-live-badge" class="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 rounded-full text-xs font-bold text-emerald-700">
                 <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span> LIVE
               </div>
@@ -3102,9 +3355,169 @@
                 </tbody>
               </table>
             </div>
+          <!-- 3-Key Zero-Trust Consensus Quorum Defense Simulator Card -->
+          <div class="bg-[#181622] border border-[#29263A] rounded-xl p-5 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#29263A] pb-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30 font-mono">CORE DEFENSE DEMO</span>
+                  <h3 class="text-sm font-bold text-[#F5F5F7] uppercase tracking-wider flex items-center gap-1.5">
+                    <i data-lucide="key" class="w-4 h-4 text-amber-400"></i>
+                    <span>3-Key Zero-Trust Consensus Quorum Simulator</span>
+                  </h3>
+                </div>
+                <p class="text-[11px] text-[#8A87A0] mt-1">
+                  Defense Against Stolen Super-Admin Credentials: Even if a hacker possesses Admin credentials, no access block can be mined without 3/3 cryptographic keys concurring.
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="setQuorumPreset('hacked_admin')" class="px-2.5 py-1 text-[11px] font-semibold bg-red-950/40 hover:bg-red-900/60 text-red-300 border border-red-700/50 rounded transition-all cursor-pointer flex items-center gap-1">
+                  <i data-lucide="skull" class="w-3.5 h-3.5"></i>
+                  <span>Test: Stolen Admin Attack</span>
+                </button>
+                <button onclick="setQuorumPreset('legit')" class="px-2.5 py-1 text-[11px] font-semibold bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-700/50 rounded transition-all cursor-pointer flex items-center gap-1">
+                  <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                  <span>Test: Legitimate 3-Key Approval</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 3 Keys Interactive Status Strip -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- Key 1: AI Behavioral & Least-Privilege Key -->
+              <div id="key-card-1" class="p-4 bg-[#13111E] border border-[#29263A] rounded-xl space-y-3 transition-all">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div id="key-icon-1" class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs">
+                      K1
+                    </div>
+                    <div>
+                      <h4 class="text-xs font-bold text-[#F5F5F7]">KEY 1: AI Behavioral</h4>
+                      <p class="text-[10px] text-[#8A87A0]">Telemetry & Risk Engine</p>
+                    </div>
+                  </div>
+                  <span id="key-badge-1" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/50">
+                    PASS
+                  </span>
+                </div>
+                <div class="space-y-1.5 text-[11px]">
+                  <div class="flex justify-between text-[#8A87A0]">
+                    <span>Telemetry Risk Score:</span>
+                    <span id="key-val-risk" class="font-mono font-bold text-emerald-400">14 / 100 (Normal)</span>
+                  </div>
+                  <div class="flex justify-between text-[#8A87A0]">
+                    <span>Access Context:</span>
+                    <span id="key-val-context" class="font-mono text-white">10:30 AM • Office Subnet</span>
+                  </div>
+                  <div class="pt-1">
+                    <label class="block text-[10px] font-semibold text-[#8A87A0] mb-1">Simulate Telemetry Mode:</label>
+                    <select id="sel-key1-mode" onchange="updateQuorumKeyStates()" class="w-full bg-[#181622] text-xs text-[#F5F5F7] border border-[#29263A] rounded p-1.5 focus:outline-none focus:border-indigo-500">
+                      <option value="normal">Normal Daytime Telemetry (Risk 14% - Cleared)</option>
+                      <option value="anomaly">3:00 AM Tor/VPN Anomaly (Risk 88% - Policy Block)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Key 2: Central Admin Governance Key -->
+              <div id="key-card-2" class="p-4 bg-[#13111E] border border-[#29263A] rounded-xl space-y-3 transition-all">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div id="key-icon-2" class="w-7 h-7 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold text-xs">
+                      K2
+                    </div>
+                    <div>
+                      <h4 class="text-xs font-bold text-[#F5F5F7]">KEY 2: Central Admin</h4>
+                      <p class="text-[10px] text-[#8A87A0]">Governance Sign-Off</p>
+                    </div>
+                  </div>
+                  <span id="key-badge-2" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/50">
+                    APPROVED
+                  </span>
+                </div>
+                <div class="space-y-1.5 text-[11px]">
+                  <div class="flex justify-between text-[#8A87A0]">
+                    <span>Signer Identity:</span>
+                    <span class="font-mono font-bold text-teal-400">admin@aichainid.org</span>
+                  </div>
+                  <div class="flex justify-between text-[#8A87A0]">
+                    <span>Policy Mode:</span>
+                    <span id="key-val-govmode" class="font-mono text-white">Standard Governance</span>
+                  </div>
+                  <div class="pt-1">
+                    <label class="block text-[10px] font-semibold text-[#8A87A0] mb-1">Admin Action:</label>
+                    <select id="sel-key2-mode" onchange="updateQuorumKeyStates()" class="w-full bg-[#181622] text-xs text-[#F5F5F7] border border-[#29263A] rounded p-1.5 focus:outline-none focus:border-teal-500">
+                      <option value="approved">Admin Signature Affixed (Approved)</option>
+                      <option value="break_glass">Break-Glass Protocol Invoked (Emergency)</option>
+                      <option value="rejected">Admin Signature Withheld (Rejected)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Key 3: Department Sub-Admin Concurrence Key -->
+              <div id="key-card-3" class="p-4 bg-[#13111E] border border-[#29263A] rounded-xl space-y-3 transition-all">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div id="key-icon-3" class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">
+                      K3
+                    </div>
+                    <div>
+                      <h4 class="text-xs font-bold text-[#F5F5F7]">KEY 3: Dept Sub-Admin</h4>
+                      <p class="text-[10px] text-[#8A87A0]">Tenant Isolation Concurrence</p>
+                    </div>
+                  </div>
+                  <span id="key-badge-3" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/50">
+                    CONCURRED
+                  </span>
+                </div>
+                <div class="space-y-1.5 text-[11px]">
+                  <div class="flex justify-between text-[#8A87A0]">
+                    <span>Lead Authority:</span>
+                    <span id="key-val-deptlead" class="font-mono font-bold text-purple-400">Vikram Mehta (Engineering)</span>
+                  </div>
+                  <div class="flex justify-between text-[#8A87A0]">
+                    <span>Cryptographic Key:</span>
+                    <span class="font-mono text-[#8A87A0] truncate max-w-[140px]">did:org:subadmin:eng_lead</span>
+                  </div>
+                  <div class="pt-1">
+                    <label class="block text-[10px] font-semibold text-[#8A87A0] mb-1">Department Sign-Off:</label>
+                    <select id="sel-key3-mode" onchange="updateQuorumKeyStates()" class="w-full bg-[#181622] text-xs text-[#F5F5F7] border border-[#29263A] rounded p-1.5 focus:outline-none focus:border-purple-500">
+                      <option value="concurred">Lead Signed (Concurred - Valid)</option>
+                      <option value="missing">Lead Signature Missing (Unauthorized Cross-Tenant)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Execution Action & Live Quorum Consensus Banner -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+              <div class="flex items-center gap-2 text-xs">
+                <span class="text-[#8A87A0]">Target Resource:</span>
+                <span class="px-2 py-0.5 bg-[#13111E] border border-[#29263A] rounded font-mono font-bold text-amber-300">GPU Cluster Production Access (#2)</span>
+                <span class="text-[#6B6880]">• Requester: Rahul Sharma (DID: did:org:123456:rahul)</span>
+              </div>
+              <button onclick="execute3KeyQuorumEvaluation()" id="btn-run-3key-quorum" class="px-4 py-2 bg-gradient-to-r from-teal-600 to-indigo-600 hover:from-teal-500 hover:to-indigo-500 text-white rounded-lg text-xs font-bold shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer">
+                <i data-lucide="cpu" class="w-4 h-4"></i>
+                <span>Execute 3-Key Quorum Consensus Verification</span>
+              </button>
+            </div>
+
+            <!-- Live Verification Terminal / Output -->
+            <div id="quorum-verification-output" class="p-4 bg-[#0E0C18] border border-[#29263A] rounded-xl font-mono text-xs space-y-2">
+              <div class="flex items-center justify-between border-b border-white/5 pb-2 text-[11px] text-[#8A87A0]">
+                <span>CONSENSUS PROTOCOL ENGINE: NIST SP 800-207 QUORUM</span>
+                <span class="text-teal-400">READY</span>
+              </div>
+              <div class="text-[#A4A1B5]">
+                Select parameters above or click <span class="text-red-400 font-bold">"Test: Stolen Admin Attack"</span> to demonstrate to the judge how the 3-Key Quorum prevents an attacker with valid admin credentials from unilaterally minting unauthorized on-chain access.
+              </div>
+            </div>
           </div>
 
           <!-- Zero-Trust Edge Resource Gate Test Card -->
+
           <div class="bg-[#181622] border border-[#29263A] rounded-xl p-5 shadow-sm space-y-3">
             <div class="flex items-center justify-between border-b border-[#29263A] pb-3">
               <div>
@@ -3570,11 +3983,89 @@
   <script>
     // Global State
     const AppState = {
-      currentUser: null, // { role: 'ADMIN' | 'EMPLOYEE', name: '...', email: '...', did: '...', dept: '...' }
+      currentUser: null, // { role: 'ADMIN', adminType: 'SUPER_ADMIN'|'DEPT_ADMIN', dept: 'ALL'|'Engineering'|..., name: '...', email: '...' }
+      activeDeptFilter: 'ALL',
+      adminAccounts: [
+        {
+          email: 'admin@aichainid.org',
+          password: 'Admin@12345',
+          name: 'System Administrator (Main)',
+          adminType: 'SUPER_ADMIN',
+          dept: 'ALL',
+          title: 'Chief Security Officer & Main Administrator',
+          role: 'ADMIN'
+        },
+        {
+          email: 'eng.lead@aichainid.org',
+          password: 'Admin@123',
+          name: 'Vikram Mehta (Engineering Lead)',
+          adminType: 'DEPT_ADMIN',
+          dept: 'Engineering',
+          title: 'Engineering Department Administrator & Project Lead',
+          role: 'ADMIN'
+        },
+        {
+          email: 'biomed.lead@aichainid.org',
+          password: 'Admin@123',
+          name: 'Dr. Alistair Finch (Biomedical Lead)',
+          adminType: 'DEPT_ADMIN',
+          dept: 'Biomedical',
+          title: 'Biomedical Research Department Administrator',
+          role: 'ADMIN'
+        },
+        {
+          email: 'infra.lead@aichainid.org',
+          password: 'Admin@123',
+          name: 'Karan Saxena (Infrastructure Lead)',
+          adminType: 'DEPT_ADMIN',
+          dept: 'Infrastructure',
+          title: 'Infrastructure & Cloud Platform Lead',
+          role: 'ADMIN'
+        }
+      ],
+      // Helper methods to return department-scoped views
+      getScopedUsers() {
+        const user = AppState.currentUser;
+        const filter = (user && user.adminType === 'DEPT_ADMIN') ? user.dept : AppState.activeDeptFilter;
+        if (!filter || filter === 'ALL') return AppState.users;
+        return AppState.users.filter(u => (u.dept || '').toLowerCase() === filter.toLowerCase());
+      },
+      getScopedRequests() {
+        const user = AppState.currentUser;
+        const filter = (user && user.adminType === 'DEPT_ADMIN') ? user.dept : AppState.activeDeptFilter;
+        if (!filter || filter === 'ALL') return AppState.accessRequests;
+        // Map requester names or resources to department
+        return AppState.accessRequests.filter(r => {
+          const matchedUser = AppState.users.find(u => u.did === r.did || (u.name && u.name.toLowerCase() === r.requester.toLowerCase()));
+          if (matchedUser && matchedUser.dept) {
+            return matchedUser.dept.toLowerCase() === filter.toLowerCase();
+          }
+          if (filter === 'Engineering' && /github|dev cluster|repo|software/i.test(r.resource + ' ' + (r.role||''))) return true;
+          if (filter === 'Biomedical' && /genomic|bio|h100|gpu/i.test(r.resource + ' ' + (r.role||''))) return true;
+          if (filter === 'Infrastructure' && /bastion|production database|server|cloud/i.test(r.resource + ' ' + (r.role||''))) return true;
+          return false;
+        });
+      },
+      getScopedAssets() {
+        const user = AppState.currentUser;
+        const filter = (user && user.adminType === 'DEPT_ADMIN') ? user.dept : AppState.activeDeptFilter;
+        if (!filter || filter === 'ALL') return AppState.assets;
+        return AppState.assets.filter(a => {
+          const matchedUser = AppState.users.find(u => u.did === a.did || (u.name && u.name.toLowerCase() === (a.assignee||'').toLowerCase()));
+          if (matchedUser && matchedUser.dept) {
+            return matchedUser.dept.toLowerCase() === filter.toLowerCase();
+          }
+          if (filter === 'Engineering' && /thinkpad|laptop|rfid smart id/i.test(a.name)) return true;
+          if (filter === 'Biomedical' && /macbook|biohazard|gpu/i.test(a.name)) return true;
+          return false;
+        });
+      },
       users: [
         { id: 1, name: 'Rahul Sharma', email: 'rahul.sharma@aichainid.org', password: 'Password@123', role: 'Software Developer', dept: 'Engineering', did: 'did:org:123456:rahul' },
         { id: 2, name: 'Dr. Elena Rostova', email: 'elena@aichainid.org', password: 'Password@123', role: 'AI Researcher', dept: 'Biomedical', did: 'did:org:884910:elena' },
-        { id: 3, name: 'Sarthak Sonawane', email: 'sarthak@aichainid.org', password: 'Password@123', role: 'System Architect', dept: 'Infrastructure', did: 'did:org:4a81f9:sarthak' }
+        { id: 3, name: 'Sarthak Sonawane', email: 'sarthak@aichainid.org', password: 'Password@123', role: 'System Architect', dept: 'Infrastructure', did: 'did:org:4a81f9:sarthak' },
+        { id: 4, name: 'Priya Nair', email: 'priya.nair@aichainid.org', password: 'Password@123', role: 'Frontend Engineer', dept: 'Engineering', did: 'did:org:771239:priya' },
+        { id: 5, name: 'Marcus Vance', email: 'marcus.v@aichainid.org', password: 'Password@123', role: 'Bioinformatics Specialist', dept: 'Biomedical', did: 'did:org:339910:marcus' }
       ],
       accessRequests: [
         { 
@@ -4953,6 +5444,45 @@
       syncEmployeeLoginFields();
     }
 
+    function fillAdminDemo(type) {
+      const emailInput = document.getElementById('admin-email');
+      const pwdInput = document.getElementById('admin-pwd');
+      const banner = document.getElementById('admin-login-risk-banner');
+      if (banner) banner.classList.add('hidden');
+
+      if (type === 'super') {
+        if (emailInput) emailInput.value = 'admin@aichainid.org';
+        if (pwdInput) pwdInput.value = 'Admin@12345';
+      } else if (type === 'eng') {
+        if (emailInput) emailInput.value = 'eng.lead@aichainid.org';
+        if (pwdInput) pwdInput.value = 'Admin@123';
+      } else if (type === 'biomed') {
+        if (emailInput) emailInput.value = 'biomed.lead@aichainid.org';
+        if (pwdInput) pwdInput.value = 'Admin@123';
+      } else if (type === 'infra') {
+        if (emailInput) emailInput.value = 'infra.lead@aichainid.org';
+        if (pwdInput) pwdInput.value = 'Admin@123';
+      }
+    }
+
+    function changeAdminDeptFilter(dept) {
+      AppState.activeDeptFilter = dept;
+      const titleEl = document.getElementById('adm-scope-title');
+      const descEl = document.getElementById('adm-scope-desc');
+      if (titleEl) {
+        titleEl.textContent = dept === 'ALL' 
+          ? 'Administrative Scope: Global Platform' 
+          : `Administrative Scope: ${dept} Department View`;
+      }
+      if (descEl) {
+        descEl.textContent = dept === 'ALL'
+          ? 'Showing all sub-divisions, assets, and authorization queues.'
+          : `Filtering employees, access requests, and assets strictly for ${dept}.`;
+      }
+      renderAdminAll();
+      showToast(`View updated for: ${dept === 'ALL' ? 'All Departments' : dept + ' Department'}`, 'info');
+    }
+
     function openForgotPasswordModal() {
       const emailInput = document.getElementById('emp-login-email');
       const forgotEmailInput = document.getElementById('forgot-pwd-email');
@@ -5069,9 +5599,13 @@
         console.warn('API login network error, checking local credential fallback:', err);
       }
 
-      // If backend API responded with failure (or wasn't reached), check authoritative admin credential
+      // If backend API responded with failure (or wasn't reached), check authoritative admin credentials
+      let matchedAdminProfile = null;
       if (!authSuccess) {
-        if (email.toLowerCase() === 'admin@aichainid.org' && password === 'Admin@12345') {
+        matchedAdminProfile = (AppState.adminAccounts || []).find(a => 
+          a.email.toLowerCase() === email.toLowerCase() && a.password === password
+        );
+        if (matchedAdminProfile) {
           authSuccess = true;
         }
       }
@@ -5086,12 +5620,26 @@
         if (token) localStorage.setItem('aichainid_token', token);
         if (userData) localStorage.setItem('aichainid_user', JSON.stringify(userData));
 
+        const profile = matchedAdminProfile || {
+          email: email,
+          name: email.toLowerCase().includes('admin@') ? 'System Administrator' : 'Department Administrator',
+          adminType: email.toLowerCase() === 'admin@aichainid.org' ? 'SUPER_ADMIN' : 'DEPT_ADMIN',
+          dept: email.toLowerCase().includes('eng') ? 'Engineering' : (email.toLowerCase().includes('biomed') ? 'Biomedical' : (email.toLowerCase().includes('infra') ? 'Infrastructure' : 'ALL')),
+          role: 'ADMIN',
+          title: 'Department Administrator'
+        };
+
         AppState.currentUser = {
           role: 'ADMIN',
-          name: 'System Administrator',
-          email: email
+          adminType: profile.adminType,
+          dept: profile.dept,
+          name: profile.name,
+          email: profile.email,
+          title: profile.title || profile.name
         };
-        showToast('Administrator authenticated successfully.', 'success');
+        AppState.activeDeptFilter = profile.dept === 'ALL' ? 'ALL' : profile.dept;
+
+        showToast(`${profile.adminType === 'SUPER_ADMIN' ? 'Main Administrator' : profile.dept + ' Department Lead'} authenticated.`, 'success');
         launchPortal();
         return;
       }
@@ -5319,11 +5867,56 @@
       const userDisplay = document.getElementById('user-display-name');
 
       if (isAdm) {
-        titleBadge.textContent = 'ADMINISTRATOR PORTAL';
-        titleBadge.className = 'px-2.5 py-0.5 rounded text-[11px] font-bold bg-brand-50 text-brand-700 border border-brand-200';
-        subInfo.textContent = 'All administrative governance, review queues, and model engines active.';
-        roleTag.textContent = 'Administrator Console';
-        userDisplay.textContent = 'System Administrator';
+        const isSuper = user.adminType === 'SUPER_ADMIN';
+        const deptName = user.dept || 'ALL';
+
+        // Title and badge
+        if (isSuper) {
+          titleBadge.textContent = 'SUPER ADMINISTRATOR PORTAL';
+          titleBadge.className = 'px-2.5 py-0.5 rounded text-[11px] font-bold bg-brand-50 text-brand-700 border border-brand-200';
+          subInfo.textContent = 'Master Governance Console • Unrestricted authority across all enterprise divisions.';
+          roleTag.textContent = 'Main Administrator';
+          userDisplay.textContent = user.name || 'System Administrator';
+        } else {
+          titleBadge.textContent = `${deptName.toUpperCase()} DEPARTMENT ADMIN CONSOLE`;
+          titleBadge.className = 'px-2.5 py-0.5 rounded text-[11px] font-bold bg-indigo-950/70 text-indigo-300 border border-indigo-700/60';
+          subInfo.textContent = `Scoped to ${deptName} Department & Projects • Managing local team, assets, and approvals.`;
+          roleTag.textContent = `${deptName} Department Lead`;
+          userDisplay.textContent = `${user.name}`;
+        }
+
+        // Hide or show Monitoring group for sub-division admins (as requested)
+        const monitoringNavGroup = document.getElementById('nav-group-monitoring');
+        if (monitoringNavGroup) {
+          monitoringNavGroup.classList.toggle('hidden', !isSuper);
+        }
+
+        // Configure Department Scope Filter Bar on Dashboard
+        const scopeTitle = document.getElementById('adm-scope-title');
+        const scopeBadge = document.getElementById('adm-scope-badge');
+        const scopeDesc = document.getElementById('adm-scope-desc');
+        const deptFilterSelect = document.getElementById('adm-dept-filter-select');
+        const deptFilterWrap = document.getElementById('adm-dept-filter-wrap');
+
+        if (isSuper) {
+          if (deptFilterWrap) deptFilterWrap.classList.remove('hidden');
+          if (deptFilterSelect) deptFilterSelect.value = AppState.activeDeptFilter || 'ALL';
+          if (scopeBadge) {
+            scopeBadge.textContent = 'SUPER ADMIN';
+            scopeBadge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-950/60 text-purple-300 border border-purple-800/60';
+          }
+          if (scopeTitle) scopeTitle.textContent = `Administrative Scope: ${AppState.activeDeptFilter === 'ALL' ? 'Global Platform (All Depts)' : AppState.activeDeptFilter + ' Department'}`;
+          if (scopeDesc) scopeDesc.textContent = 'Full administrative authority. Switch dropdown to inspect sub-divisions.';
+        } else {
+          if (deptFilterWrap) deptFilterWrap.classList.add('hidden'); // Locked to their department
+          if (scopeBadge) {
+            scopeBadge.textContent = 'DEPT ADMIN / LEAD';
+            scopeBadge.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/60';
+          }
+          if (scopeTitle) scopeTitle.textContent = `Administrative Scope: ${deptName} Department (Isolated)`;
+          if (scopeDesc) scopeDesc.textContent = `You are authenticated as ${user.name}. Only ${deptName} team members, assets, and queues are visible.`;
+        }
+
         switchAdminTab('adm-dashboard');
         renderAdminAll();
       } else {
@@ -5692,25 +6285,50 @@
     }
 
     function renderAdminDashboard() {
-      document.getElementById('stat-adm-users').textContent = AppState.users.length;
-      document.getElementById('stat-adm-dids').textContent = AppState.users.length;
-      document.getElementById('stat-adm-assets').textContent = AppState.assets.length;
+      const scopedUsers = AppState.getScopedUsers();
+      const scopedRequests = AppState.getScopedRequests();
+      const scopedAssets = AppState.getScopedAssets();
 
-      const pending = AppState.accessRequests.filter(r => r.status === 'PENDING');
+      document.getElementById('stat-adm-users').textContent = scopedUsers.length;
+      document.getElementById('stat-adm-dids').textContent = scopedUsers.length;
+      document.getElementById('stat-adm-assets').textContent = scopedAssets.length;
+
+      const pending = scopedRequests.filter(r => r.status === 'PENDING');
       document.getElementById('stat-adm-pending').textContent = pending.length;
       document.getElementById('badge-admin-queue-count').textContent = pending.length;
 
+      const user = AppState.currentUser;
+      const isSuper = !user || user.adminType === 'SUPER_ADMIN';
+      const activeFilter = isSuper ? AppState.activeDeptFilter : user.dept;
+
+      const titleEl = document.getElementById('dash-view-title');
+      const subTitleEl = document.getElementById('dash-view-subtitle');
+      if (titleEl) {
+        titleEl.textContent = isSuper
+          ? (activeFilter === 'ALL' ? 'Executive Governance Dashboard' : `${activeFilter} Division Governance Dashboard`)
+          : `${user.dept} Department Governance Dashboard`;
+      }
+      if (subTitleEl) {
+        subTitleEl.textContent = isSuper
+          ? (activeFilter === 'ALL' ? 'Global telemetry across all organization identities, assets, and queues.' : `Filtered administrative telemetry for ${activeFilter} department.`)
+          : `Localized project telemetry and department administrative control for ${user.name}.`;
+      }
+
       const reqList = document.getElementById('dash-adm-requests-list');
       if (reqList) {
-        reqList.innerHTML = AppState.accessRequests.slice(0, 3).map(r => `
-          <div class="p-2.5 rounded-lg bg-[#13111E]/80 border border-[#E7E9F0] flex items-center justify-between text-xs">
-            <div>
-              <span class="font-bold text-[#E8E6F0]">${r.resource}</span>
-              <span class="text-[#8A87A0] font-mono text-[11px] block">${r.requester} • AI Risk: ${r.risk}/100</span>
+        if (scopedRequests.length === 0) {
+          reqList.innerHTML = `<p class="text-xs text-[#6B6880] py-4 text-center">No access requests in this department scope.</p>`;
+        } else {
+          reqList.innerHTML = scopedRequests.slice(0, 3).map(r => `
+            <div class="p-2.5 rounded-lg bg-[#13111E]/80 border border-[#E7E9F0] flex items-center justify-between text-xs">
+              <div>
+                <span class="font-bold text-[#E8E6F0]">${r.resource}</span>
+                <span class="text-[#8A87A0] font-mono text-[11px] block">${r.requester} • AI Risk: ${r.risk}/100</span>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.status === 'PENDING' ? 'bg-amber-100 text-amber-800' : r.status === 'APPROVED' ? 'bg-[#EAF7EE] text-[#16A34A] border border-[#D1F0DA]' : 'bg-red-100 text-red-800'}">${r.status}</span>
             </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${r.status === 'PENDING' ? 'bg-amber-100 text-amber-800' : r.status === 'APPROVED' ? 'bg-[#EAF7EE] text-[#16A34A] border border-[#D1F0DA]' : 'bg-red-100 text-red-800'}">${r.status}</span>
-          </div>
-        `).join('');
+          `).join('');
+        }
       }
 
       const bcList = document.getElementById('dash-adm-blockchain-list');
@@ -5727,13 +6345,180 @@
       }
     }
 
+    // ===================================================================
+    // ANTI-CLUSTERING STATE ENGINE: EMPLOYEES
+    // ===================================================================
+    let empPagination = {
+      page: 1,
+      pageSize: 5,
+      search: '',
+      status: 'ALL'
+    };
+
+    function setEmpStatusFilter(status) {
+      empPagination.status = status;
+      empPagination.page = 1;
+      ['ALL', 'ACTIVE', 'REVOKED'].forEach(s => {
+        const btn = document.getElementById(`tab-emp-${s}`);
+        if (btn) {
+          if (s === status) {
+            btn.className = 'px-2 py-0.5 rounded font-semibold transition-colors bg-[#29263A] text-[#F5F5F7] shadow-2xs';
+          } else {
+            btn.className = 'px-2 py-0.5 rounded font-medium text-[#8A87A0] hover:text-[#E8E6F0] transition-colors';
+          }
+        }
+      });
+      renderAdminEmployeesTable();
+    }
+
+    function onEmpSearchInput(val) {
+      empPagination.search = (val || '').trim().toLowerCase();
+      empPagination.page = 1;
+      renderAdminEmployeesTable();
+    }
+
+    function changeEmpPageSize(val) {
+      empPagination.pageSize = parseInt(val, 10) || 5;
+      empPagination.page = 1;
+      renderAdminEmployeesTable();
+    }
+
+    function changeEmpPage(delta) {
+      empPagination.page += delta;
+      renderAdminEmployeesTable();
+    }
+
+    function setEmpPage(pageNum) {
+      empPagination.page = pageNum;
+      renderAdminEmployeesTable();
+    }
+
+    // EXPORT TO EXCEL / CSV: Employees
+    function exportEmployeesToExcel() {
+      const scopedUsers = AppState.getScopedUsers();
+      let users = scopedUsers;
+      if (empPagination.status !== 'ALL') {
+        users = users.filter(u => (empPagination.status === 'REVOKED' ? u.status === 'REVOKED' : u.status !== 'REVOKED'));
+      }
+      if (empPagination.search) {
+        users = users.filter(u =>
+          (u.name && u.name.toLowerCase().includes(empPagination.search)) ||
+          (u.email && u.email.toLowerCase().includes(empPagination.search)) ||
+          (u.did && u.did.toLowerCase().includes(empPagination.search)) ||
+          (u.role && u.role.toLowerCase().includes(empPagination.search)) ||
+          (u.dept && u.dept.toLowerCase().includes(empPagination.search))
+        );
+      }
+
+      if (users.length === 0) {
+        showToast('No employee records match the current filter to export.', 'info');
+        return;
+      }
+
+      // Generate CSV file formatted for Microsoft Excel
+      const headers = ["Employee ID", "Full Name", "Corporate Email", "Department", "Role", "Decentralized ID (DID)", "Credential Vault Status", "Account Status"];
+      const rows = users.map(u => [
+        `"${u.id || ''}"`,
+        `"${(u.name || '').replace(/"/g, '""')}"`,
+        `"${(u.email || '').replace(/"/g, '""')}"`,
+        `"${(u.dept || '').replace(/"/g, '""')}"`,
+        `"${(u.role || '').replace(/"/g, '""')}"`,
+        `"${(u.did || '').replace(/"/g, '""')}"`,
+        `"AES-256 Committed"`,
+        `"${u.status === 'REVOKED' ? 'Revoked' : 'Active'}"`
+      ]);
+
+      const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const deptTag = AppState.currentUser?.adminType === 'DEPT_ADMIN' ? AppState.currentUser.dept : (AppState.activeDeptFilter === 'ALL' ? 'Global' : AppState.activeDeptFilter);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `AICHAINID_Employees_${deptTag}_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast(`Exported ${users.length} employee records to Excel CSV!`, 'success');
+    }
+
     function renderAdminEmployeesTable(highlightId = null) {
       const tbody = document.getElementById('adm-employees-table');
       const countEl = document.getElementById('adm-emp-table-count');
-      if (countEl) countEl.textContent = `${AppState.users.length} Enrolled Profiles`;
+      const scopedUsers = AppState.getScopedUsers();
+      
+      // Filter by Status
+      let filtered = scopedUsers;
+      if (empPagination.status !== 'ALL') {
+        filtered = filtered.filter(u => (empPagination.status === 'REVOKED' ? u.status === 'REVOKED' : u.status !== 'REVOKED'));
+      }
+
+      // Filter by Search
+      if (empPagination.search) {
+        filtered = filtered.filter(u =>
+          (u.name && u.name.toLowerCase().includes(empPagination.search)) ||
+          (u.email && u.email.toLowerCase().includes(empPagination.search)) ||
+          (u.did && u.did.toLowerCase().includes(empPagination.search)) ||
+          (u.role && u.role.toLowerCase().includes(empPagination.search)) ||
+          (u.dept && u.dept.toLowerCase().includes(empPagination.search))
+        );
+      }
+
+      const totalItems = filtered.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / empPagination.pageSize));
+      if (empPagination.page > totalPages) empPagination.page = totalPages;
+      if (empPagination.page < 1) empPagination.page = 1;
+
+      const startIndex = (empPagination.page - 1) * empPagination.pageSize;
+      const endIndex = Math.min(startIndex + empPagination.pageSize, totalItems);
+      const pageItems = filtered.slice(startIndex, endIndex);
+
+      if (countEl) {
+        const deptTag = AppState.currentUser?.adminType === 'DEPT_ADMIN' ? AppState.currentUser.dept : (AppState.activeDeptFilter === 'ALL' ? 'Global' : AppState.activeDeptFilter);
+        countEl.textContent = `${totalItems} of ${scopedUsers.length} Profiles (${deptTag})`;
+      }
+
+      // Update Pagination Bar UI elements
+      const pageStartEl = document.getElementById('emp-page-start');
+      const pageEndEl = document.getElementById('emp-page-end');
+      const pageTotalEl = document.getElementById('emp-page-total');
+      const btnPrev = document.getElementById('emp-btn-prev');
+      const btnNext = document.getElementById('emp-btn-next');
+      const pageNumContainer = document.getElementById('emp-page-numbers');
+
+      if (pageStartEl) pageStartEl.textContent = totalItems === 0 ? 0 : startIndex + 1;
+      if (pageEndEl) pageEndEl.textContent = endIndex;
+      if (pageTotalEl) pageTotalEl.textContent = totalItems;
+      if (btnPrev) btnPrev.disabled = empPagination.page <= 1;
+      if (btnNext) btnNext.disabled = empPagination.page >= totalPages;
+
+      if (pageNumContainer) {
+        let pagesHtml = '';
+        for (let p = 1; p <= totalPages; p++) {
+          if (p === empPagination.page) {
+            pagesHtml += `<button type="button" class="w-6 h-6 rounded font-semibold text-xs bg-indigo-600 text-white shadow-2xs">${p}</button>`;
+          } else {
+            pagesHtml += `<button type="button" onclick="setEmpPage(${p})" class="w-6 h-6 rounded font-medium text-xs bg-[#181622] text-[#8A87A0] hover:text-[#F5F5F7] border border-[#343047] transition-colors">${p}</button>`;
+          }
+        }
+        pageNumContainer.innerHTML = pagesHtml;
+      }
+
       if (!tbody) return;
 
-      tbody.innerHTML = AppState.users.map(u => {
+      if (totalItems === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-8 text-center text-[#6B6880]">
+              <p class="text-xs font-semibold text-[#A4A1B5]">No enrolled identities match current filter</p>
+              <p class="text-[11px] text-[#6B6880] mt-0.5">Try changing the search query or status filter.</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = pageItems.map(u => {
         const isNew = highlightId && (u.id === highlightId || u.did === highlightId);
         const initials = u.name.split(' ').map(n => n[0]).join('').substring(0, 2);
         return `
@@ -5786,8 +6571,111 @@
     }
 
     // ===================================================================
-    // ACCESS REQUESTS QUEUE & AI APPROVALS CONTROLLER
+    // ACCESS REQUESTS QUEUE & AI APPROVALS CONTROLLER (ANTI-CLUSTERING)
     // ===================================================================
+    let reqPagination = {
+      page: 1,
+      pageSize: 5,
+      search: '',
+      riskTier: 'ALL'
+    };
+
+    function setReqRiskFilter(tier) {
+      reqPagination.riskTier = tier;
+      reqPagination.page = 1;
+      ['ALL', 'HIGH', 'REVIEW', 'LOW'].forEach(t => {
+        const btn = document.getElementById(`tab-req-${t}`);
+        if (btn) {
+          if (t === tier) {
+            btn.className = 'px-2 py-0.5 rounded font-semibold transition-colors bg-[#29263A] text-[#F5F5F7] shadow-2xs';
+          } else {
+            btn.className = 'px-2 py-0.5 rounded font-medium text-[#8A87A0] hover:text-[#E8E6F0] transition-colors';
+          }
+        }
+      });
+      renderAdminApprovals();
+    }
+
+    function onReqSearchInput(val) {
+      reqPagination.search = (val || '').trim().toLowerCase();
+      reqPagination.page = 1;
+      renderAdminApprovals();
+    }
+
+    function changeReqPageSize(val) {
+      reqPagination.pageSize = parseInt(val, 10) || 5;
+      reqPagination.page = 1;
+      renderAdminApprovals();
+    }
+
+    function changeReqPage(delta) {
+      reqPagination.page += delta;
+      renderAdminApprovals();
+    }
+
+    function setReqPage(pageNum) {
+      reqPagination.page = pageNum;
+      renderAdminApprovals();
+    }
+
+    // EXPORT TO EXCEL / CSV: Access Requests
+    function exportRequestsToExcel() {
+      const scopedRequests = AppState.getScopedRequests();
+      let pending = scopedRequests.filter(r => r.status === 'PENDING');
+
+      if (reqPagination.riskTier !== 'ALL') {
+        if (reqPagination.riskTier === 'HIGH') pending = pending.filter(r => r.risk > 70);
+        else if (reqPagination.riskTier === 'REVIEW') pending = pending.filter(r => r.risk >= 30 && r.risk <= 70);
+        else if (reqPagination.riskTier === 'LOW') pending = pending.filter(r => r.risk < 30);
+      }
+
+      if (reqPagination.search) {
+        pending = pending.filter(r =>
+          (r.requester && r.requester.toLowerCase().includes(reqPagination.search)) ||
+          (r.role && r.role.toLowerCase().includes(reqPagination.search)) ||
+          (r.resource && r.resource.toLowerCase().includes(reqPagination.search)) ||
+          (r.scope && r.scope.toLowerCase().includes(reqPagination.search)) ||
+          (r.did && r.did.toLowerCase().includes(reqPagination.search))
+        );
+      }
+
+      if (pending.length === 0) {
+        showToast('No access request records match the current filter to export.', 'info');
+        return;
+      }
+
+      const headers = ["Request ID", "Requester Name", "Requester DID", "Role", "Target Resource", "Scope Requested", "AI Risk Score", "Risk Category", "AI Recommendation", "Submission Time", "Status"];
+      const rows = pending.map(r => {
+        const riskLabel = r.risk > 70 ? 'High Risk' : (r.risk >= 30 ? 'Review Required' : 'Low Risk');
+        return [
+          `"${r.id || ''}"`,
+          `"${(r.requester || '').replace(/"/g, '""')}"`,
+          `"${(r.did || '').replace(/"/g, '""')}"`,
+          `"${(r.role || '').replace(/"/g, '""')}"`,
+          `"${(r.resource || '').replace(/"/g, '""')}"`,
+          `"${(r.scope || '').replace(/"/g, '""')}"`,
+          `"${r.risk || 0}"`,
+          `"${riskLabel}"`,
+          `"${(getRecommendationSentence(r) || '').replace(/"/g, '""')}"`,
+          `"${r.time || ''}"`,
+          `"${r.status || 'PENDING'}"`
+        ];
+      });
+
+      const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const deptTag = AppState.currentUser?.adminType === 'DEPT_ADMIN' ? AppState.currentUser.dept : (AppState.activeDeptFilter === 'ALL' ? 'Global' : AppState.activeDeptFilter);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `AICHAINID_AccessRequests_${deptTag}_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast(`Exported ${pending.length} access requests to Excel CSV!`, 'success');
+    }
+
     function getRecommendationSentence(r) {
       if (r.recSentence) return r.recSentence;
       if (r.risk < 30) return "Recommend approve — matches role's standard access pattern.";
@@ -5813,41 +6701,106 @@
     function renderAdminApprovals() {
       const list = document.getElementById('adm-queue-list');
       const badge = document.getElementById('adm-queue-badge');
-      const pending = AppState.accessRequests.filter(r => r.status === 'PENDING');
+      const scopedRequests = AppState.getScopedRequests();
+      const allPending = scopedRequests.filter(r => r.status === 'PENDING');
 
-      if (badge) badge.textContent = `${pending.length} Pending Request${pending.length === 1 ? '' : 's'}`;
+      // Filter by Risk Tier
+      let filtered = allPending;
+      if (reqPagination.riskTier !== 'ALL') {
+        if (reqPagination.riskTier === 'HIGH') filtered = filtered.filter(r => r.risk > 70);
+        else if (reqPagination.riskTier === 'REVIEW') filtered = filtered.filter(r => r.risk >= 30 && r.risk <= 70);
+        else if (reqPagination.riskTier === 'LOW') filtered = filtered.filter(r => r.risk < 30);
+      }
+
+      // Filter by Search Query
+      if (reqPagination.search) {
+        filtered = filtered.filter(r =>
+          (r.requester && r.requester.toLowerCase().includes(reqPagination.search)) ||
+          (r.role && r.role.toLowerCase().includes(reqPagination.search)) ||
+          (r.resource && r.resource.toLowerCase().includes(reqPagination.search)) ||
+          (r.scope && r.scope.toLowerCase().includes(reqPagination.search)) ||
+          (r.did && r.did.toLowerCase().includes(reqPagination.search))
+        );
+      }
+
+      const totalItems = filtered.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / reqPagination.pageSize));
+      if (reqPagination.page > totalPages) reqPagination.page = totalPages;
+      if (reqPagination.page < 1) reqPagination.page = 1;
+
+      const startIndex = (reqPagination.page - 1) * reqPagination.pageSize;
+      const endIndex = Math.min(startIndex + reqPagination.pageSize, totalItems);
+      const pageItems = filtered.slice(startIndex, endIndex);
+
+      const deptLabel = AppState.currentUser?.adminType === 'DEPT_ADMIN' ? ` (${AppState.currentUser.dept})` : (AppState.activeDeptFilter === 'ALL' ? '' : ` (${AppState.activeDeptFilter})`);
+      if (badge) badge.textContent = `${allPending.length} Pending Request${allPending.length === 1 ? '' : 's'}${deptLabel}`;
       const sideBadge = document.getElementById('badge-admin-queue-count');
-      if (sideBadge) sideBadge.textContent = pending.length;
+      if (sideBadge) sideBadge.textContent = allPending.length;
       const statPending = document.getElementById('stat-adm-pending');
-      if (statPending) statPending.textContent = pending.length;
+      if (statPending) statPending.textContent = allPending.length;
+
+      // Update Pagination Bar UI
+      const pageStartEl = document.getElementById('req-page-start');
+      const pageEndEl = document.getElementById('req-page-end');
+      const pageTotalEl = document.getElementById('req-page-total');
+      const btnPrev = document.getElementById('req-btn-prev');
+      const btnNext = document.getElementById('req-btn-next');
+      const pageNumContainer = document.getElementById('req-page-numbers');
+
+      if (pageStartEl) pageStartEl.textContent = totalItems === 0 ? 0 : startIndex + 1;
+      if (pageEndEl) pageEndEl.textContent = endIndex;
+      if (pageTotalEl) pageTotalEl.textContent = totalItems;
+      if (btnPrev) btnPrev.disabled = reqPagination.page <= 1;
+      if (btnNext) btnNext.disabled = reqPagination.page >= totalPages;
+
+      if (pageNumContainer) {
+        let pagesHtml = '';
+        for (let p = 1; p <= totalPages; p++) {
+          if (p === reqPagination.page) {
+            pagesHtml += `<button type="button" class="w-6 h-6 rounded font-semibold text-xs bg-indigo-600 text-white shadow-2xs">${p}</button>`;
+          } else {
+            pagesHtml += `<button type="button" onclick="setReqPage(${p})" class="w-6 h-6 rounded font-medium text-xs bg-[#181622] text-[#8A87A0] hover:text-[#F5F5F7] border border-[#343047] transition-colors">${p}</button>`;
+          }
+        }
+        pageNumContainer.innerHTML = pagesHtml;
+      }
 
       updateLedgerRailAmbientDots();
 
       if (!list) return;
 
-      if (pending.length === 0) {
-        list.innerHTML = `
-          <div class="empty-state-fade-in py-10 px-4 text-center border border-dashed border-[#E7E9F0] rounded-lg bg-[#13111E]/50 space-y-3">
-            <div class="w-11 h-11 rounded-full bg-[#EEF2FF] border border-indigo-100 text-[#4F46E5] flex items-center justify-center mx-auto shadow-xs">
-              <svg class="w-5 h-5 text-[#4F46E5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-                <circle cx="12" cy="12" r="9"/>
-                <path d="M9 12l2 2 4-4"/>
-              </svg>
+      if (totalItems === 0) {
+        if (allPending.length === 0) {
+          list.innerHTML = `
+            <div class="empty-state-fade-in py-10 px-4 text-center border border-dashed border-[#E7E9F0] rounded-lg bg-[#13111E]/50 space-y-3">
+              <div class="w-11 h-11 rounded-full bg-[#EEF2FF] border border-indigo-100 text-[#4F46E5] flex items-center justify-center mx-auto shadow-xs">
+                <svg class="w-5 h-5 text-[#4F46E5]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                  <circle cx="12" cy="12" r="9"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+              </div>
+              <div class="space-y-1">
+                <h4 class="text-xs font-bold text-[#F5F5F7]">Access Requests Queue Clear</h4>
+                <p class="text-[11px] text-[#8A87A0] max-w-sm mx-auto leading-relaxed">No pending access requests require administrative sign-off at this time. Incoming requests will appear here with AI recommendations.</p>
+              </div>
+              <div class="pt-1">
+                <button type="button" onclick="resetDemoAccessRequests()" class="text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 underline cursor-pointer">Reload Demo Requests</button>
+              </div>
             </div>
-            <div class="space-y-1">
-              <h4 class="text-xs font-bold text-[#F5F5F7]">Access Requests Queue Clear</h4>
-              <p class="text-[11px] text-[#8A87A0] max-w-sm mx-auto leading-relaxed">No pending access requests require administrative sign-off at this time. Incoming requests will appear here with AI recommendations.</p>
+          `;
+        } else {
+          list.innerHTML = `
+            <div class="py-8 text-center text-[#6B6880] border border-[#29263A] rounded-lg bg-[#13111E]/50">
+              <p class="text-xs font-semibold text-[#A4A1B5]">No access requests match the current filter</p>
+              <p class="text-[11px] text-[#6B6880] mt-0.5">Try selecting 'All' or adjusting the search term.</p>
             </div>
-            <div class="pt-1">
-              <button type="button" onclick="resetDemoAccessRequests()" class="text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 underline cursor-pointer">Reload Demo Requests</button>
-            </div>
-          </div>
-        `;
+          `;
+        }
         if (window.lucide) lucide.createIcons();
         return;
       }
 
-      list.innerHTML = pending.map(r => {
+      list.innerHTML = pageItems.map(r => {
         const isLow = r.risk < 30;
         const isMed = r.risk >= 30 && r.risk <= 70;
         const isHigh = r.risk > 70;
@@ -6306,23 +7259,133 @@
     }
 
     // ===================================================================
-    // ASSET MANAGEMENT & BLOCKCHAIN ANCHORING CONTROLLER
+    // ASSET MANAGEMENT & BLOCKCHAIN ANCHORING CONTROLLER (ANTI-CLUSTERING)
     // ===================================================================
     let currentAssetCategory = 'ALL';
+    let assetPagination = {
+      page: 1,
+      pageSize: 5,
+      search: ''
+    };
+
+    function filterAssigneeDropdown(query) {
+      const q = (query || '').trim().toLowerCase();
+      const select = document.getElementById('adm-asset-assignee');
+      const countEl = document.getElementById('assignee-filter-count');
+      if (!select) return;
+
+      const scopedUsers = AppState.getScopedUsers().filter(u => u.status !== 'REVOKED');
+      const filtered = q
+        ? scopedUsers.filter(u =>
+            (u.name && u.name.toLowerCase().includes(q)) ||
+            (u.role && u.role.toLowerCase().includes(q)) ||
+            (u.dept && u.dept.toLowerCase().includes(q)) ||
+            (u.did && u.did.toLowerCase().includes(q))
+          )
+        : scopedUsers;
+
+      if (countEl) countEl.textContent = q ? `${filtered.length} found` : '';
+
+      if (filtered.length === 0) {
+        select.innerHTML = '<option value="">No matching staff members found</option>';
+        return;
+      }
+
+      select.innerHTML = filtered.map(u => `
+        <option value="${u.name}|${u.did}|${u.role}">${u.name} (${u.role} • ${u.dept}) — ${u.did}</option>
+      `).join('');
+    }
+
+    function onAssetSearchInput(val) {
+      assetPagination.search = (val || '').trim().toLowerCase();
+      assetPagination.page = 1;
+      renderAdminAssetsTable();
+    }
+
+    function changeAssetPageSize(val) {
+      assetPagination.pageSize = parseInt(val, 10) || 5;
+      assetPagination.page = 1;
+      renderAdminAssetsTable();
+    }
+
+    function changeAssetPage(delta) {
+      assetPagination.page += delta;
+      renderAdminAssetsTable();
+    }
+
+    function setAssetPage(pageNum) {
+      assetPagination.page = pageNum;
+      renderAdminAssetsTable();
+    }
+
+    // EXPORT TO EXCEL / CSV: Asset Inventory
+    function exportAssetsToExcel() {
+      const scopedAssets = AppState.getScopedAssets();
+      let assets = scopedAssets || [];
+
+      if (currentAssetCategory !== 'ALL') {
+        assets = assets.filter(a => getAssetCategory(a) === currentAssetCategory);
+      }
+
+      if (assetPagination.search) {
+        assets = assets.filter(a =>
+          (a.tag && a.tag.toLowerCase().includes(assetPagination.search)) ||
+          (a.name && a.name.toLowerCase().includes(assetPagination.search)) ||
+          (a.assignee && a.assignee.toLowerCase().includes(assetPagination.search)) ||
+          (a.did && a.did.toLowerCase().includes(assetPagination.search))
+        );
+      }
+
+      if (assets.length === 0) {
+        showToast('No asset inventory records match the current filter to export.', 'info');
+        return;
+      }
+
+      const headers = ["Hardware Tag", "Asset Name / Model", "Category", "Assigned Staff", "Staff DID", "Status", "Anchored On Blockchain", "Transaction Hash"];
+      const rows = assets.map(a => [
+        `"${a.tag || ''}"`,
+        `"${(a.name || '').replace(/"/g, '""')}"`,
+        `"${getAssetCategory(a)}"`,
+        `"${(a.assignee || '').replace(/"/g, '""')}"`,
+        `"${(a.did || '').replace(/"/g, '""')}"`,
+        `"${a.status || 'ASSIGNED'}"`,
+        `"TRUE"`,
+        `"${a.txHash || ''}"`
+      ]);
+
+      const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const deptTag = AppState.currentUser?.adminType === 'DEPT_ADMIN' ? AppState.currentUser.dept : (AppState.activeDeptFilter === 'ALL' ? 'Global' : AppState.activeDeptFilter);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `AICHAINID_HardwareAssets_${deptTag}_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      showToast(`Exported ${assets.length} hardware assets to Excel CSV!`, 'success');
+    }
 
     function initAdminAssetsScreen() {
       const select = document.getElementById('adm-asset-assignee');
+      const filterInput = document.getElementById('adm-asset-assignee-filter');
+      if (filterInput) filterInput.value = '';
       if (select) {
         const currentVal = select.value;
-        const activeUsers = AppState.users.filter(u => u.status !== 'REVOKED');
-        select.innerHTML = activeUsers.map(u => `
-          <option value="${u.name}|${u.did}|${u.role}">${u.name} (${u.role}) — ${u.did}</option>
-        `).join('');
+        const scopedUsers = AppState.getScopedUsers().filter(u => u.status !== 'REVOKED');
+        if (scopedUsers.length === 0) {
+          select.innerHTML = '<option value="">No active employees in this department scope</option>';
+        } else {
+          select.innerHTML = scopedUsers.map(u => `
+            <option value="${u.name}|${u.did}|${u.role}">${u.name} (${u.role} • ${u.dept}) — ${u.did}</option>
+          `).join('');
 
-        if (currentVal && activeUsers.some(u => `${u.name}|${u.did}|${u.role}` === currentVal)) {
-          select.value = currentVal;
-        } else if (activeUsers.length > 0) {
-          select.value = `${activeUsers[0].name}|${activeUsers[0].did}|${activeUsers[0].role}`;
+          if (currentVal && scopedUsers.some(u => `${u.name}|${u.did}|${u.role}` === currentVal)) {
+            select.value = currentVal;
+          } else {
+            select.value = `${scopedUsers[0].name}|${scopedUsers[0].did}|${scopedUsers[0].role}`;
+          }
         }
       }
 
@@ -6358,6 +7421,7 @@
 
     function setAssetCategoryFilter(category) {
       currentAssetCategory = category;
+      assetPagination.page = 1;
 
       ['ALL', 'COMPUTE', 'PHYSICAL', 'KEYS'].forEach(cat => {
         const btn = document.getElementById(`tab-asset-${cat}`);
@@ -6398,7 +7462,8 @@
       const countEl = document.getElementById('asset-inventory-count');
       if (!tbody) return;
 
-      const assets = AppState.assets || [];
+      const scopedAssets = AppState.getScopedAssets();
+      const assets = scopedAssets || [];
 
       // Update Category Counter badges
       const countAll = assets.length;
@@ -6422,8 +7487,7 @@
       }
 
       // Filter by Search Query
-      const searchInput = document.getElementById('asset-search-input');
-      const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+      const query = assetPagination.search;
       if (query) {
         filtered = filtered.filter(a =>
           (a.tag && a.tag.toLowerCase().includes(query)) ||
@@ -6433,11 +7497,46 @@
         );
       }
 
+      const totalItems = filtered.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / assetPagination.pageSize));
+      if (assetPagination.page > totalPages) assetPagination.page = totalPages;
+      if (assetPagination.page < 1) assetPagination.page = 1;
+
+      const startIndex = (assetPagination.page - 1) * assetPagination.pageSize;
+      const endIndex = Math.min(startIndex + assetPagination.pageSize, totalItems);
+      const pageItems = filtered.slice(startIndex, endIndex);
+
       if (countEl) {
-        countEl.textContent = `${filtered.length} Anchored ${filtered.length === 1 ? 'Asset' : 'Assets'}`;
+        countEl.textContent = `${totalItems} Anchored ${totalItems === 1 ? 'Asset' : 'Assets'}`;
       }
 
-      if (filtered.length === 0) {
+      // Update Asset Pagination Bar UI elements
+      const pageStartEl = document.getElementById('asset-page-start');
+      const pageEndEl = document.getElementById('asset-page-end');
+      const pageTotalEl = document.getElementById('asset-page-total');
+      const btnPrev = document.getElementById('asset-btn-prev');
+      const btnNext = document.getElementById('asset-btn-next');
+      const pageNumContainer = document.getElementById('asset-page-numbers');
+
+      if (pageStartEl) pageStartEl.textContent = totalItems === 0 ? 0 : startIndex + 1;
+      if (pageEndEl) pageEndEl.textContent = endIndex;
+      if (pageTotalEl) pageTotalEl.textContent = totalItems;
+      if (btnPrev) btnPrev.disabled = assetPagination.page <= 1;
+      if (btnNext) btnNext.disabled = assetPagination.page >= totalPages;
+
+      if (pageNumContainer) {
+        let pagesHtml = '';
+        for (let p = 1; p <= totalPages; p++) {
+          if (p === assetPagination.page) {
+            pagesHtml += `<button type="button" class="w-6 h-6 rounded font-semibold text-xs bg-indigo-600 text-white shadow-2xs">${p}</button>`;
+          } else {
+            pagesHtml += `<button type="button" onclick="setAssetPage(${p})" class="w-6 h-6 rounded font-medium text-xs bg-[#181622] text-[#8A87A0] hover:text-[#F5F5F7] border border-[#343047] transition-colors">${p}</button>`;
+          }
+        }
+        pageNumContainer.innerHTML = pagesHtml;
+      }
+
+      if (totalItems === 0) {
         tbody.innerHTML = `
           <tr>
             <td colspan="3" class="py-8 text-center text-[#6B6880] bg-[#13111E]/50">
@@ -6453,9 +7552,9 @@
         return;
       }
 
-      // Group Assets by Assignee Clusters
+      // Group Assets by Assignee Clusters for the current page
       const groups = {};
-      filtered.forEach(a => {
+      pageItems.forEach(a => {
         const key = a.assignee || 'Unassigned Staff';
         if (!groups[key]) groups[key] = [];
         groups[key].push(a);
@@ -6703,6 +7802,23 @@
           } else {
             bar.className = 'h-1 rounded-full bg-[#252235] transition-all duration-300';
             label.className = 'text-[10px] font-medium text-[#6B6880] block truncate';
+          }
+        }
+      }
+
+      // Auto-set department when entering step 2 based on active department scope
+      if (step === 2) {
+        const deptSelect = document.getElementById('adm-ob-dept');
+        const user = AppState.currentUser;
+        if (deptSelect && user) {
+          if (user.adminType === 'DEPT_ADMIN' && user.dept) {
+            deptSelect.value = user.dept;
+            deptSelect.disabled = true;
+          } else if (AppState.activeDeptFilter && AppState.activeDeptFilter !== 'ALL') {
+            deptSelect.value = AppState.activeDeptFilter;
+            deptSelect.disabled = false;
+          } else {
+            deptSelect.disabled = false;
           }
         }
       }
@@ -7116,6 +8232,11 @@
           if (this.suspiciousFeed.length > 15) this.suspiciousFeed.pop();
         }
 
+        // Telemetry Event Accumulator: Store structured event for AI Model Retraining Dataset
+        if (typeof recordTelemetryEvent === 'function') {
+          recordTelemetryEvent(evt);
+        }
+
         this.updateUI();
       },
 
@@ -7247,6 +8368,215 @@
     }
 
     // ===================================================================
+    // REAL-TIME BEHAVIORAL TELEMETRY ACCUMULATOR & AI DATASET GENERATOR
+    // ===================================================================
+    if (!AppState.telemetryLogs) {
+      AppState.telemetryLogs = [];
+    }
+
+    function recordTelemetryEvent(evt) {
+      if (!AppState.telemetryLogs) AppState.telemetryLogs = [];
+
+      // Parse event time into decimal hour (e.g. "10:35" -> 10.58)
+      let hourVal = 10.5;
+      if (evt.time && evt.time.includes(':')) {
+        const parts = evt.time.split(':');
+        const h = parseInt(parts[0], 10) || 10;
+        const m = parseInt(parts[1], 10) || 0;
+        hourVal = Math.round((h + m / 60) * 100) / 100;
+      }
+
+      // Check if unusual hour (outside standard 08:00 to 18:00)
+      const isUnusual = (hourVal < 8 || hourVal >= 18) ? 1 : 0;
+
+      // Map resource sensitivity (1 to 4)
+      const resName = (evt.resource || '').toLowerCase();
+      let sensitivity = 1;
+      if (resName.includes('production') || resName.includes('database') || resName.includes('patient') || resName.includes('financial')) {
+        sensitivity = 4;
+      } else if (resName.includes('admin') || resName.includes('cluster') || resName.includes('lab') || resName.includes('hr')) {
+        sensitivity = 3;
+      } else if (resName.includes('development') || resName.includes('server') || resName.includes('staging')) {
+        sensitivity = 2;
+      }
+
+      // Role-Resource standard match check
+      const roleName = (evt.role || '').toLowerCase();
+      let roleResourceMatch = 1;
+      if (roleName.includes('intern') && sensitivity >= 3) roleResourceMatch = 0;
+      if (roleName.includes('developer') && resName.includes('hr')) roleResourceMatch = 0;
+      if (roleName.includes('finance') && resName.includes('lab')) roleResourceMatch = 0;
+      if (evt.anomalies && evt.anomalies.some(a => a.toLowerCase().includes('mismatch') || a.toLowerCase().includes('unusual access'))) {
+        roleResourceMatch = 0;
+      }
+
+      // Risk score and risk label
+      const rScore = typeof evt.riskScore === 'number' ? evt.riskScore : (evt.decision === 'BLOCK' ? 88.5 : evt.decision === 'ADMIN_REVIEW' ? 52.0 : 12.5);
+      const rLabel = rScore >= 70 ? 'HIGH' : (rScore >= 30 ? 'MEDIUM' : 'LOW');
+
+      const telemetryRow = {
+        role: evt.role || 'Software Developer',
+        department: evt.department || 'Engineering',
+        resource: evt.resource || 'GitHub Enterprise',
+        resource_sensitivity: sensitivity,
+        hour: hourVal,
+        is_unusual_time: isUnusual,
+        known_device: evt.deviceKnown !== false ? 1 : 0,
+        location_match: evt.locationMatch !== false ? 1 : 0,
+        role_resource_match: roleResourceMatch,
+        failed_attempts: evt.failedAttempts || 0,
+        request_frequency: evt.requestFrequency || 1.5,
+        credential_valid: evt.credentialValid !== false ? 1 : 0,
+        previous_behavior_score: typeof evt.previousBehaviorScore === 'number' ? evt.previousBehaviorScore : 0.85,
+        risk_score: Math.round(rScore * 10) / 10,
+        risk_label: rLabel,
+        recorded_at: new Date().toISOString()
+      };
+
+      AppState.telemetryLogs.unshift(telemetryRow);
+      // Keep recent 500 captured telemetry records in browser storage
+      if (AppState.telemetryLogs.length > 500) AppState.telemetryLogs.pop();
+    }
+
+    // Live Batch Telemetry Generator (from current enrolled employee roster)
+    function generateBatchTelemetry() {
+      const users = AppState.getScopedUsers();
+      if (!users || users.length === 0) {
+        showToast('No active employees enrolled to generate telemetry from.', 'error');
+        return;
+      }
+
+      const sampleResources = [
+        { name: "GitHub Enterprise", sensitivity: 1, dept: "Engineering" },
+        { name: "Production Database", sensitivity: 4, dept: "Infrastructure" },
+        { name: "Lab Compute Cluster", sensitivity: 3, dept: "Biomedical" },
+        { name: "Development Server", sensitivity: 2, dept: "Engineering" },
+        { name: "Facility RFID Access Gate", sensitivity: 2, dept: "Infrastructure" },
+        { name: "Genomic Sequence Pipeline", sensitivity: 4, dept: "Biomedical" }
+      ];
+
+      let generatedCount = 0;
+      users.forEach((u, uIdx) => {
+        // Generate 3 activity footprints per employee across typical workday & occasional off-hours
+        for (let i = 0; i < 3; i++) {
+          const res = sampleResources[Math.floor(Math.random() * sampleResources.length)];
+          const isOffHour = Math.random() < 0.2; // 20% off-hour simulation
+          const hour = isOffHour ? (Math.random() * 5 + 1) : (Math.random() * 9 + 9); // 1-6 AM or 9 AM - 6 PM
+          const isUnknownDev = Math.random() < 0.15;
+          const isLocationMatch = isUnknownDev ? 0 : 1;
+          const failedAtt = isUnknownDev ? Math.floor(Math.random() * 3) : 0;
+          const reqFreq = Math.round((Math.random() * 4 + 1) * 10) / 10;
+          const behaviorScore = Math.round((Math.random() * 0.3 + 0.7) * 100) / 100;
+          const credValid = u.status === 'REVOKED' ? 0 : 1;
+
+          // Simple risk heuristic matching backend model
+          let risk = 10;
+          if (isOffHour) risk += 30;
+          if (isUnknownDev) risk += 40;
+          if (failedAtt > 1) risk += 25;
+          if (credValid === 0) risk += 50;
+          if (res.dept !== u.dept) risk += 15;
+          risk = Math.min(100, Math.max(0, risk));
+
+          const label = risk >= 70 ? 'HIGH' : (risk >= 30 ? 'MEDIUM' : 'LOW');
+
+          const row = {
+            role: u.role || 'System Architect',
+            department: u.dept || 'Engineering',
+            resource: res.name,
+            resource_sensitivity: res.sensitivity,
+            hour: Math.round(hour * 100) / 100,
+            is_unusual_time: isOffHour ? 1 : 0,
+            known_device: isUnknownDev ? 0 : 1,
+            location_match: isLocationMatch,
+            role_resource_match: res.dept === u.dept ? 1 : 0,
+            failed_attempts: failedAtt,
+            request_frequency: reqFreq,
+            credential_valid: credValid,
+            previous_behavior_score: behaviorScore,
+            risk_score: risk,
+            risk_label: label,
+            recorded_at: new Date(Date.now() - Math.floor(Math.random() * 86400000)).toISOString()
+          };
+
+          if (!AppState.telemetryLogs) AppState.telemetryLogs = [];
+          AppState.telemetryLogs.unshift(row);
+          generatedCount++;
+        }
+      });
+
+      persistState();
+      showToast(`Captured & synthesized ${generatedCount} live behavioral footprints for ${users.length} employees!`, 'success');
+      
+      const elTick = document.getElementById('mon-last-tick');
+      if (elTick) elTick.textContent = `Telemetry: ${AppState.telemetryLogs.length} events buffered`;
+    }
+
+    // Export AI Model Training Dataset (Excel CSV with exact 15 ML columns)
+    function exportAiTrainingDataset() {
+      // If telemetry logs empty, seed from active monitoring feed and enrolled roster
+      if (!AppState.telemetryLogs || AppState.telemetryLogs.length === 0) {
+        generateBatchTelemetry();
+      }
+
+      const records = AppState.telemetryLogs || [];
+      if (records.length === 0) {
+        showToast('No telemetry events recorded yet. Run monitoring simulation first.', 'warning');
+        return;
+      }
+
+      // Exact columns required by Python AI service risk_dataset.csv
+      const headers = [
+        "role",
+        "department",
+        "resource",
+        "resource_sensitivity",
+        "hour",
+        "is_unusual_time",
+        "known_device",
+        "location_match",
+        "role_resource_match",
+        "failed_attempts",
+        "request_frequency",
+        "credential_valid",
+        "previous_behavior_score",
+        "risk_score",
+        "risk_label"
+      ];
+
+      const rows = records.map(r => [
+        `"${(r.role || '').replace(/"/g, '""')}"`,
+        `"${(r.department || '').replace(/"/g, '""')}"`,
+        `"${(r.resource || '').replace(/"/g, '""')}"`,
+        r.resource_sensitivity || 1,
+        r.hour || 10.5,
+        r.is_unusual_time || 0,
+        r.known_device || 1,
+        r.location_match || 1,
+        r.role_resource_match || 1,
+        r.failed_attempts || 0,
+        r.request_frequency || 1.5,
+        r.credential_valid || 1,
+        r.previous_behavior_score || 0.85,
+        r.risk_score || 15.0,
+        r.risk_label || 'LOW'
+      ]);
+
+      const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `AICHAINID_LiveTelemetry_RiskDataset_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      showToast(`Exported ${records.length} telemetry records matching AI Training Model schema!`, 'success');
+    }
+
+    // ===================================================================
     // ROLE CHANGE & AI SCOPE RE-ANALYSIS CONTROLLER
     // ===================================================================
     const RoleScopeModel = {
@@ -7320,9 +8650,9 @@
       const select = document.getElementById('adm-rc-target');
       if (!select) return;
 
-      const activeUsers = AppState.users.filter(u => u.status !== 'REVOKED');
+      const activeUsers = AppState.getScopedUsers().filter(u => u.status !== 'REVOKED');
       if (activeUsers.length === 0) {
-        select.innerHTML = '<option value="">No active employees available</option>';
+        select.innerHTML = '<option value="">No active employees available in this department scope</option>';
         const btn = document.getElementById('btn-execute-role-change');
         if (btn) btn.disabled = true;
         return;
@@ -7678,10 +9008,10 @@
       if (!select) return;
 
       const currentVal = select.value;
-      const activeUsers = AppState.users.filter(u => u.status !== 'REVOKED');
+      const activeUsers = AppState.getScopedUsers().filter(u => u.status !== 'REVOKED');
 
       if (activeUsers.length === 0) {
-        select.innerHTML = '<option value="">No active identities remaining to offboard</option>';
+        select.innerHTML = '<option value="">No active identities remaining to offboard in this scope</option>';
         const initBtn = document.getElementById('btn-initiate-offboard');
         if (initBtn) initBtn.disabled = true;
         return;
@@ -8079,34 +9409,334 @@
         resBox.innerHTML = '<span class="animate-pulse text-indigo-400">Querying Zero-Trust Edge Resource Gate for Resource #2 against blockchain ledger...</span>';
       }
 
-      try {
-        const res = await apiFetch('/api/blockchain/verify-edge-access', {
-          method: 'POST',
-          body: JSON.stringify({ resourceId: 2, userId: 1 })
-        });
-        if (res && res.data) {
-          const d = res.data;
-          if (resBox) {
-            resBox.innerHTML = `
-              <div class="text-emerald-400 font-bold mb-1">✓ EDGE GATE DECISION: ${d.accessAllowed ? 'ACCESS GRANTED' : 'ACCESS DENIED'}</div>
-              <div class="text-[#A4A1B5] text-[11px] mb-1">${d.reason}</div>
-              <div class="grid grid-cols-2 gap-2 text-[10px] text-[#8A87A0] pt-2 border-t border-[#29263A]">
-                <div>Verified Block: <span class="text-white font-bold">#${d.verifiedBlockNumber || '1000002'}</span></div>
-                <div>Break-Glass Active: <span class="text-amber-400 font-bold">${d.isBreakGlass ? 'YES (EMERGENCY OVERRIDE)' : 'NO'}</span></div>
-                <div class="col-span-2 truncate">Tx Hash: <span class="font-mono text-teal-300">${d.transactionHash || '0x4a2253...'}</span></div>
-              </div>
-            `;
-          }
-          showToast('Edge Gate check completed: Access validated on blockchain', 'success');
-        }
-      } catch (err) {
+      await new Promise(r => setTimeout(r, 400));
+
+      // STRICT ZERO-TRUST ENFORCEMENT:
+      // If 3-Key Quorum was NOT executed or was REJECTED, access must be DENIED!
+      const isMined = (window._last3KeyQuorumResult && window._last3KeyQuorumResult.mined === true);
+      const isPassed = (window._last3KeyQuorumResult && window._last3KeyQuorumResult.passed === true);
+
+      if (!isMined || !isPassed) {
+        const reasons = (window._last3KeyQuorumResult && window._last3KeyQuorumResult.reasons && window._last3KeyQuorumResult.reasons.length > 0)
+          ? window._last3KeyQuorumResult.reasons.join('; ')
+          : 'No 3-Key Quorum consensus block has been executed or mined for this resource on the blockchain ledger.';
+
         if (resBox) {
           resBox.innerHTML = `
-            <div class="text-emerald-400 font-bold mb-1">✓ EDGE GATE DECISION: ACCESS GRANTED</div>
-            <div class="text-[#A4A1B5] text-[11px]">Zero-Trust Edge Simulator confirmed access against local ledger anchor for Resource #2.</div>
+            <div class="text-red-400 font-bold mb-1 flex items-center gap-1.5">
+              <i data-lucide="shield-alert" class="w-4 h-4"></i>
+              <span>✕ EDGE GATE DECISION: ACCESS DENIED (PERIMETER LOCKOUT)</span>
+            </div>
+            <div class="text-[#F5F5F7] text-[11px] mb-1">
+              Zero-Trust Edge Gate refused entry. Hardware door lock / GPU SSH gate found <strong>NO valid 3-Key consensus block</strong> on the blockchain ledger.
+            </div>
+            <div class="p-2.5 bg-red-950/30 border border-red-900/50 rounded text-[11px] text-red-200 mt-2 space-y-1">
+              <div><strong>Root Cause:</strong> ${reasons}</div>
+              <div><strong>Zero-Trust Rule:</strong> "Never trust the local database; only unlock if an immutable SHA-256 block exists on the blockchain."</div>
+              <div><strong>Security Status:</strong> Unsigned / Unmined Transaction &rarr; Physical Door Stays Locked & SSH Terminated.</div>
+            </div>
           `;
         }
+        if (window.lucide) lucide.createIcons();
+        showToast('Zero-Trust Edge Gate: ACCESS DENIED! No valid 3-Key Quorum block found on blockchain.', 'error');
+        return;
       }
+
+      // If legitimate 3-Key Quorum block was successfully mined:
+      const blockNum = window._last3KeyQuorumResult.blockNumber || '1000003';
+      const txHash = window._last3KeyQuorumResult.txHash || '0x4a2253...';
+      const isBreakGlass = window._last3KeyQuorumResult.isBreakGlass || false;
+
+      if (resBox) {
+        resBox.innerHTML = `
+          <div class="text-emerald-400 font-bold mb-1 flex items-center gap-1.5">
+            <i data-lucide="check-circle" class="w-4 h-4"></i>
+            <span>✓ EDGE GATE DECISION: ACCESS GRANTED</span>
+          </div>
+          <div class="text-[#A4A1B5] text-[11px] mb-1">
+            ${isBreakGlass ? 'ACCESS GRANTED [EMERGENCY BREAK-GLASS OVERRIDE]: Verified against immutable blockchain ledger.' : 'ACCESS GRANTED: Verified 3-Key consensus against zero-trust blockchain ledger.'}
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-[10px] text-[#8A87A0] pt-2 border-t border-[#29263A]">
+            <div>Verified Block: <span class="text-white font-bold">#${blockNum}</span></div>
+            <div>Break-Glass Active: <span class="${isBreakGlass ? 'text-amber-400' : 'text-emerald-400'} font-bold">${isBreakGlass ? 'YES (EMERGENCY OVERRIDE)' : 'NO'}</span></div>
+            <div class="col-span-2 truncate">Tx Hash: <span class="font-mono text-teal-300">${txHash}</span></div>
+          </div>
+        `;
+      }
+      if (window.lucide) lucide.createIcons();
+      showToast('Edge Gate check completed: Access validated on blockchain', 'success');
+    }
+
+    // ── 3-Key Zero-Trust Consensus Quorum Defense Simulator Logic ──
+    function setQuorumPreset(type) {
+      const k1 = document.getElementById('sel-key1-mode');
+      const k2 = document.getElementById('sel-key2-mode');
+      const k3 = document.getElementById('sel-key3-mode');
+
+      if (type === 'hacked_admin') {
+        if (k1) k1.value = 'anomaly'; // 3:00 AM Tor/VPN Anomaly (Risk 88%)
+        if (k2) k2.value = 'approved'; // Stolen Admin approved!
+        if (k3) k3.value = 'missing'; // Department lead hasn't approved
+        showToast('Preset Loaded: Stolen Admin Midnight Attack (Admin credentials compromised, but AI & Dept Keys fail)', 'warning');
+      } else {
+        if (k1) k1.value = 'normal';
+        if (k2) k2.value = 'approved';
+        if (k3) k3.value = 'concurred';
+        showToast('Preset Loaded: Legitimate Daytime Request (All 3 Keys Align)', 'success');
+      }
+      updateQuorumKeyStates();
+    }
+
+    function updateQuorumKeyStates() {
+      const k1Val = document.getElementById('sel-key1-mode')?.value || 'normal';
+      const k2Val = document.getElementById('sel-key2-mode')?.value || 'approved';
+      const k3Val = document.getElementById('sel-key3-mode')?.value || 'concurred';
+
+      // Key 1 UI
+      const badge1 = document.getElementById('key-badge-1');
+      const riskEl = document.getElementById('key-val-risk');
+      const ctxEl = document.getElementById('key-val-context');
+      const card1 = document.getElementById('key-card-1');
+      if (k1Val === 'normal') {
+        if (badge1) { badge1.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/50'; badge1.textContent = 'PASS'; }
+        if (riskEl) { riskEl.className = 'font-mono font-bold text-emerald-400'; riskEl.textContent = '14 / 100 (Normal)'; }
+        if (ctxEl) ctxEl.textContent = '10:30 AM • Office Subnet (192.168.1.42)';
+        if (card1) card1.style.borderColor = '#29263A';
+      } else {
+        if (badge1) { badge1.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-950/60 text-red-300 border border-red-800/50 animate-pulse'; badge1.textContent = 'POLICY BLOCK'; }
+        if (riskEl) { riskEl.className = 'font-mono font-bold text-red-400'; riskEl.textContent = '88 / 100 (ANOMALOUS)'; }
+        if (ctxEl) ctxEl.textContent = '03:14 AM • Unknown Exit Node / Tor VPN';
+        if (card1) card1.style.borderColor = '#EF4444';
+      }
+
+      // Key 2 UI
+      const badge2 = document.getElementById('key-badge-2');
+      const govEl = document.getElementById('key-val-govmode');
+      const card2 = document.getElementById('key-card-2');
+      if (k2Val === 'approved') {
+        if (badge2) { badge2.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/50'; badge2.textContent = 'APPROVED'; }
+        if (govEl) govEl.textContent = 'Standard Governance Sign-Off';
+        if (card2) card2.style.borderColor = '#29263A';
+      } else if (k2Val === 'break_glass') {
+        if (badge2) { badge2.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-950/60 text-amber-300 border border-amber-800/50'; badge2.textContent = 'BREAK-GLASS'; }
+        if (govEl) govEl.textContent = 'NIST SP 800-207 Break-Glass Protocol';
+        if (card2) card2.style.borderColor = '#F59E0B';
+      } else {
+        if (badge2) { badge2.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-950/60 text-red-300 border border-red-800/50'; badge2.textContent = 'REJECTED'; }
+        if (govEl) govEl.textContent = 'Admin Governance Withheld';
+        if (card2) card2.style.borderColor = '#EF4444';
+      }
+
+      // Key 3 UI
+      const badge3 = document.getElementById('key-badge-3');
+      const card3 = document.getElementById('key-card-3');
+      if (k3Val === 'concurred') {
+        if (badge3) { badge3.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/50'; badge3.textContent = 'CONCURRED'; }
+        if (card3) card3.style.borderColor = '#29263A';
+      } else {
+        if (badge3) { badge3.className = 'px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-950/60 text-red-300 border border-red-800/50 animate-pulse'; badge3.textContent = 'MISSING'; }
+        if (card3) card3.style.borderColor = '#EF4444';
+      }
+
+      // Automatically evaluate state so Edge Gate check immediately aligns with the keys
+      const isK1Valid = (k1Val === 'normal');
+      const isK2Valid = (k2Val === 'approved' || k2Val === 'break_glass');
+      const isK3Valid = (k3Val === 'concurred');
+      const isBreakGlass = (k2Val === 'break_glass');
+      const currentQuorumPassed = (isK1Valid && isK2Valid && isK3Valid) || (isBreakGlass && isK3Valid);
+
+      const reasons = [];
+      if (!isK1Valid) reasons.push('Key 1 (AI Risk Engine) flagged an anomalous request pattern (Risk Score > 70)');
+      if (!isK2Valid) reasons.push('Key 2 (Admin Governance) was not signed or was rejected');
+      if (!isK3Valid) reasons.push('Key 3 (Department Sub-Admin Concurrence) signature is missing (Cross-Tenant Escalation Blocked)');
+
+      window._last3KeyQuorumResult = {
+        passed: currentQuorumPassed,
+        isBreakGlass: isBreakGlass,
+        reasons: reasons
+      };
+
+      const edgeResBox = document.getElementById('idx-edge-gate-result');
+      if (edgeResBox) {
+        if (!currentQuorumPassed) {
+          edgeResBox.innerHTML = `
+            <div class="text-red-400 font-bold mb-1 flex items-center gap-1.5">
+              <i data-lucide="shield-alert" class="w-4 h-4"></i>
+              <span>✕ EDGE GATE ALERT: HARDWARE LOCKOUT ENFORCED</span>
+            </div>
+            <div class="text-red-300/90 text-[11px]">
+              Because 3-Key Quorum is rejected, no valid consensus block exists on the blockchain. Click "Simulate Gate Check" to verify perimeter lockout.
+            </div>
+          `;
+        } else {
+          edgeResBox.innerHTML = `
+            <div class="text-emerald-400 font-bold mb-1">✓ EDGE GATE STATUS: CONSENSUS READY</div>
+            <div class="text-[#A4A1B5] text-[11px]">All 3 keys align. Click "Execute 3-Key Quorum" to mine the block and "Simulate Gate Check" to verify entry.</div>
+          `;
+        }
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+
+    async function execute3KeyQuorumEvaluation() {
+      const outputBox = document.getElementById('quorum-verification-output');
+      const btn = document.getElementById('btn-run-3key-quorum');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin mr-1">sync</span> Evaluating 3-Key Quorum Cryptographic Consensus...';
+      }
+
+      const k1Val = document.getElementById('sel-key1-mode')?.value || 'normal';
+      const k2Val = document.getElementById('sel-key2-mode')?.value || 'approved';
+      const k3Val = document.getElementById('sel-key3-mode')?.value || 'concurred';
+
+      // Simulate cryptographic consensus check latency
+      await new Promise(r => setTimeout(r, 600));
+
+      const isK1Valid = (k1Val === 'normal');
+      const isK2Valid = (k2Val === 'approved' || k2Val === 'break_glass');
+      const isK3Valid = (k3Val === 'concurred');
+      const isBreakGlass = (k2Val === 'break_glass');
+
+      const quorumPassed = (isK1Valid && isK2Valid && isK3Valid) || (isBreakGlass && isK3Valid);
+
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i data-lucide="cpu" class="w-4 h-4"></i> <span>Execute 3-Key Quorum Consensus Verification</span>';
+        if (window.lucide) lucide.createIcons();
+      }
+
+      const blockTimestamp = new Date().toISOString();
+      const mockParentHash = "0x" + Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join('').substring(0, 32) + "...";
+      const mockNewHash = "0x" + Array.from({length: 64}, () => Math.floor(Math.random()*16).toString(16)).join('');
+
+      if (quorumPassed) {
+        const sigType = isBreakGlass ? 'SIG_EMERGENCY_OVERRIDE_ADMIN_1' : 'SIG_3KEY_CONSENSUS_AFFIRMED';
+        
+        const tbody = document.getElementById('adm-blockchain-tbody');
+        const totalBlocksEl = document.getElementById('idx-chain-total-blocks');
+        let blockCount = 3;
+        if (tbody) {
+          blockCount = tbody.children.length + 1;
+          const newRow = document.createElement('tr');
+          newRow.className = 'hover:bg-[#13111E] transition-colors border-b border-[#29263A] bg-teal-950/20';
+          newRow.innerHTML = `
+            <td class="py-3 px-3 font-bold text-teal-400 font-mono">
+              #100000${blockCount}
+              ${isBreakGlass ? '<span class="ml-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-900/60 text-amber-300 border border-amber-700/60">BREAK-GLASS</span>' : '<span class="ml-1.5 px-1.5 py-0.5 rounded text-[9px] font-bold bg-teal-900/60 text-teal-300 border border-teal-700/60">3-KEY MINED</span>'}
+            </td>
+            <td class="py-3 px-3">
+              <span class="font-bold text-[#F5F5F7] block text-xs">ACCESS_REQUEST_APPROVED</span>
+              <span class="text-[10px] text-[#8A87A0] font-mono">ACCESS_REQUEST #2 (Rahul Sharma)</span>
+            </td>
+            <td class="py-3 px-3">
+              <span class="font-mono text-xs text-indigo-300 block truncate max-w-[200px]" title="${mockNewHash}">${mockNewHash.substring(0, 22)}...</span>
+              <span class="text-[9px] text-teal-400 font-mono">SHA-256 Merkle Block</span>
+            </td>
+            <td class="py-3 px-3">
+              <span class="font-mono text-xs text-amber-300/80 block truncate max-w-[180px]">${mockParentHash}</span>
+              <span class="text-[9px] text-[#6B6880] font-mono">Chained Parent</span>
+            </td>
+            <td class="py-3 px-3 text-right">
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/60 text-emerald-300 border border-emerald-800/60">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>${sigType}</span>
+              </span>
+            </td>
+          `;
+          tbody.insertBefore(newRow, tbody.firstChild);
+        }
+        if (totalBlocksEl) {
+          totalBlocksEl.textContent = `${blockCount} Blocks`;
+        }
+
+        if (outputBox) {
+          outputBox.innerHTML = `
+            <div class="flex items-center justify-between border-b border-white/5 pb-2 text-[11px]">
+              <span class="text-emerald-400 font-bold flex items-center gap-1">
+                <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                <span>✅ 3/3 QUORUM REACHED — TRANSACTION MINED ONTO BLOCKCHAIN LEDGER</span>
+              </span>
+              <span class="text-emerald-300 font-mono bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-700/60">BLOCK #100000${blockCount}</span>
+            </div>
+            <div class="space-y-1.5 pt-1 text-xs">
+              <div class="text-[#C4C0D5]">
+                <strong class="text-white">Consensus Verdict:</strong> All cryptographic keys converged. The access approval has been committed into the sequential SHA-256 blockchain ledger.
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2 p-2 bg-[#13111E] rounded border border-emerald-900/40 text-[11px]">
+                <div><span class="text-[#8A87A0]">Key 1 (AI ML Risk):</span> <span class="text-emerald-400 font-bold">14/100 (Cleared)</span></div>
+                <div><span class="text-[#8A87A0]">Key 2 (Admin Gov):</span> <span class="text-emerald-400 font-bold">admin@aichainid.org (Affirmed)</span></div>
+                <div><span class="text-[#8A87A0]">Key 3 (Dept Concur):</span> <span class="text-emerald-400 font-bold">Vikram Mehta (Signed)</span></div>
+              </div>
+              <div class="text-[11px] text-[#8A87A0] font-mono pt-1">
+                Transaction Hash: <span class="text-teal-300">${mockNewHash}</span><br/>
+                Merkle Signature: <span class="text-indigo-300">${sigType}</span> | Timestamp: <span>${blockTimestamp}</span>
+              </div>
+            </div>
+          `;
+        }
+        window._last3KeyQuorumResult = {
+          mined: true,
+          passed: true,
+          isBreakGlass: isBreakGlass,
+          blockNumber: '100000' + blockCount,
+          txHash: mockNewHash
+        };
+        const edgeResBox = document.getElementById('idx-edge-gate-result');
+        if (edgeResBox) {
+          edgeResBox.innerHTML = `
+            <div class="text-emerald-400 font-bold mb-1">✓ EDGE GATE PREVIEW: READY TO PASS</div>
+            <div class="text-[#A4A1B5] text-[11px]">3-Key Quorum Block #100000${blockCount} successfully mined. Click "Simulate Gate Check" below to verify edge admittance.</div>
+          `;
+        }
+        showToast('3-Key Quorum satisfied! Block #100000' + blockCount + ' cryptographically mined to ledger.', 'success');
+      } else {
+        const reasons = [];
+        if (!isK1Valid) reasons.push('Key 1 (AI Risk Engine) flagged an anomalous request pattern (Risk Score > 70)');
+        if (!isK2Valid) reasons.push('Key 2 (Admin Governance) was not signed or was rejected');
+        if (!isK3Valid) reasons.push('Key 3 (Department Sub-Admin Concurrence) signature is missing (Cross-Tenant Escalation Blocked)');
+
+        window._last3KeyQuorumResult = { passed: false, reasons: reasons };
+        const edgeResBox = document.getElementById('idx-edge-gate-result');
+        if (edgeResBox) {
+          edgeResBox.innerHTML = `
+            <div class="text-red-400 font-bold mb-1 flex items-center gap-1.5">
+              <i data-lucide="shield-alert" class="w-4 h-4"></i>
+              <span>✕ EDGE GATE ALERT: HARDWARE LOCKOUT ENFORCED</span>
+            </div>
+            <div class="text-red-300/90 text-[11px]">
+              Because 3-Key Quorum was rejected, no block exists on the blockchain. Click "Simulate Gate Check" to observe hardware lockout.
+            </div>
+          `;
+        }
+
+        if (outputBox) {
+          outputBox.innerHTML = `
+            <div class="flex items-center justify-between border-b border-red-500/20 pb-2 text-[11px]">
+              <span class="text-red-400 font-bold flex items-center gap-1">
+                <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+                <span>🚨 CONSENSUS ABORTED: STOLEN ADMIN PRIVILEGE ESCALATION PREVENTED!</span>
+              </span>
+              <span class="text-red-300 font-mono bg-red-950/80 px-2 py-0.5 rounded border border-red-700/60">QUORUM REJECTED (0 BLOCKS MINED)</span>
+            </div>
+            <div class="space-y-2 pt-1 text-xs">
+              <div class="text-[#F5F5F7]">
+                <strong class="text-red-400">Judges Demonstration Takeaway:</strong> Even though the Super Admin account approved this transaction (Key 2 = VALID), the platform <strong>refused to update the database or mint a block</strong> because zero-trust requires all 3 independent keys to concur.
+              </div>
+              <div class="p-2.5 bg-red-950/20 border border-red-900/50 rounded-lg text-xs space-y-1">
+                <p class="font-bold text-red-300">Violations Identified by Consensus Engine:</p>
+                ${reasons.map(r => `<div class="flex items-center gap-1.5 text-red-200 text-[11px]"><span class="w-1.5 h-1.5 rounded-full bg-red-400"></span><span>${r}</span></div>`).join('')}
+              </div>
+              <div class="text-[11px] text-[#8A87A0] font-mono">
+                Security Result: <span class="text-emerald-400 font-bold">DATABASE REMAINS UNCHANGED</span> • No Verifiable Credential Issued • Perimeter Edge Gates will DENY access.
+              </div>
+            </div>
+          `;
+        }
+        showToast('3-Key Consensus Rejected! Stolen Admin privilege escalation blocked.', 'error');
+      }
+
+      if (window.lucide) lucide.createIcons();
     }
 
     async function triggerIndexBreakGlassModal() {
