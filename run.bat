@@ -21,9 +21,10 @@ echo.
 echo ================================================================
 echo     AI-ChainID Unified Platform is READY!                      
 echo ================================================================
-echo   Platform URL:          http://localhost:8080/
+echo   Integrated Platform:   http://localhost:8080/
+echo   AI Microservice:       http://localhost:8000/
 echo   Admin Credentials:     admin@aichainid.org / Admin@12345
-echo   AI Engine Status:      Integrated & Online
+echo   AI Engine Status:      Integrated ^& Online
 echo ================================================================
 echo.
 

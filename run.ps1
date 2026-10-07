@@ -24,12 +24,13 @@ Start-Sleep -Seconds 6
 Write-Host "`n================================================================" -ForegroundColor Green
 Write-Host "    AI-ChainID Unified Platform is READY!                      " -ForegroundColor Green
 Write-Host "================================================================" -ForegroundColor Green
-Write-Host "  Platform URL:          http://localhost:8080/" -ForegroundColor Cyan
+Write-Host "  Integrated Platform:   http://localhost:8080/" -ForegroundColor Cyan
+Write-Host "  AI Microservice:       http://localhost:8000/" -ForegroundColor Gray
 Write-Host "  Admin Credentials:     admin@aichainid.org / Admin@12345" -ForegroundColor White
 Write-Host "  AI Engine Status:      Integrated & Online" -ForegroundColor Green
 Write-Host "================================================================" -ForegroundColor Green
 
-# Open browser to unified platform
+# Open browser to integrated platform
 Start-Process "http://localhost:8080/"
 
 Write-Host "`nPlatform running in background. To exit and stop services, press Enter." -ForegroundColor Gray
