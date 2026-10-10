@@ -1,0 +1,77 @@
+services:
+  # ===================================================================
+  # 1. Database: MySQL 8.0 Engine
+  # ===================================================================
+  mysql:
+    image: mysql:8.0
+    container_name: aichainid-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+      MYSQL_DATABASE: AIchinId
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$${MYSQL_ROOT_PASSWORD} || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - aichainid-network
+
+  # ===================================================================
+  # 2. Python AI Engine: FastAPI Microservice (Port 8000)
+  # ===================================================================
+  ai-service:
+    build:
+      context: ./ai-chainid
+      dockerfile: Dockerfile
+    container_name: aichainid-ai
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    networks:
+      - aichainid-network
+
+  # ===================================================================
+  # 3. Core Unified Platform Gateway: Spring Boot Backend & Web UI (Port 8080)
+  # ===================================================================
+  backend:
+    build:
+      context: ./AIchainID-backend-main
+      dockerfile: Dockerfile
+    container_name: aichainid-gateway
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/AIchinId?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      DB_USERNAME: root
+      DB_PASSWORD: ${DB_PASSWORD:-root}
+      AI_SERVICE_URL: http://ai-service:8000
+      JWT_SECRET: ${JWT_SECRET:-404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080,http://localhost:8000}
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ai-service:
+        condition: service_healthy
+    networks:
+      - aichainid-network
+
+networks:
+  aichainid-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+    driver: local
