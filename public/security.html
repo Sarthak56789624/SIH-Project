@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID - AI Security Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#6D54E8",
+                    "primary-hover": "#7C64F5",
+                    "secondary": "#0EA5A0",
+                    "background": "#0d0b14",
+                    "surface": "#151320",
+                    "surface-card": "#181626",
+                    "surface-container": "#1e1b2e",
+                    "surface-container-low": "#151320",
+                    "surface-container-lowest": "#100e1a",
+                    "on-surface": "#f1f5f9",
+                    "on-surface-variant": "#a4a1b5",
+                    "outline": "#343047",
+                    "outline-variant": "#232034",
+                    "error": "#ef4444",
+                    "warning": "#f59e0b",
+                    "success": "#10b981"
+                },
+                fontFamily: {
+                    "body-md": ["Inter", "sans-serif"],
+                    "headline-lg": ["Geist", "sans-serif"],
+                    "headline-md": ["Geist", "sans-serif"],
+                    "label-sm": ["Geist", "sans-serif"],
+                    "display-hero": ["Geist", "sans-serif"]
+                }
+            }
+        }
+    };
+</script>
+<style>
+    body {
+        background-color: #0d0b14;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+    }
+    .card-dark {
+        background: #181626;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .box-dark {
+        background: #1e1b2e;
+        border: 1px solid #2a273f;
+    }
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0d0b14;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #2a273f;
+        border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #6D54E8;
+    }
+</style>
+</head>
+<body class="bg-[#0d0b14] text-[#f1f5f9] font-body-md antialiased min-h-screen flex overflow-hidden">
+
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col h-screen sticky top-0 left-0 overflow-y-auto bg-[#13111e] border-r border-[#29263a] w-64 flex-shrink-0 select-none z-40">
+    <div class="px-6 py-6 border-b border-[#29263a]/60">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#6D54E8] to-[#0EA5A0] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#6D54E8]/30">
+                AI
+            </div>
+            <h1 class="font-display-hero text-xl font-bold tracking-tight text-white">AI-ChainID</h1>
+        </div>
+        <p class="text-xs text-[#a4a1b5] mt-1 font-medium tracking-wide">Enterprise Zero-Trust</p>
+    </div>
+
+    <div class="px-5 pt-5 pb-3">
+        <button onclick="window.location.href='/static/access-requests.html'" class="w-full bg-[#6D54E8] hover:bg-[#7c64f5] text-white py-2.5 px-4 rounded-lg font-label-sm text-xs font-semibold tracking-wide transition-all shadow-md shadow-[#6D54E8]/25 flex items-center justify-center gap-2 cursor-pointer">
+            <span class="material-symbols-outlined text-sm font-bold">add</span> New Access Request
+        </button>
+    </div>
+
+    <ul class="flex-1 flex flex-col gap-1.5 px-3 mt-3">
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/dashboard.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                <span>Overview</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/people.html">
+                <span class="material-symbols-outlined text-[20px]">badge</span>
+                <span>People & DID</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/access-requests.html">
+                <span class="material-symbols-outlined text-[20px]">hub</span>
+                <span>Access Requests</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-white font-semibold rounded-lg bg-[#221e38] border border-[#6D54E8]/30 text-sm transition-all shadow-sm" href="/static/security.html">
+                <span class="material-symbols-outlined text-[#6D54E8] text-[20px]" style="font-variation-settings: 'FILL' 1;">security</span>
+                <span>AI Security</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/temp-access.html">
+                <span class="material-symbols-outlined text-[20px]">timer</span>
+                <span>Temp Access</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/index.html">
+                <span class="material-symbols-outlined text-[20px]">account_tree</span>
+                <span>Workflow Studio</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="px-4 py-4 border-t border-[#29263a]/80 mt-auto">
+        <ul class="flex flex-col gap-1">
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-all cursor-pointer text-xs font-semibold" onclick="Auth.clear(); window.location.href='/static/login.html';">
+                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                    <span>Sign Out</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#777389] hover:text-[#a4a1b5] hover:bg-white/5 rounded-lg transition-all text-xs" href="/swagger-ui/index.html" target="_blank">
+                    <span class="material-symbols-outlined text-[18px]">api</span>
+                    <span>OpenAPI Swagger</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-screen overflow-y-auto bg-[#0d0b14]">
+    <div class="flex-1 w-full max-w-[1360px] mx-auto px-8 py-8">
+        
+        <!-- Page Header -->
+        <div class="mb-8">
+            <div class="flex items-center gap-2 text-xs text-[#a4a1b5] mb-1">
+                <span>Defense</span>
+                <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                <span class="text-[#6D54E8] font-medium">Anomaly Intelligence</span>
+            </div>
+            <h1 class="text-2xl font-bold text-white tracking-tight">AI Security & Continuous Risk Radar</h1>
+            <p class="text-xs text-[#a4a1b5] mt-1">Real-time isolation forest anomaly detection and multi-factor behavioral risk scoring.</p>
+        </div>
+
+        <!-- Bento Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Section A: Risk Analysis (7 cols) -->
+            <div class="lg:col-span-7 flex flex-col gap-6">
+                <!-- Risk Distribution Card -->
+                <div class="card-dark rounded-xl p-6 h-full">
+                    <h2 class="text-base font-bold text-white mb-6 flex items-center justify-between">
+                        <span>Risk Vector Distribution</span>
+                        <span class="text-xs font-normal text-[#a4a1b5]">Step 8 Engine</span>
+                    </h2>
+
+                    <div class="grid grid-cols-3 gap-3.5 mb-8">
+                        <div class="box-dark p-4 rounded-lg flex flex-col items-center justify-center border-l-2 border-l-[#10b981]">
+                            <span class="text-2xl font-bold text-white count-low">118</span>
+                            <span class="text-[11px] text-[#10b981] font-semibold mt-1 uppercase tracking-wider">Low Risk</span>
+                        </div>
+                        <div class="box-dark p-4 rounded-lg flex flex-col items-center justify-center border-l-2 border-l-[#f59e0b]">
+                            <span class="text-2xl font-bold text-white count-med">7</span>
+                            <span class="text-[11px] text-[#f59e0b] font-semibold mt-1 uppercase tracking-wider">Medium</span>
+                        </div>
+                        <div class="box-dark p-4 rounded-lg flex flex-col items-center justify-center border-l-2 border-l-[#ef4444]">
+                            <span class="text-2xl font-bold text-[#f87171] count-high">3</span>
+                            <span class="text-[11px] text-[#f87171] font-semibold mt-1 uppercase tracking-wider">High / Blocked</span>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xs font-semibold text-[#a4a1b5] uppercase tracking-wider mb-3">Live Anomaly Events</h3>
+                    <div class="space-y-3" id="alerts-list">
+                        <!-- Anomalous List Item 1 -->
+                        <div class="flex items-center justify-between p-3.5 box-dark rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-[#ef4444]/15 border border-[#ef4444]/30 flex items-center justify-center text-[#f87171]">
+                                    <span class="material-symbols-outlined text-[18px]">warning</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold text-white mb-0.5">ProductionDatabase Access - BLOCK</p>
+                                    <p class="text-[11px] text-[#a4a1b5]">did:chainid:7fc7d2... (Score: 100/100)</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-[#ef4444]/15 text-[#f87171] text-[10px] font-bold rounded uppercase">High</span>
+                                <span class="material-symbols-outlined text-[#64748b] text-[16px]">chevron_right</span>
+                            </div>
+                        </div>
+
+                        <!-- Anomalous List Item 2 -->
+                        <div class="flex items-center justify-between p-3.5 box-dark rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-lg bg-[#f59e0b]/15 border border-[#f59e0b]/30 flex items-center justify-center text-[#f59e0b]">
+                                    <span class="material-symbols-outlined text-[18px]">public</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold text-white mb-0.5">Unusual Geo-location Access</p>
+                                    <p class="text-[11px] text-[#a4a1b5]">Multiple failed attempts from unfamiliar IP</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-[#f59e0b]/15 text-[#f59e0b] text-[10px] font-bold rounded uppercase">Med</span>
+                                <span class="material-symbols-outlined text-[#64748b] text-[16px]">chevron_right</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section B: Anomaly Detection & Interactive Simulator (5 cols) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <!-- Behavioral Baseline Card -->
+                <div class="card-dark rounded-xl p-6 h-full flex flex-col">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h2 class="text-base font-bold text-white">AI Behavioral Deviation</h2>
+                            <p class="text-xs text-[#a4a1b5] mt-0.5">Real-time isolation forest monitor</p>
+                        </div>
+                        <div class="w-2.5 h-2.5 rounded-full bg-[#10b981] animate-pulse"></div>
+                    </div>
+
+                    <!-- Active Detection Alert -->
+                    <div class="box-dark p-4 rounded-xl mb-6 border-l-4 border-l-[#ef4444] relative overflow-hidden bg-[#ef4444]/5">
+                        <div class="flex items-start gap-3">
+                            <span class="material-symbols-outlined text-[#ef4444] text-[20px] mt-0.5">crisis_alert</span>
+                            <div class="text-xs">
+                                <h4 class="font-bold text-white mb-1">Behavioral Outlier Classified</h4>
+                                <p class="text-[#a4a1b5] mb-3">
+                                    Target identity attempting off-hours connection to <span class="text-white font-mono">ProductionDatabase</span>.
+                                </p>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="bg-[#151322] p-2.5 rounded border border-[#2a273f]">
+                                        <span class="block text-[10px] text-[#a4a1b5] uppercase">Timestamp</span>
+                                        <span class="text-xs text-[#f87171] font-semibold flex items-center gap-1 mt-0.5">
+                                            <span class="material-symbols-outlined text-[14px]">schedule</span> 02:30 AM
+                                        </span>
+                                    </div>
+                                    <div class="bg-[#151322] p-2.5 rounded border border-[#2a273f]">
+                                        <span class="block text-[10px] text-[#a4a1b5] uppercase">Hardware</span>
+                                        <span class="text-xs text-[#f87171] font-semibold flex items-center gap-1 mt-0.5">
+                                            <span class="material-symbols-outlined text-[14px]">devices</span> Unknown Device
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live AI Simulator Form (NOW SLEEK DARK GLASSMORPHIC) -->
+                    <div class="box-dark p-5 rounded-xl mb-4 text-xs">
+                        <h3 class="text-xs font-bold text-white mb-1 flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[#6D54E8] text-[16px]">bolt</span>
+                            Live ML Risk Assessment Simulator
+                        </h3>
+                        <p class="text-[11px] text-[#a4a1b5] mb-4">
+                            Simulate access request features to trigger real-time inference on the Python AI microservice.
+                        </p>
+
+                        <div class="space-y-3 mb-4">
+                            <div>
+                                <label class="text-[#a4a1b5] font-medium block mb-1">Resource</label>
+                                <select id="sim-res" class="w-full bg-[#151322] border border-[#343047] p-2 rounded-lg text-white focus:outline-none focus:border-[#6D54E8]">
+                                    <option value="ProductionDatabase">ProductionDatabase</option>
+                                    <option value="AWS Production Console">AWS Production Console</option>
+                                    <option value="Customer Data Store">Customer Data Store</option>
+                                    <option value="DevelopmentCluster">DevelopmentCluster</option>
+                                    <option value="SourceCodeRepository">SourceCodeRepository</option>
+                                </select>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="text-[#a4a1b5] font-medium block mb-1">Time (24h)</label>
+                                    <input type="text" id="sim-time" value="02:30" class="w-full bg-[#151322] border border-[#343047] p-2 rounded-lg text-white font-mono focus:outline-none focus:border-[#6D54E8]">
+                                </div>
+                                <div>
+                                    <label class="text-[#a4a1b5] font-medium block mb-1">Failed Attempts</label>
+                                    <input type="number" id="sim-fails" value="4" min="0" max="10" class="w-full bg-[#151322] border border-[#343047] p-2 rounded-lg text-white font-mono focus:outline-none focus:border-[#6D54E8]">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-[#a4a1b5] font-medium block mb-1">Device Signature & Location</label>
+                                <select id="sim-dev" class="w-full bg-[#151322] border border-[#343047] p-2 rounded-lg text-white focus:outline-none focus:border-[#6D54E8]">
+                                    <option value="suspicious">Unknown Device + Foreign IP (Mismatch)</option>
+                                    <option value="normal">Registered Device + Corporate Office IP</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-3 items-center pt-2">
+                            <button id="btn-run-sim" class="w-full bg-[#6D54E8] hover:bg-[#7c64f5] text-white py-2.5 rounded-lg text-xs font-bold transition-all shadow-md shadow-[#6D54E8]/25 flex items-center justify-center gap-1.5 cursor-pointer">
+                                <span>Evaluate Event with AI</span>
+                                <span class="material-symbols-outlined text-sm">bolt</span>
+                            </button>
+                        </div>
+                        <span id="sim-loading" class="hidden text-[11px] text-[#a4a1b5] animate-pulse mt-2 block text-center">Invoking FastAPI RandomForest + Isolation Forest...</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<script src="/static/api.js"></script>
+<script>
+    Auth.requireAuth();
+
+    async function loadRiskAlerts() {
+        try {
+            const data = await AiApi.getRiskAlerts();
+            if (data && data.alerts) {
+                const alerts = data.alerts;
+                let high = 0, med = 0, low = 0;
+                alerts.forEach(a => {
+                    if (a.riskLevel === 'HIGH' || a.riskLevel === 'CRITICAL') high++;
+                    else if (a.riskLevel === 'MEDIUM') med++;
+                    else low++;
+                });
+
+                const lowEl = document.querySelector('.count-low');
+                const medEl = document.querySelector('.count-med');
+                const highEl = document.querySelector('.count-high');
+                if (lowEl) lowEl.textContent = 118 + low;
+                if (medEl) medEl.textContent = 7 + med;
+                if (highEl) highEl.textContent = 3 + high;
+
+                const listContainer = document.getElementById('alerts-list');
+                if (listContainer && alerts.length > 0) {
+                    listContainer.innerHTML = alerts.slice(0, 5).map(a => `
+                        <div class="flex items-center justify-between p-3.5 box-dark rounded-lg hover:bg-white/5 transition-colors cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <div class="w-9 h-9 rounded-lg ${a.riskLevel === 'HIGH' ? 'bg-[#ef4444]/15 border border-[#ef4444]/30 text-[#f87171]' : 'bg-[#f59e0b]/15 border border-[#f59e0b]/30 text-[#f59e0b]'} flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[18px]">${a.riskLevel === 'HIGH' ? 'warning' : 'public'}</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-semibold text-white mb-0.5">${a.resource} - ${a.decision}</p>
+                                    <p class="text-[11px] text-[#a4a1b5]">${a.employeeName} · Score: ${Math.round(a.riskScore)}/100</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 ${a.riskLevel === 'HIGH' ? 'bg-[#ef4444]/15 text-[#f87171]' : 'bg-[#f59e0b]/15 text-[#f59e0b]'} text-[10px] font-bold rounded uppercase">${a.riskLevel}</span>
+                                <span class="material-symbols-outlined text-[#64748b] text-[16px]">chevron_right</span>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+        } catch (err) {
+            console.error("Failed to load alerts:", err);
+        }
+    }
+
+    loadRiskAlerts();
+
+    document.getElementById("btn-run-sim").addEventListener("click", async () => {
+        const resource = document.getElementById("sim-res").value;
+        const time = document.getElementById("sim-time").value.trim() || "02:30";
+        const devMode = document.getElementById("sim-dev").value;
+        const failedAttempts = parseInt(document.getElementById("sim-fails").value) || 0;
+
+        const isKnown = devMode === "normal";
+        const locMatch = devMode === "normal";
+
+        const loading = document.getElementById("sim-loading");
+        const btn = document.getElementById("btn-run-sim");
+        loading.classList.remove("hidden");
+        btn.disabled = true;
+
+        try {
+            const res = await apiFetch("/api/ai/risk-score", {
+                method: "POST",
+                body: JSON.stringify({
+                    did: "did:chainid:simulated_identity",
+                    role: "Intern",
+                    department: "Engineering",
+                    resource: resource,
+                    time: time,
+                    deviceKnown: isKnown,
+                    locationMatch: locMatch,
+                    failedAttempts: failedAttempts,
+                    requestFrequency: isKnown ? 1.0 : 8.5,
+                    credentialValid: true,
+                    previousBehaviorScore: isKnown ? 0.9 : 0.2
+                })
+            });
+
+            if (res && res.data) {
+                const r = res.data;
+                showToast(`AI Risk Score: ${r.riskScore}/100 (${r.riskLevel}) - Decision: ${r.decision}`, r.riskLevel === 'HIGH' ? 'error' : 'success');
+
+                loadRiskAlerts();
+            }
+        } catch (err) {
+            showToast(err.message || "Failed to calculate AI risk score", "error");
+        } finally {
+            loading.classList.add("hidden");
+            btn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

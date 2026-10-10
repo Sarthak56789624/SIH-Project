@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID - Executive Governance Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#6D54E8",
+                    "primary-hover": "#7C64F5",
+                    "primary-light": "#231e3d",
+                    "secondary": "#0EA5A0",
+                    "background": "#0d0b14",
+                    "surface": "#151320",
+                    "surface-card": "#181626",
+                    "surface-container": "#1e1b2e",
+                    "surface-container-low": "#151320",
+                    "surface-container-lowest": "#100e1a",
+                    "surface-container-high": "#252237",
+                    "surface-container-highest": "#2e2a44",
+                    "on-surface": "#f1f5f9",
+                    "on-surface-variant": "#a4a1b5",
+                    "outline": "#343047",
+                    "outline-variant": "#232034",
+                    "error": "#ef4444",
+                    "error-container": "rgba(239, 68, 68, 0.15)",
+                    "warning": "#f59e0b",
+                    "success": "#10b981",
+                    "success-container": "rgba(16, 185, 129, 0.15)"
+                },
+                borderRadius: {
+                    "DEFAULT": "0.375rem",
+                    "lg": "0.75rem",
+                    "xl": "1rem",
+                    "2xl": "1.25rem",
+                    "full": "9999px"
+                },
+                spacing: {
+                    "container-max": "1360px",
+                    "margin-desktop": "32px",
+                    "gutter": "20px"
+                },
+                fontFamily: {
+                    "body-md": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "headline-lg": ["Geist", "sans-serif"],
+                    "headline-md": ["Geist", "sans-serif"],
+                    "label-sm": ["Geist", "sans-serif"],
+                    "display-hero": ["Geist", "sans-serif"]
+                }
+            }
+        }
+    };
+</script>
+<style>
+    body {
+        background-color: #0d0b14;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+    }
+    .card-dark {
+        background: #181626;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .card-dark:hover {
+        border-color: rgba(109, 84, 232, 0.35);
+    }
+    .box-dark {
+        background: #1e1b2e;
+        border: 1px solid #2a273f;
+    }
+    .interactive-hover:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        transition: background-color 0.2s ease;
+    }
+    /* Panel Animation */
+    #review-panel {
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: #151322;
+        border-left: 1px solid #2a273f;
+    }
+    #review-panel.open {
+        transform: translateX(0);
+    }
+    #overlay {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+    #overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    /* Subtle scrollbar styling */
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0d0b14;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #2a273f;
+        border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #6D54E8;
+    }
+</style>
+</head>
+<body class="font-body-md text-body-md flex h-screen overflow-hidden antialiased bg-[#0d0b14]">
+
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col h-screen sticky top-0 left-0 overflow-y-auto bg-[#13111e] border-r border-[#29263a] w-64 z-40 shrink-0 select-none">
+    <div class="px-6 py-6 border-b border-[#29263a]/60 flex items-center justify-between">
+        <div>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#6D54E8] to-[#0EA5A0] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#6D54E8]/30">
+                    AI
+                </div>
+                <h1 class="font-display-hero text-xl font-bold tracking-tight text-white">AI-ChainID</h1>
+            </div>
+            <p class="font-label-sm text-xs text-[#a4a1b5] mt-1 font-medium tracking-wide">Enterprise Zero-Trust</p>
+        </div>
+    </div>
+
+    <div class="px-5 pt-5 pb-3">
+        <button onclick="window.location.href='/static/access-requests.html'" class="w-full bg-[#6D54E8] hover:bg-[#7c64f5] text-white py-2.5 px-4 rounded-lg font-label-sm text-xs font-semibold tracking-wide transition-all shadow-md shadow-[#6D54E8]/25 flex items-center justify-center gap-2 cursor-pointer">
+            <span class="material-symbols-outlined text-sm font-bold">add</span> New Access Request
+        </button>
+    </div>
+
+    <ul class="flex-1 flex flex-col gap-1.5 px-3 mt-3">
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-white font-semibold rounded-lg bg-[#221e38] border border-[#6D54E8]/30 text-sm transition-all shadow-sm" href="/static/dashboard.html">
+                <span class="material-symbols-outlined text-[#6D54E8] text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                <span>Overview</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/people.html">
+                <span class="material-symbols-outlined text-[20px]">badge</span>
+                <span>People & DID</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/access-requests.html">
+                <span class="material-symbols-outlined text-[20px]">hub</span>
+                <span>Access Requests</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/security.html">
+                <span class="material-symbols-outlined text-[20px]">security</span>
+                <span>AI Security</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/temp-access.html">
+                <span class="material-symbols-outlined text-[20px]">timer</span>
+                <span>Temp Access</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/index.html">
+                <span class="material-symbols-outlined text-[20px]">account_tree</span>
+                <span>Workflow Studio</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="px-4 py-4 border-t border-[#29263a]/80 mt-auto">
+        <ul class="flex flex-col gap-1">
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-all cursor-pointer text-xs font-semibold" onclick="Auth.clear(); window.location.href='/static/login.html';">
+                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                    <span>Sign Out</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#777389] hover:text-[#a4a1b5] hover:bg-white/5 rounded-lg transition-all text-xs" href="/swagger-ui/index.html" target="_blank">
+                    <span class="material-symbols-outlined text-[18px]">api</span>
+                    <span>OpenAPI Swagger</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden bg-[#0d0b14] relative z-0">
+    <!-- TopAppBar -->
+    <header class="h-16 border-b border-[#29263a]/80 bg-[#13111e]/80 backdrop-blur-md flex items-center justify-between px-8 shrink-0 z-30">
+        <div class="flex items-center gap-2.5 text-xs text-[#a4a1b5] font-medium">
+            <span class="text-white font-semibold">AI-ChainID Platform</span>
+            <span class="material-symbols-outlined text-[14px] text-[#64748b]">chevron_right</span>
+            <span class="text-[#6D54E8] font-semibold">Executive Governance Overview</span>
+        </div>
+
+        <div class="flex-1 max-w-md mx-8 hidden md:block">
+            <div class="relative w-full">
+                <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-[#64748b] text-[18px]">search</span>
+                <input class="w-full bg-[#1e1b2e] border border-[#343047] rounded-lg pl-10 pr-4 py-1.5 text-xs text-white placeholder:text-[#64748b] focus:outline-none focus:border-[#6D54E8] focus:ring-1 focus:ring-[#6D54E8]/50 transition-all" placeholder="Search identities, DIDs, resources or audit events..." type="text"/>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-5">
+            <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-[#10b981]/10 border border-[#10b981]/25 text-[#10b981] text-xs font-semibold">
+                <span class="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+                <span>AI Engines Live</span>
+            </div>
+
+            <div class="flex items-center gap-3 border-l border-[#29263a] pl-5">
+                <div class="w-8 h-8 rounded-full bg-[#2a2544] border border-[#6D54E8]/40 flex items-center justify-center text-white font-bold text-xs">
+                    SA
+                </div>
+                <div class="hidden sm:block text-left">
+                    <div class="text-xs font-semibold text-white">System Admin</div>
+                    <div class="text-[11px] text-[#777389]">admin@aichainid.org</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Scrollable Content Area -->
+    <div class="flex-1 overflow-y-auto px-8 py-8 relative z-10">
+        <div class="max-w-[1360px] mx-auto">
+            
+            <!-- Section 1: Header Banner -->
+            <section class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="font-headline-lg text-2xl md:text-3xl font-bold text-white tracking-tight">Good morning, Administrator.</h2>
+                    <p class="text-sm text-[#a4a1b5] mt-1">Autonomous identity governance active. All zero-trust perimeter nodes verified.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="window.location.href='/static/access-requests.html'" class="px-4 py-2 bg-[#232034] hover:bg-[#2e2a44] border border-[#343047] text-white rounded-lg text-xs font-semibold transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px] text-[#6D54E8]">fact_check</span> Review Pending (7)
+                    </button>
+                    <button onclick="window.location.href='/static/security.html'" class="px-4 py-2 bg-[#6D54E8]/20 hover:bg-[#6D54E8]/30 border border-[#6D54E8]/40 text-[#a594fd] rounded-lg text-xs font-semibold transition-all flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">shield</span> Security Radar
+                    </button>
+                </div>
+            </section>
+
+            <!-- 12-Column Grid Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Main Content Column (Col 1-8) -->
+                <div class="lg:col-span-8 flex flex-col gap-6">
+                    
+                    <!-- Section 2: Organization Status Panel -->
+                    <div class="card-dark rounded-xl p-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-[#29263a]/70">
+                            <div class="flex items-center gap-3">
+                                <div class="w-3 h-3 bg-[#10b981] rounded-full shadow-lg shadow-[#10b981]/50 animate-pulse"></div>
+                                <h3 class="font-headline-md text-lg font-semibold text-white">System Operating In Optimal State</h3>
+                            </div>
+                            <div class="flex gap-4 text-xs font-medium text-[#a4a1b5]">
+                                <span class="bg-[#1e1b2e] px-2.5 py-1 rounded border border-[#2a273f]">5 Identities</span>
+                                <span class="bg-[#1e1b2e] px-2.5 py-1 rounded border border-[#2a273f]">126 Permissions</span>
+                                <span class="bg-[#1e1b2e] px-2.5 py-1 rounded border border-[#2a273f]">100% Policy Sync</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+                            <div class="p-3.5 box-dark rounded-lg flex flex-col gap-2">
+                                <div class="flex items-center justify-between text-white">
+                                    <span class="text-xs font-semibold text-[#a4a1b5]">DID Identity</span>
+                                    <span class="material-symbols-outlined text-[16px] text-[#10b981]">verified</span>
+                                </div>
+                                <div class="text-base font-bold text-white">100% Valid</div>
+                                <div class="h-1.5 w-full bg-[#13111e] rounded-full overflow-hidden">
+                                    <div class="h-full bg-[#10b981] w-full rounded-full"></div>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 box-dark rounded-lg flex flex-col gap-2">
+                                <div class="flex items-center justify-between text-white">
+                                    <span class="text-xs font-semibold text-[#a4a1b5]">Access Graph</span>
+                                    <span class="material-symbols-outlined text-[16px] text-[#10b981]">hub</span>
+                                </div>
+                                <div class="text-base font-bold text-white">Continuous</div>
+                                <div class="h-1.5 w-full bg-[#13111e] rounded-full overflow-hidden">
+                                    <div class="h-full bg-[#6D54E8] w-full rounded-full"></div>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 box-dark rounded-lg flex flex-col gap-2">
+                                <div class="flex items-center justify-between text-white">
+                                    <span class="text-xs font-semibold text-[#a4a1b5]">AI Anomaly</span>
+                                    <span class="material-symbols-outlined text-[16px] text-[#0EA5A0]">psychology</span>
+                                </div>
+                                <div class="text-base font-bold text-white">Active (RF+IF)</div>
+                                <div class="h-1.5 w-full bg-[#13111e] rounded-full overflow-hidden">
+                                    <div class="h-full bg-[#0EA5A0] w-full rounded-full"></div>
+                                </div>
+                            </div>
+
+                            <div class="p-3.5 box-dark rounded-lg flex flex-col gap-2">
+                                <div class="flex items-center justify-between text-white">
+                                    <span class="text-xs font-semibold text-[#a4a1b5]">Immutable Log</span>
+                                    <span class="material-symbols-outlined text-[16px] text-[#10b981]">lock</span>
+                                </div>
+                                <div class="text-base font-bold text-white">Block #5</div>
+                                <div class="h-1.5 w-full bg-[#13111e] rounded-full overflow-hidden">
+                                    <div class="h-full bg-[#10b981] w-full rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Needs Your Attention (High Risk Alert Card) -->
+                    <div class="card-dark rounded-xl p-6 border-l-4 border-l-[#ef4444] relative overflow-hidden">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div>
+                                <div class="flex items-center gap-3 mb-2">
+                                    <span class="px-2.5 py-1 bg-[#ef4444]/15 border border-[#ef4444]/30 text-[#f87171] text-xs font-bold rounded-md flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-xs">crisis_alert</span> High Risk Score: 99.6/100
+                                    </span>
+                                    <span class="text-xs text-[#a4a1b5] font-medium">Production Database Access</span>
+                                </div>
+                                <h3 class="text-lg font-bold text-white mb-1">Suspicious Credential Event Flagged</h3>
+                                <p class="text-xs text-[#a4a1b5]">Target DID: <span class="font-mono text-white">did:chainid:7fc7d2cf...</span> · Machine Learning Decision: <span class="text-[#f87171] font-bold">BLOCK</span></p>
+                                
+                                <div class="flex flex-wrap gap-3 mt-4 text-xs text-[#a4a1b5]">
+                                    <div class="flex items-center gap-1.5 bg-[#1e1b2e] px-2.5 py-1 rounded border border-[#2a273f]">
+                                        <span class="material-symbols-outlined text-[14px] text-[#f59e0b]">warning</span> Unusual 02:30 AM Access
+                                    </div>
+                                    <div class="flex items-center gap-1.5 bg-[#1e1b2e] px-2.5 py-1 rounded border border-[#2a273f]">
+                                        <span class="material-symbols-outlined text-[14px] text-[#ef4444]">devices</span> Unregistered Device
+                                    </div>
+                                    <div class="flex items-center gap-1.5 bg-[#1e1b2e] px-2.5 py-1 rounded border border-[#2a273f]">
+                                        <span class="material-symbols-outlined text-[14px] text-[#ef4444]">speed</span> Rapid Request Frequency
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="bg-[#ef4444] hover:bg-[#dc2626] text-white px-5 py-2.5 rounded-lg text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-[#ef4444]/25 whitespace-nowrap cursor-pointer" onclick="document.getElementById('review-panel').classList.add('open'); document.getElementById('overlay').classList.add('open');">
+                                Review Incident
+                                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Today's Access Snapshot -->
+                    <div class="card-dark rounded-xl p-6">
+                        <h4 class="text-xs text-[#a4a1b5] uppercase tracking-wider font-semibold mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[16px] text-[#6D54E8]">analytics</span>
+                            Access Authorization Metrics
+                        </h4>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                            <div class="box-dark rounded-lg p-4">
+                                <div class="text-2xl font-bold text-white">128</div>
+                                <div class="text-xs text-[#a4a1b5] mt-1">Total Requests</div>
+                            </div>
+                            <div class="box-dark rounded-lg p-4 border-l-2 border-l-[#10b981]">
+                                <div class="text-2xl font-bold text-[#10b981]">118</div>
+                                <div class="text-xs text-[#a4a1b5] mt-1">Granted (AI Cleared)</div>
+                            </div>
+                            <div class="box-dark rounded-lg p-4 border-l-2 border-l-[#f59e0b]">
+                                <div class="text-2xl font-bold text-[#f59e0b]">7</div>
+                                <div class="text-xs text-[#a4a1b5] mt-1">Admin Review</div>
+                            </div>
+                            <div class="box-dark rounded-lg p-4 border-l-2 border-l-[#ef4444]">
+                                <div class="text-2xl font-bold text-[#ef4444]">3</div>
+                                <div class="text-xs text-[#a4a1b5] mt-1">Auto-Blocked</div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- End Col 1-8 -->
+
+                <!-- Side Column (Col 9-12) -->
+                <div class="lg:col-span-4 flex flex-col gap-6">
+                    
+                    <!-- Section 7: Quick Actions -->
+                    <div class="card-dark rounded-xl p-6">
+                        <h4 class="text-xs text-[#a4a1b5] uppercase tracking-wider font-semibold mb-4">Quick Command Center</h4>
+                        <div class="flex flex-col gap-2">
+                            <button onclick="window.location.href='/static/people.html'" class="w-full text-left p-3 flex items-center gap-3 rounded-lg bg-[#1e1b2e] hover:bg-[#252237] border border-[#2a273f] text-xs font-semibold text-white transition-all cursor-pointer">
+                                <span class="material-symbols-outlined text-[18px] text-[#6D54E8]">person_add</span>
+                                <span>Issue New DID Credential</span>
+                            </button>
+                            <button onclick="window.location.href='/static/access-requests.html'" class="w-full text-left p-3 flex items-center gap-3 rounded-lg bg-[#1e1b2e] hover:bg-[#252237] border border-[#2a273f] text-xs font-semibold text-white transition-all cursor-pointer">
+                                <span class="material-symbols-outlined text-[18px] text-[#0EA5A0]">rule</span>
+                                <span>Execute Access Approvals</span>
+                            </button>
+                            <button onclick="window.location.href='/static/security.html'" class="w-full text-left p-3 flex items-center gap-3 rounded-lg bg-[#1e1b2e] hover:bg-[#252237] border border-[#2a273f] text-xs font-semibold text-white transition-all cursor-pointer">
+                                <span class="material-symbols-outlined text-[18px] text-[#f59e0b]">shield_with_heart</span>
+                                <span>Simulate Security Attack Event</span>
+                            </button>
+                            <button onclick="window.location.href='/static/temp-access.html'" class="w-full text-left p-3 flex items-center gap-3 rounded-lg bg-[#1e1b2e] hover:bg-[#252237] border border-[#2a273f] text-xs font-semibold text-white transition-all cursor-pointer">
+                                <span class="material-symbols-outlined text-[18px] text-[#a4a1b5]">timer</span>
+                                <span>Inspect Expiring JIT Grants</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Section 6: Expiring Soon (JIT Grants) -->
+                    <div class="card-dark rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-xs text-[#a4a1b5] uppercase tracking-wider font-semibold">Expiring JIT Grants</h4>
+                            <span class="text-[11px] text-[#f59e0b] font-mono">1 Expiring</span>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <div class="p-3 box-dark rounded-lg flex justify-between items-center">
+                                <div>
+                                    <div class="text-xs font-bold text-white">Rahul Sharma</div>
+                                    <div class="text-[11px] text-[#a4a1b5]">AWS Production Console</div>
+                                </div>
+                                <span class="px-2 py-0.5 bg-[#f59e0b]/15 border border-[#f59e0b]/30 text-[#f59e0b] text-xs font-bold rounded">24m left</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Real-Time Blockchain Ledger Chain Viewer & Tamper Audit -->
+                    <div class="card-dark rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h4 class="text-xs text-[#a4a1b5] uppercase tracking-wider font-semibold flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[16px] text-[#0EA5A0]">link</span>
+                                    Blockchain Ledger Chain Viewer
+                                </h4>
+                                <p class="text-[11px] text-[#777389] mt-0.5">SHA-256 Hash-Chained Blocks & Consensus</p>
+                            </div>
+                            <button onclick="runLedgerAudit()" id="btn-audit-ledger" class="px-2.5 py-1 bg-[#0EA5A0]/20 hover:bg-[#0EA5A0]/30 border border-[#0EA5A0]/40 text-[#5eead4] rounded text-[11px] font-semibold transition-all flex items-center gap-1 cursor-pointer">
+                                <span class="material-symbols-outlined text-[14px]">verified</span> Audit Chain
+                            </button>
+                        </div>
+
+                        <!-- Tamper Status Badge -->
+                        <div id="ledger-status-banner" class="mb-3 p-2.5 rounded-lg bg-[#10b981]/10 border border-[#10b981]/30 flex items-center justify-between text-xs">
+                            <span class="flex items-center gap-1.5 text-[#34d399] font-medium">
+                                <span class="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+                                Cryptographic Consensus Intact
+                            </span>
+                            <span class="font-mono text-[10px] text-[#a4a1b5]">Zero-Trust Active</span>
+                        </div>
+
+                        <!-- Dynamic Hash-Chained Blocks List -->
+                        <div id="blockchain-feed-list" class="relative border-l border-[#29263a] ml-2 pl-4 flex flex-col gap-4 text-xs max-h-[290px] overflow-y-auto">
+                            <div class="text-[#777389] text-[11px]">Loading on-chain blocks...</div>
+                        </div>
+                    </div>
+
+                </div> <!-- End Col 9-12 -->
+            </div> <!-- End Grid -->
+        </div>
+    </div>
+</main>
+
+<!-- Overlay & Detail Panel -->
+<div class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 transition-opacity" id="overlay" onclick="document.getElementById('review-panel').classList.remove('open'); this.classList.remove('open');"></div>
+
+<aside class="fixed right-0 top-0 bottom-0 w-full max-w-md shadow-2xl z-50 flex flex-col text-white" id="review-panel">
+    <div class="p-6 border-b border-[#29263a] flex justify-between items-center bg-[#181626]">
+        <div>
+            <h3 class="text-lg font-bold text-white">Review Security Incident</h3>
+            <p class="text-xs text-[#a4a1b5] mt-0.5">Automated AI Risk Classification</p>
+        </div>
+        <button class="text-[#a4a1b5] hover:text-white transition-colors p-1.5 rounded-lg hover:bg-white/5" onclick="document.getElementById('review-panel').classList.remove('open'); document.getElementById('overlay').classList.remove('open');">
+            <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-6 flex flex-col gap-5 bg-[#151322]">
+        <div class="p-4 rounded-lg bg-[#ef4444]/10 border border-[#ef4444]/30">
+            <div class="text-xs font-bold text-[#f87171] uppercase tracking-wider mb-1">Threat Assessment</div>
+            <div class="text-2xl font-bold text-white">99.6 <span class="text-sm font-normal text-[#a4a1b5]">/ 100 Risk</span></div>
+            <div class="text-xs text-[#a4a1b5] mt-1">Autonomous Decision: <span class="text-[#f87171] font-bold">BLOCK</span></div>
+        </div>
+
+        <div>
+            <h4 class="text-sm font-semibold text-white">Subject Information</h4>
+            <div class="mt-2 p-3.5 box-dark rounded-lg flex flex-col gap-2 text-xs">
+                <div class="flex justify-between"><span class="text-[#a4a1b5]">Employee:</span> <span class="text-white font-medium">System Administrator (Simulated)</span></div>
+                <div class="flex justify-between"><span class="text-[#a4a1b5]">Target Resource:</span> <span class="text-white font-mono">ProductionDatabase</span></div>
+                <div class="flex justify-between"><span class="text-[#a4a1b5]">Timestamp:</span> <span class="text-white">02:30 AM (Off-hours)</span></div>
+            </div>
+        </div>
+
+        <div>
+            <h4 class="text-sm font-semibold text-white mb-2">Machine Learning Explanations</h4>
+            <div class="box-dark p-4 rounded-lg flex flex-col gap-3 text-xs">
+                <div class="flex items-start gap-2 text-[#a4a1b5]">
+                    <span class="material-symbols-outlined text-[16px] text-[#ef4444] shrink-0 mt-0.5">warning</span>
+                    <span>Access requested outside normal business hours (Off-peak).</span>
+                </div>
+                <div class="flex items-start gap-2 text-[#a4a1b5]">
+                    <span class="material-symbols-outlined text-[16px] text-[#f59e0b] shrink-0 mt-0.5">devices</span>
+                    <span>Unknown client fingerprint and device mismatch.</span>
+                </div>
+                <div class="flex items-start gap-2 text-[#a4a1b5]">
+                    <span class="material-symbols-outlined text-[16px] text-[#ef4444] shrink-0 mt-0.5">speed</span>
+                    <span>Frequency exceeds standard baseline thresholds.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-5 border-t border-[#29263a] flex flex-col gap-2 bg-[#181626]">
+        <div class="flex gap-2">
+            <button id="btn-deny-request" class="flex-1 bg-[#232034] hover:bg-[#2d2942] border border-[#343047] text-white py-2.5 rounded-lg text-xs font-bold transition-all cursor-pointer">
+                Confirm Block
+            </button>
+            <button id="btn-approve-request" class="flex-1 bg-[#6D54E8] hover:bg-[#7c64f5] text-white py-2.5 rounded-lg text-xs font-bold transition-all shadow-md shadow-[#6D54E8]/25 cursor-pointer">
+                Standard Approve
+            </button>
+        </div>
+        <button id="btn-break-glass-trigger" onclick="openBreakGlassPrompt()" class="w-full bg-gradient-to-r from-[#dc2626] to-[#b91c1c] hover:from-[#ef4444] hover:to-[#dc2626] text-white py-2.5 rounded-lg text-xs font-bold transition-all shadow-lg shadow-[#ef4444]/25 flex items-center justify-center gap-2 cursor-pointer border border-[#f87171]/40">
+            <span class="material-symbols-outlined text-[16px]">emergency</span>
+            <span>🚨 Invoke Break-Glass Emergency Override</span>
+        </button>
+    </div>
+</aside>
+
+<script src="/static/api.js"></script>
+<script>
+    Auth.requireAuth();
+
+    async function loadDashboardStats() {
+        try {
+            const user = Auth.getUser();
+            if (user) {
+                const headerTitle = document.querySelector("section h2");
+                if (headerTitle) {
+                    headerTitle.textContent = `Good morning, ${user.firstName || 'Administrator'}.`;
+                }
+            }
+
+            // Fetch live access requests from Java backend
+            const res = await apiFetch("/api/access-requests");
+            if (res && res.data) {
+                const requests = res.data;
+                const pending = requests.filter(r => r.status === 'PENDING');
+                const approved = requests.filter(r => r.status === 'APPROVED');
+                const rejected = requests.filter(r => r.status === 'REJECTED' || r.status === 'BLOCKED');
+
+                const grantedEl = document.querySelector(".border-l-\\[\\#10b981\\] .text-2xl");
+                if (grantedEl && approved.length) grantedEl.textContent = approved.length;
+                
+                const reviewEl = document.querySelector(".border-l-\\[\\#f59e0b\\] .text-2xl");
+                if (reviewEl && pending.length) reviewEl.textContent = pending.length;
+
+                const blockedEl = document.querySelector(".border-l-\\[\\#ef4444\\] .text-2xl");
+                if (blockedEl && rejected.length) blockedEl.textContent = rejected.length;
+            }
+        } catch (err) {
+            console.warn("Could not load dynamic request stats:", err);
+        }
+    }
+
+    async function loadBlockchainFeed() {
+        try {
+            const feedContainer = document.getElementById("blockchain-feed-list");
+            if (!feedContainer) return;
+
+            const res = await apiFetch("/api/blockchain/records");
+            if (res && res.data && res.data.length > 0) {
+                // Show latest records first
+                const records = [...res.data].reverse();
+                feedContainer.innerHTML = records.map((record, index) => {
+                    const isBg = record.isBreakGlass;
+                    const dotColor = isBg ? "bg-[#ef4444]" : (record.eventType.includes("APPROVED") ? "bg-[#10b981]" : "bg-[#6D54E8]");
+                    const badge = isBg 
+                        ? `<span class="ml-1.5 px-1.5 py-0.5 rounded bg-[#ef4444]/20 border border-[#ef4444]/40 text-[#f87171] text-[10px] font-bold">🚨 BREAK-GLASS</span>`
+                        : `<span class="ml-1.5 px-1.5 py-0.5 rounded bg-[#10b981]/20 border border-[#10b981]/40 text-[#34d399] text-[10px] font-bold">CHAINED</span>`;
+                    
+                    const shortHash = record.transactionHash ? record.transactionHash.substring(0, 10) + "..." + record.transactionHash.substring(record.transactionHash.length - 6) : "Pending";
+                    const shortPrev = record.previousHash ? record.previousHash.substring(0, 8) + "..." : "Genesis";
+
+                    return `
+                        <div class="relative group">
+                            <div class="absolute -left-[21px] top-1 w-2.5 h-2.5 ${dotColor} rounded-full ring-4 ring-[#0d0b14]"></div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-white font-medium flex items-center">
+                                    Block #${record.blockNumber} · ${record.eventType}
+                                    ${badge}
+                                </span>
+                            </div>
+                            <div class="text-[11px] text-[#777389] mt-0.5 flex flex-col gap-0.5 font-mono">
+                                <span>Tx: <span class="text-[#a4a1b5]">${shortHash}</span></span>
+                                <span class="text-[10px]">PrevHash: <span class="text-[#6D54E8]">${shortPrev}</span></span>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            } else {
+                feedContainer.innerHTML = `<div class="text-[#777389] text-[11px]">No on-chain blocks minted yet.</div>`;
+            }
+        } catch (err) {
+            console.warn("Could not load blockchain feed:", err);
+        }
+    }
+
+    async function runLedgerAudit() {
+        const btn = document.getElementById("btn-audit-ledger");
+        const banner = document.getElementById("ledger-status-banner");
+        if (btn) btn.innerHTML = `<span class="animate-spin inline-block">⟳</span> Auditing...`;
+
+        try {
+            const res = await apiFetch("/api/blockchain/verify-ledger");
+            if (res && res.data && res.data.ledgerIntact) {
+                showToast("Cryptographic Ledger Integrity: 100% Valid & Mathematically Verified!", "success");
+                if (banner) {
+                    banner.className = "mb-3 p-2.5 rounded-lg bg-[#10b981]/10 border border-[#10b981]/30 flex items-center justify-between text-xs";
+                    banner.innerHTML = `
+                        <span class="flex items-center gap-1.5 text-[#34d399] font-medium">
+                            <span class="w-2 h-2 rounded-full bg-[#10b981] animate-pulse"></span>
+                            Cryptographic Consensus Intact
+                        </span>
+                        <span class="font-mono text-[10px] text-[#a4a1b5]">All Hash-Chains Verified</span>
+                    `;
+                }
+            } else {
+                showToast("CRITICAL TAMPER ALERT: Hash chain broken!", "error");
+                if (banner) {
+                    banner.className = "mb-3 p-2.5 rounded-lg bg-[#ef4444]/15 border border-[#ef4444]/40 flex items-center justify-between text-xs";
+                    banner.innerHTML = `
+                        <span class="flex items-center gap-1.5 text-[#f87171] font-bold">
+                            <span class="w-2 h-2 rounded-full bg-[#ef4444] animate-ping"></span>
+                            TAMPER DETECTED: Hash Mismatch
+                        </span>
+                        <span class="font-mono text-[10px] text-[#ef4444]">Consensus Broken</span>
+                    `;
+                }
+            }
+        } catch (err) {
+            showToast("Ledger audit error: " + err.message, "error");
+        } finally {
+            if (btn) btn.innerHTML = `<span class="material-symbols-outlined text-[14px]">verified</span> Audit Chain`;
+        }
+    }
+
+    async function openBreakGlassPrompt() {
+        const reason = prompt("🚨 EMERGENCY BREAK-GLASS PROTOCOL\n\nState the mandatory operational justification for this emergency bypass (minimum 10 characters):", "Urgent overnight maintenance required, secondary co-approver unreachable.");
+        if (!reason || reason.trim().length < 10) {
+            alert("Break-Glass aborted: Justification must be at least 10 characters detailing the operational emergency.");
+            return;
+        }
+
+        try {
+            const res = await apiFetch("/api/access-requests/2/break-glass", {
+                method: "POST",
+                body: JSON.stringify({ emergencyReason: reason })
+            });
+
+            showToast("🚨 Break-Glass Emergency Override Executed & Anchored On-Chain!", "success");
+            document.getElementById('review-panel').classList.remove('open');
+            document.getElementById('overlay').classList.remove('open');
+            loadBlockchainFeed();
+            loadDashboardStats();
+        } catch (err) {
+            showToast("Break-Glass Error: " + err.message, "error");
+        }
+    }
+
+    document.getElementById("btn-deny-request")?.addEventListener("click", async () => {
+        showToast("Access attempt permanently blocked and logged on ledger", "error");
+        document.getElementById('review-panel').classList.remove('open');
+        document.getElementById('overlay').classList.remove('open');
+    });
+
+    document.getElementById("btn-approve-request")?.addEventListener("click", async () => {
+        try {
+            await apiFetch("/api/access-requests/2/approve", {
+                method: "POST",
+                body: JSON.stringify({ reason: "Standard approval attempt by admin" })
+            });
+            showToast("Access approved normally", "success");
+        } catch (err) {
+            // Guardrail caught!
+            alert("🛡️ " + err.message);
+        }
+    });
+
+    loadDashboardStats();
+    loadBlockchainFeed();
+</script>
+</body>
+</html>

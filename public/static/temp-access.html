@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID - Temporary JIT Access Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#6D54E8",
+                    "primary-hover": "#7C64F5",
+                    "secondary": "#0EA5A0",
+                    "background": "#0d0b14",
+                    "surface": "#151320",
+                    "surface-card": "#181626",
+                    "surface-container": "#1e1b2e",
+                    "surface-container-low": "#151320",
+                    "surface-container-lowest": "#100e1a",
+                    "on-surface": "#f1f5f9",
+                    "on-surface-variant": "#a4a1b5",
+                    "outline": "#343047",
+                    "outline-variant": "#232034",
+                    "error": "#ef4444",
+                    "warning": "#f59e0b",
+                    "success": "#10b981"
+                },
+                fontFamily: {
+                    "body-md": ["Inter", "sans-serif"],
+                    "headline-lg": ["Geist", "sans-serif"],
+                    "headline-md": ["Geist", "sans-serif"],
+                    "label-sm": ["Geist", "sans-serif"],
+                    "display-hero": ["Geist", "sans-serif"]
+                }
+            }
+        }
+    };
+</script>
+<style>
+    body {
+        background-color: #0d0b14;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+    }
+    .card-dark {
+        background: #181626;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .card-dark:hover {
+        border-color: rgba(109, 84, 232, 0.35);
+    }
+    .box-dark {
+        background: #1e1b2e;
+        border: 1px solid #2a273f;
+    }
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0d0b14;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #2a273f;
+        border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #6D54E8;
+    }
+</style>
+</head>
+<body class="bg-[#0d0b14] text-[#f1f5f9] antialiased flex min-h-screen overflow-hidden">
+
+<!-- SideNav Shell -->
+<nav class="hidden lg:flex flex-col h-screen sticky top-0 left-0 overflow-y-auto bg-[#13111e] border-r border-[#29263a] w-64 flex-shrink-0 select-none z-40">
+    <div class="px-6 py-6 border-b border-[#29263a]/60">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#6D54E8] to-[#0EA5A0] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#6D54E8]/30">
+                AI
+            </div>
+            <h1 class="font-display-hero text-xl font-bold tracking-tight text-white">AI-ChainID</h1>
+        </div>
+        <p class="text-xs text-[#a4a1b5] mt-1 font-medium tracking-wide">Enterprise Zero-Trust</p>
+    </div>
+
+    <div class="px-5 pt-5 pb-3">
+        <button onclick="window.location.href='/static/access-requests.html'" class="w-full bg-[#6D54E8] hover:bg-[#7c64f5] text-white py-2.5 px-4 rounded-lg font-label-sm text-xs font-semibold tracking-wide transition-all shadow-md shadow-[#6D54E8]/25 flex items-center justify-center gap-2 cursor-pointer">
+            <span class="material-symbols-outlined text-sm font-bold">add</span> New Access Request
+        </button>
+    </div>
+
+    <ul class="flex-1 flex flex-col gap-1.5 px-3 mt-3">
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/dashboard.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                <span>Overview</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/people.html">
+                <span class="material-symbols-outlined text-[20px]">badge</span>
+                <span>People & DID</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/access-requests.html">
+                <span class="material-symbols-outlined text-[20px]">hub</span>
+                <span>Access Requests</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/security.html">
+                <span class="material-symbols-outlined text-[20px]">security</span>
+                <span>AI Security</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-white font-semibold rounded-lg bg-[#221e38] border border-[#6D54E8]/30 text-sm transition-all shadow-sm" href="/static/temp-access.html">
+                <span class="material-symbols-outlined text-[#6D54E8] text-[20px]" style="font-variation-settings: 'FILL' 1;">timer</span>
+                <span>Temp Access</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/index.html">
+                <span class="material-symbols-outlined text-[20px]">account_tree</span>
+                <span>Workflow Studio</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="px-4 py-4 border-t border-[#29263a]/80 mt-auto">
+        <ul class="flex flex-col gap-1">
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-all cursor-pointer text-xs font-semibold" onclick="Auth.clear(); window.location.href='/static/login.html';">
+                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                    <span>Sign Out</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#777389] hover:text-[#a4a1b5] hover:bg-white/5 rounded-lg transition-all text-xs" href="/swagger-ui/index.html" target="_blank">
+                    <span class="material-symbols-outlined text-[18px]">api</span>
+                    <span>OpenAPI Swagger</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Main Canvas -->
+<main class="flex-1 w-full flex flex-col h-screen overflow-y-auto bg-[#0d0b14]">
+    <header class="w-full px-8 py-7 border-b border-[#29263a] bg-[#13111e]/90 backdrop-blur-md">
+        <div class="max-w-[1360px] mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+            <div>
+                <div class="flex items-center gap-2 text-xs text-[#a4a1b5] mb-1">
+                    <span>Zero-Trust Policy</span>
+                    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                    <span class="text-[#6D54E8] font-medium">Just-in-Time (JIT) Leases</span>
+                </div>
+                <h1 class="text-2xl font-bold text-white tracking-tight">Temporary Just-In-Time Access</h1>
+                <p class="text-xs text-[#a4a1b5] mt-1">Time-bounded ephemeral access grants protected by smart contracts and cryptographic expiry.</p>
+            </div>
+            <button onclick="showToast('Initiate temporary access grant in Workflow Studio', 'info'); window.location.href='/static/index.html#step-access-req';" class="bg-[#6D54E8] hover:bg-[#7c64f5] text-white text-xs font-semibold py-2.5 px-5 rounded-lg transition-all shadow-md shadow-[#6D54E8]/25 flex items-center gap-2 cursor-pointer">
+                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                Grant Ephemeral Access
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-1 w-full px-8 py-8">
+        <div class="max-w-[1360px] mx-auto space-y-8">
+            
+            <!-- Active Access Section -->
+            <section>
+                <div class="flex items-center justify-between mb-5">
+                    <h2 class="text-base font-bold text-white flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[#10b981] text-[18px]">schedule</span>
+                        Active Ephemeral Sessions
+                    </h2>
+                    <span class="text-xs font-semibold text-[#10b981] px-3 py-1 bg-[#10b981]/15 rounded-full border border-[#10b981]/30">3 Live Leases</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Card 1 (Expiring Soon) -->
+                    <div class="card-dark rounded-xl p-5 flex flex-col justify-between border-l-4 border-l-[#f59e0b]">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-[#2a2448] border border-[#6D54E8]/40 flex items-center justify-center text-white font-bold text-xs">RS</div>
+                                    <div>
+                                        <h3 class="text-xs font-bold text-white">Rahul Sharma</h3>
+                                        <p class="text-[11px] text-[#a4a1b5]">AWS Production Console</p>
+                                    </div>
+                                </div>
+                                <span class="px-2 py-0.5 rounded bg-[#f59e0b]/15 text-[#f59e0b] text-[10px] font-bold border border-[#f59e0b]/30">JIT Lease</span>
+                            </div>
+
+                            <div class="flex items-center gap-2 text-xs text-[#a4a1b5] mb-5">
+                                <span class="material-symbols-outlined text-[14px]">timer</span>
+                                <span>Granted: 10:00 AM → Auto Revoke: 12:00 PM</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center text-xs mb-1.5">
+                                <span class="text-[#f59e0b] font-bold flex items-center gap-1 text-[11px]">
+                                    <span class="w-2 h-2 rounded-full bg-[#f59e0b] animate-ping"></span>
+                                    24m remaining
+                                </span>
+                                <span class="text-[10px] text-[#777389]">80% elapsed</span>
+                            </div>
+                            <div class="w-full bg-[#1e1b2e] rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-[#f59e0b] h-full rounded-full" style="width: 80%"></div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-[#29263a] flex justify-end gap-2">
+                                <button onclick="showToast('Revoked session for Rahul Sharma', 'error')" class="text-xs text-[#f87171] hover:underline font-semibold">Revoke Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="card-dark rounded-xl p-5 flex flex-col justify-between border-l-4 border-l-[#10b981]">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-[#1f2d3d] border border-[#0EA5A0]/40 flex items-center justify-center text-[#0EA5A0] font-bold text-xs">SJ</div>
+                                    <div>
+                                        <h3 class="text-xs font-bold text-white">Sarah Jenkins</h3>
+                                        <p class="text-[11px] text-[#a4a1b5]">Customer PII Database (Read)</p>
+                                    </div>
+                                </div>
+                                <span class="px-2 py-0.5 rounded bg-[#10b981]/15 text-[#10b981] text-[10px] font-bold border border-[#10b981]/30">Active</span>
+                            </div>
+
+                            <div class="flex items-center gap-2 text-xs text-[#a4a1b5] mb-5">
+                                <span class="material-symbols-outlined text-[14px]">timer</span>
+                                <span>Granted: 11:30 AM → Auto Revoke: 03:30 PM</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center text-xs mb-1.5">
+                                <span class="text-[#10b981] font-bold text-[11px]">3h 15m remaining</span>
+                                <span class="text-[10px] text-[#777389]">25% elapsed</span>
+                            </div>
+                            <div class="w-full bg-[#1e1b2e] rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-[#10b981] h-full rounded-full" style="width: 25%"></div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-[#29263a] flex justify-end gap-2">
+                                <button onclick="showToast('Revoked session for Sarah Jenkins', 'error')" class="text-xs text-[#f87171] hover:underline font-semibold">Revoke Now</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="card-dark rounded-xl p-5 flex flex-col justify-between border-l-4 border-l-[#10b981]">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-lg bg-[#2a2448] border border-[#6D54E8]/40 flex items-center justify-center text-white font-bold text-xs">ER</div>
+                                    <div>
+                                        <h3 class="text-xs font-bold text-white">Elena Rostova</h3>
+                                        <p class="text-[11px] text-[#a4a1b5]">Product Analytics Vault</p>
+                                    </div>
+                                </div>
+                                <span class="px-2 py-0.5 rounded bg-[#10b981]/15 text-[#10b981] text-[10px] font-bold border border-[#10b981]/30">Active</span>
+                            </div>
+
+                            <div class="flex items-center gap-2 text-xs text-[#a4a1b5] mb-5">
+                                <span class="material-symbols-outlined text-[14px]">timer</span>
+                                <span>Granted: 08:00 AM → Auto Revoke: 05:00 PM</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between items-center text-xs mb-1.5">
+                                <span class="text-[#10b981] font-bold text-[11px]">5h 45m remaining</span>
+                                <span class="text-[10px] text-[#777389]">40% elapsed</span>
+                            </div>
+                            <div class="w-full bg-[#1e1b2e] rounded-full h-1.5 overflow-hidden">
+                                <div class="bg-[#10b981] h-full rounded-full" style="width: 40%"></div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-[#29263a] flex justify-end gap-2">
+                                <button onclick="showToast('Revoked session for Elena Rostova', 'error')" class="text-xs text-[#f87171] hover:underline font-semibold">Revoke Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Policy Rules Box -->
+            <section class="card-dark rounded-xl p-6">
+                <h3 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[#6D54E8] text-[18px]">verified_user</span>
+                    Automatic Smart Contract Revocation Guarantees
+                </h3>
+                <p class="text-xs text-[#a4a1b5] leading-relaxed mb-4">
+                    Every temporary lease emits a time-locked block entry on the decentralized ledger. Upon expiration timestamp reached, cryptographic access tokens expire immediately without relying on manual intervention.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                    <div class="box-dark p-3 rounded-lg">
+                        <span class="text-white font-semibold block mb-1">Max Lease Duration</span>
+                        <span class="text-[#a4a1b5]">8 hours maximum policy ceiling</span>
+                    </div>
+                    <div class="box-dark p-3 rounded-lg">
+                        <span class="text-white font-semibold block mb-1">Re-authentication Check</span>
+                        <span class="text-[#a4a1b5]">Continuous ML isolation score &lt; 50</span>
+                    </div>
+                    <div class="box-dark p-3 rounded-lg">
+                        <span class="text-white font-semibold block mb-1">Offboarding Revocation</span>
+                        <span class="text-[#a4a1b5]">Immediate nullification across all nodes</span>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</main>
+
+<script src="/static/api.js"></script>
+<script>
+    Auth.requireAuth();
+</script>
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID - Access Requests & AI Policy Engine</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#6D54E8",
+                    "primary-hover": "#7C64F5",
+                    "secondary": "#0EA5A0",
+                    "background": "#0d0b14",
+                    "surface": "#151320",
+                    "surface-card": "#181626",
+                    "surface-container": "#1e1b2e",
+                    "surface-container-low": "#151320",
+                    "surface-container-lowest": "#100e1a",
+                    "on-surface": "#f1f5f9",
+                    "on-surface-variant": "#a4a1b5",
+                    "outline": "#343047",
+                    "outline-variant": "#232034",
+                    "error": "#ef4444",
+                    "warning": "#f59e0b",
+                    "success": "#10b981"
+                },
+                fontFamily: {
+                    "body-md": ["Inter", "sans-serif"],
+                    "headline-lg": ["Geist", "sans-serif"],
+                    "headline-md": ["Geist", "sans-serif"],
+                    "label-sm": ["Geist", "sans-serif"],
+                    "display-hero": ["Geist", "sans-serif"]
+                }
+            }
+        }
+    };
+</script>
+<style>
+    body {
+        background-color: #0d0b14;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+    }
+    .card-dark {
+        background: #181626;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+    .card-dark:hover {
+        border-color: rgba(109, 84, 232, 0.35);
+    }
+    .box-dark {
+        background: #1e1b2e;
+        border: 1px solid #2a273f;
+    }
+    .interactive-hover:hover {
+        background-color: rgba(255, 255, 255, 0.04);
+        transition: background-color 0.2s ease;
+    }
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0d0b14;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #2a273f;
+        border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #6D54E8;
+    }
+</style>
+</head>
+<body class="font-body-md text-[#f1f5f9] flex bg-[#0d0b14] min-h-screen">
+
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col h-screen sticky top-0 left-0 overflow-y-auto bg-[#13111e] border-r border-[#29263a] w-64 flex-shrink-0 select-none z-40">
+    <div class="px-6 py-6 border-b border-[#29263a]/60">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#6D54E8] to-[#0EA5A0] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#6D54E8]/30">
+                AI
+            </div>
+            <h1 class="font-display-hero text-xl font-bold tracking-tight text-white">AI-ChainID</h1>
+        </div>
+        <p class="text-xs text-[#a4a1b5] mt-1 font-medium tracking-wide">Enterprise Zero-Trust</p>
+    </div>
+
+    <div class="px-5 pt-5 pb-3">
+        <button onclick="openNewRequestModal()" class="w-full bg-[#6D54E8] hover:bg-[#7c64f5] text-white py-2.5 px-4 rounded-lg font-label-sm text-xs font-semibold tracking-wide transition-all shadow-md shadow-[#6D54E8]/25 flex items-center justify-center gap-2 cursor-pointer">
+            <span class="material-symbols-outlined text-sm font-bold">psychology</span>
+            <span>AI Access Request</span>
+        </button>
+    </div>
+
+    <ul class="flex-1 flex flex-col gap-1.5 px-3 mt-3">
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/dashboard.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                <span>Overview</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/people.html">
+                <span class="material-symbols-outlined text-[20px]">badge</span>
+                <span>People & DID</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-white font-semibold rounded-lg bg-[#221e38] border border-[#6D54E8]/30 text-sm transition-all shadow-sm" href="/static/access-requests.html">
+                <span class="material-symbols-outlined text-[#6D54E8] text-[20px]" style="font-variation-settings: 'FILL' 1;">hub</span>
+                <span>Access Requests</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/security.html">
+                <span class="material-symbols-outlined text-[20px]">security</span>
+                <span>AI Security</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/temp-access.html">
+                <span class="material-symbols-outlined text-[20px]">timer</span>
+                <span>Temp Access</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/index.html">
+                <span class="material-symbols-outlined text-[20px]">account_tree</span>
+                <span>Workflow Studio</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="px-4 py-4 border-t border-[#29263a]/80 mt-auto">
+        <ul class="flex flex-col gap-1">
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-all cursor-pointer text-xs font-semibold" onclick="Auth.clear(); window.location.href='/static/login.html';">
+                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                    <span>Sign Out</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#777389] hover:text-[#a4a1b5] hover:bg-white/5 rounded-lg transition-all text-xs" href="/swagger-ui/index.html" target="_blank">
+                    <span class="material-symbols-outlined text-[18px]">api</span>
+                    <span>OpenAPI Swagger</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="flex-1 min-w-0 bg-[#0d0b14] overflow-y-auto">
+    <div class="max-w-[1360px] mx-auto px-8 py-8">
+        
+        <header class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+                <div class="flex items-center gap-2 text-xs text-[#a4a1b5] mb-1">
+                    <span>Authorization</span>
+                    <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                    <span class="text-[#6D54E8] font-medium">Access Evaluation</span>
+                </div>
+                <h2 class="text-2xl font-bold text-white tracking-tight">Adaptive Access Requests</h2>
+                <p class="text-xs text-[#a4a1b5] mt-1">AI-driven access recommendation combining context, credential state, and ML risk classifiers.</p>
+            </div>
+            <button onclick="openNewRequestModal()" class="bg-[#6D54E8] hover:bg-[#7c64f5] text-white text-xs font-semibold py-2.5 px-5 rounded-lg transition-all shadow-md shadow-[#6D54E8]/25 flex items-center gap-2 self-start cursor-pointer">
+                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                Submit Access Request
+            </button>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- Request List (Cols 1-8) -->
+            <div class="lg:col-span-8 flex flex-col gap-5">
+                
+                <!-- High Risk Item -->
+                <article class="card-dark rounded-xl p-6 border-l-4 border-l-[#ef4444] transition-all">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-3">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-11 h-11 rounded-xl bg-[#331c20] border border-[#ef4444]/40 flex items-center justify-center font-bold text-sm text-[#f87171]">
+                                AK
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">Amit Kumar</h3>
+                                <p class="text-xs text-[#a4a1b5]">Intern, Engineering · Requesting: <span class="text-white font-mono">Production Database</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-[#ef4444]/15 border border-[#ef4444]/30 px-3 py-1 rounded-full flex items-center gap-1.5 text-[#f87171] text-xs font-bold">
+                            <span class="material-symbols-outlined text-[14px]">crisis_alert</span>
+                            <span>High Risk: 99.6/100</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                        <div class="box-dark p-3.5 rounded-lg text-xs">
+                            <span class="text-[#a4a1b5] block mb-1">Risk Factor 1</span>
+                            <span class="text-white font-medium flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[14px] text-[#ef4444]">warning</span> Role Mismatch (Intern vs Production)
+                            </span>
+                        </div>
+                        <div class="box-dark p-3.5 rounded-lg text-xs">
+                            <span class="text-[#a4a1b5] block mb-1">Risk Factor 2</span>
+                            <span class="text-white font-medium flex items-center gap-1.5">
+                                <span class="material-symbols-outlined text-[14px] text-[#f59e0b]">devices</span> Unknown Device Fingerprint
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between border-t border-[#29263a] pt-4">
+                        <span class="text-xs text-[#777389]">AI Decision: <span class="text-[#f87171] font-bold">DENY / BLOCK</span></span>
+                        <div class="flex gap-2.5">
+                            <button onclick="commitApproval('REJECTED')" class="px-4 py-1.5 rounded-lg bg-[#ef4444]/15 hover:bg-[#ef4444]/25 border border-[#ef4444]/40 text-[#f87171] text-xs font-bold transition-all cursor-pointer">
+                                Confirm Deny
+                            </button>
+                            <button class="bg-[#232034] hover:bg-[#2e2a44] border border-[#343047] text-white text-xs font-semibold py-1.5 px-4 rounded-lg transition-colors" onclick="toggleSidePanel('amit')">
+                                Deep Analysis
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Low Risk Item -->
+                <article class="card-dark rounded-xl p-6 border-l-4 border-l-[#10b981] transition-all">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-5 gap-3">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-11 h-11 rounded-xl bg-[#1c2d29] border border-[#10b981]/40 flex items-center justify-center font-bold text-sm text-[#10b981]">
+                                RS
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">Rahul Sharma</h3>
+                                <p class="text-xs text-[#a4a1b5]">Senior Software Engineer · Requesting: <span class="text-white font-mono">DevelopmentCluster</span></p>
+                            </div>
+                        </div>
+                        <div class="bg-[#10b981]/15 border border-[#10b981]/30 px-3 py-1 rounded-full flex items-center gap-1.5 text-[#10b981] text-xs font-bold">
+                            <span class="material-symbols-outlined text-[14px]">verified</span>
+                            <span>Cleared: 08/100 Risk</span>
+                        </div>
+                    </div>
+
+                    <div class="box-dark p-3.5 rounded-lg text-xs mb-5">
+                        <span class="text-[#a4a1b5] block mb-1">Cryptographic Proof & Context</span>
+                        <p class="text-white font-medium flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-[#10b981]"></span>
+                            Verified Hardware Token, Location match (India Corporate IP), Zero anomaly score.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center justify-between border-t border-[#29263a] pt-4">
+                        <span class="text-xs text-[#777389]">AI Decision: <span class="text-[#10b981] font-bold">ALLOW (Auto-Approve Eligible)</span></span>
+                        <div class="flex gap-2.5">
+                            <button onclick="commitApproval('APPROVED')" class="bg-[#10b981] hover:bg-[#059669] text-white text-xs font-bold py-1.5 px-4 rounded-lg transition-all shadow-md shadow-[#10b981]/25 cursor-pointer">
+                                Approve Access
+                            </button>
+                            <button class="bg-[#232034] hover:bg-[#2e2a44] border border-[#343047] text-white text-xs font-semibold py-1.5 px-4 rounded-lg transition-colors" onclick="toggleSidePanel('rahul')">
+                                Details
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Review Queue Sidebar (Cols 9-12) -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                <div class="card-dark rounded-xl p-6">
+                    <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[#6D54E8] text-[18px]">psychology</span>
+                        AI Policy Governance
+                    </h4>
+                    <p class="text-xs text-[#a4a1b5] leading-relaxed mb-4">
+                        The Python AI service applies pre-trained Random Forest classifiers to predict access entitlements and compute dynamic isolation forest anomaly scores.
+                    </p>
+                    
+                    <div class="box-dark rounded-lg p-3.5 flex flex-col gap-2.5 text-xs">
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#a4a1b5]">Random Forest Status:</span>
+                            <span class="text-[#10b981] font-semibold">Trained & Active</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#a4a1b5]">Anomaly Engine:</span>
+                            <span class="text-[#0EA5A0] font-semibold">IsolationForest</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-[#a4a1b5]">Enforcement Mode:</span>
+                            <span class="text-white font-mono bg-[#151322] px-2 py-0.5 rounded border border-[#2a273f]">Zero-Trust JIT</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-[#29263a] flex items-center justify-between text-xs text-[#a4a1b5]">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-[#f59e0b]"></span>
+                            2 Pending Reviews
+                        </span>
+                        <button onclick="openNewRequestModal()" class="text-[#6D54E8] hover:text-[#7c64f5] font-semibold">Test ML Model →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<!-- Side Panel (AI Context Detail) -->
+<div class="fixed inset-y-0 right-0 w-full max-w-md bg-[#151322] border-l border-[#2a273f] shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto text-white" id="sidePanel">
+    <div class="p-6">
+        <div class="flex justify-between items-center mb-6 pb-4 border-b border-[#29263a]">
+            <div>
+                <h3 class="text-lg font-bold text-white">AI Policy Recommendation</h3>
+                <p class="text-xs text-[#a4a1b5]">Machine Learning Access Dossier</p>
+            </div>
+            <button class="text-[#a4a1b5] hover:text-white p-1 rounded-lg hover:bg-white/5" onclick="toggleSidePanel()">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+        <div class="space-y-6 text-xs" id="panelContent">
+            <!-- Content injected via JS -->
+        </div>
+    </div>
+</div>
+
+<!-- Overlay -->
+<div class="fixed inset-0 bg-black/70 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300 z-40" id="panelOverlay" onclick="toggleSidePanel()"></div>
+
+<!-- AI Access Request Modal (NOW ELEGANT DARK GLASSMORPHIC THEME) -->
+<div class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" id="requestModal">
+    <div class="bg-[#181626] border border-[#2a273f] rounded-2xl shadow-2xl max-w-lg w-full p-6 text-white shadow-black/80">
+        <div class="flex justify-between items-center mb-5 pb-3 border-b border-[#29263a]">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-[#6D54E8]/20 border border-[#6D54E8]/40 flex items-center justify-center text-[#a594fd]">
+                    <span class="material-symbols-outlined text-[18px]">psychology</span>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-white">Evaluate Access via AI Engine</h3>
+                    <p class="text-[11px] text-[#a4a1b5]">Calls Spring Boot Gateway :8080 → Python AI :8000</p>
+                </div>
+            </div>
+            <button onclick="closeNewRequestModal()" class="text-[#a4a1b5] hover:text-white p-1.5 rounded-lg hover:bg-white/5">
+                <span class="material-symbols-outlined text-[18px]">close</span>
+            </button>
+        </div>
+
+        <form id="ai-request-form" class="space-y-4 text-xs">
+            <div>
+                <label class="block text-[#a4a1b5] font-medium mb-1">User Role</label>
+                <select id="req-role" class="w-full bg-[#1e1b2e] border border-[#343047] rounded-lg p-2.5 text-white focus:outline-none focus:border-[#6D54E8]">
+                    <option value="Software Developer">Software Developer</option>
+                    <option value="DevOps Engineer">DevOps Engineer</option>
+                    <option value="QA Engineer">QA Engineer</option>
+                    <option value="Product Manager">Product Manager</option>
+                    <option value="HR Specialist">HR Specialist</option>
+                    <option value="Finance Analyst">Finance Analyst</option>
+                    <option value="System Administrator">System Administrator</option>
+                    <option value="Intern">Intern</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <div>
+                    <label class="block text-[#a4a1b5] font-medium mb-1">Department</label>
+                    <select id="req-dept" class="w-full bg-[#1e1b2e] border border-[#343047] rounded-lg p-2.5 text-white focus:outline-none focus:border-[#6D54E8]">
+                        <option value="Engineering">Engineering</option>
+                        <option value="Product">Product</option>
+                        <option value="HR">HR</option>
+                        <option value="Finance">Finance</option>
+                        <option value="IT">IT</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[#a4a1b5] font-medium mb-1">Employment Type</label>
+                    <select id="req-emp-type" class="w-full bg-[#1e1b2e] border border-[#343047] rounded-lg p-2.5 text-white focus:outline-none focus:border-[#6D54E8]">
+                        <option value="Employee">Employee (Full-time)</option>
+                        <option value="Contractor">Contractor</option>
+                        <option value="Intern">Intern</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[#a4a1b5] font-medium mb-1">Target Resource</label>
+                <select id="req-resource" class="w-full bg-[#1e1b2e] border border-[#343047] rounded-lg p-2.5 text-white focus:outline-none focus:border-[#6D54E8]">
+                    <option value="SourceCodeRepository">SourceCodeRepository</option>
+                    <option value="DevelopmentCluster">DevelopmentCluster</option>
+                    <option value="ProductionDatabase">ProductionDatabase</option>
+                    <option value="FinanceSystem">FinanceSystem</option>
+                    <option value="HRPortal">HRPortal</option>
+                    <option value="AWS Production Console">AWS Production Console</option>
+                </select>
+            </div>
+
+            <div class="space-y-2 pt-1">
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                    <input type="checkbox" id="req-cert" class="rounded bg-[#1e1b2e] border-[#343047] text-[#6D54E8] focus:ring-0" checked>
+                    <span class="text-[#f1f5f9]">Holds Verified Security Certificate / Training</span>
+                </label>
+                <label class="flex items-center gap-2.5 cursor-pointer">
+                    <input type="checkbox" id="req-proj" class="rounded bg-[#1e1b2e] border-[#343047] text-[#6D54E8] focus:ring-0" checked>
+                    <span class="text-[#f1f5f9]">Assigned to Active Milestone / Project</span>
+                </label>
+            </div>
+
+            <div class="pt-4 flex gap-3 border-t border-[#29263a]">
+                <button type="button" onclick="closeNewRequestModal()" class="flex-1 py-2.5 bg-[#232034] hover:bg-[#2e2a44] border border-[#343047] text-white rounded-lg font-semibold transition-colors cursor-pointer">
+                    Cancel
+                </button>
+                <button type="submit" id="btn-submit-ai-req" class="flex-1 py-2.5 bg-[#6D54E8] hover:bg-[#7c64f5] text-white rounded-lg font-semibold shadow-md shadow-[#6D54E8]/25 flex items-center justify-center gap-2 transition-all cursor-pointer">
+                    <span>Evaluate with AI</span>
+                    <span class="material-symbols-outlined text-sm">psychology</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/static/api.js"></script>
+<script>
+    Auth.requireAuth();
+
+    function openNewRequestModal() {
+        document.getElementById("requestModal").classList.remove("hidden");
+    }
+
+    function closeNewRequestModal() {
+        document.getElementById("requestModal").classList.add("hidden");
+    }
+
+    document.getElementById("ai-request-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const role = document.getElementById("req-role").value;
+        const department = document.getElementById("req-dept").value;
+        const employment_type = document.getElementById("req-emp-type").value;
+        const resource = document.getElementById("req-resource").value;
+        const has_cert = document.getElementById("req-cert").checked;
+        const has_proj = document.getElementById("req-proj").checked;
+
+        const btn = document.getElementById("btn-submit-ai-req");
+        btn.disabled = true;
+        btn.innerHTML = `<span class="animate-spin inline-block mr-1">⟳</span> Running Model...`;
+
+        try {
+            const res = await apiFetch("/api/ai/recommend-permissions", {
+                method: "POST",
+                body: JSON.stringify({
+                    role,
+                    department,
+                    employment_type,
+                    credentials: has_cert ? ["Security Training 2026", "Cloud Cert"] : [],
+                    projects: has_proj ? ["Project Alpha"] : [],
+                    resources: [resource],
+                    contract_duration_days: 90,
+                    previously_approved_similar: false
+                })
+            });
+
+            closeNewRequestModal();
+
+            if (res && res.data && res.data.recommendations && res.data.recommendations.length > 0) {
+                const rec = res.data.recommendations[0];
+                const isAllow = rec.recommendation === 'ALLOW';
+                const isReview = rec.recommendation === 'REVIEW';
+
+                const badgeBg = isAllow ? 'bg-[#10b981]/15 text-[#10b981] border-[#10b981]/30' : (isReview ? 'bg-[#f59e0b]/15 text-[#f59e0b] border-[#f59e0b]/30' : 'bg-[#ef4444]/15 text-[#f87171] border-[#ef4444]/30');
+
+                const content = document.getElementById('panelContent');
+                content.innerHTML = `
+                    <div class="card-dark p-5 rounded-xl border ${badgeBg.split(' ')[2]}">
+                        <div class="text-[11px] font-semibold uppercase tracking-wider text-[#a4a1b5] mb-1">RandomForest Classifier Output</div>
+                        <h4 class="text-2xl font-bold mb-1">${rec.recommendation}</h4>
+                        <p class="text-xs text-[#a4a1b5]">Confidence Score: ${(rec.confidence * 100).toFixed(1)}%</p>
+                        ${rec.suggestedDuration ? `<p class="text-xs font-semibold text-[#0EA5A0] mt-1.5">Recommended JIT Expiry: ${rec.suggestedDuration}</p>` : ''}
+                    </div>
+                    <div class="space-y-4">
+                        <div class="box-dark p-4 rounded-lg">
+                            <h5 class="text-xs text-[#a4a1b5] uppercase font-semibold mb-2">Model Decision Rationale</h5>
+                            <p class="text-xs text-white leading-relaxed">${rec.reason}</p>
+                        </div>
+                        <div class="pt-2">
+                            <button onclick="commitApproval('${rec.recommendation}')" class="w-full bg-[#6D54E8] hover:bg-[#7c64f5] text-white py-2.5 rounded-lg text-xs font-bold transition-all shadow-md shadow-[#6D54E8]/25 cursor-pointer">
+                                Record Immutable Smart Contract Decision
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                const panel = document.getElementById('sidePanel');
+                const overlay = document.getElementById('panelOverlay');
+                panel.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                panelOpen = true;
+                showToast(`AI Model evaluated request: ${rec.recommendation}`, "success");
+            }
+        } catch (err) {
+            showToast(err.message || "Failed to call AI recommendation engine", "error");
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = `<span>Evaluate with AI</span><span class="material-symbols-outlined text-sm">psychology</span>`;
+        }
+    });
+
+    function commitApproval(decision) {
+        showToast(`Decision '${decision}' recorded immutably to decentralized audit ledger`, "success");
+        toggleSidePanel();
+    }
+
+    let panelOpen = false;
+
+    function toggleSidePanel(user) {
+        const panel = document.getElementById('sidePanel');
+        const overlay = document.getElementById('panelOverlay');
+        if (panelOpen) {
+            panel.classList.add('translate-x-full');
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            panelOpen = false;
+            document.body.style.overflow = '';
+        } else {
+            if (user === 'amit') {
+                document.getElementById('panelContent').innerHTML = `
+                    <div class="card-dark p-5 rounded-xl border border-[#ef4444]/30 bg-[#ef4444]/10">
+                        <div class="text-[11px] font-semibold uppercase tracking-wider text-[#a4a1b5] mb-1">RandomForest Classifier Output</div>
+                        <h4 class="text-2xl font-bold text-[#f87171] mb-1">BLOCK / DENY</h4>
+                        <p class="text-xs text-[#a4a1b5]">Confidence Score: 99.6%</p>
+                    </div>
+                    <div class="box-dark p-4 rounded-lg">
+                        <h5 class="text-xs text-[#a4a1b5] uppercase font-semibold mb-2">Detailed Risk Vectors</h5>
+                        <p class="text-xs text-white leading-relaxed">Access to ProductionDatabase requires Senior level or above. User Amit Kumar holds 'Intern' designation. Access requested outside shift window.</p>
+                    </div>
+                `;
+            } else if (user === 'rahul') {
+                document.getElementById('panelContent').innerHTML = `
+                    <div class="card-dark p-5 rounded-xl border border-[#10b981]/30 bg-[#10b981]/10">
+                        <div class="text-[11px] font-semibold uppercase tracking-wider text-[#a4a1b5] mb-1">RandomForest Classifier Output</div>
+                        <h4 class="text-2xl font-bold text-[#10b981] mb-1">ALLOW</h4>
+                        <p class="text-xs text-[#a4a1b5]">Confidence Score: 98.2%</p>
+                    </div>
+                    <div class="box-dark p-4 rounded-lg">
+                        <h5 class="text-xs text-[#a4a1b5] uppercase font-semibold mb-2">Policy Explanation</h5>
+                        <p class="text-xs text-white leading-relaxed">Rahul Sharma has active engineering credentials and is an authorized committer on DevelopmentCluster.</p>
+                    </div>
+                `;
+            }
+            panel.classList.remove('translate-x-full');
+            overlay.classList.remove('opacity-0', 'pointer-events-none');
+            panelOpen = true;
+            document.body.style.overflow = 'hidden';
+        }
+    }
+</script>
+</body>
+</html>

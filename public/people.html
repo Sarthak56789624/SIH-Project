@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI-ChainID - People & DID Identities</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#6D54E8",
+                    "primary-hover": "#7C64F5",
+                    "secondary": "#0EA5A0",
+                    "background": "#0d0b14",
+                    "surface": "#151320",
+                    "surface-card": "#181626",
+                    "surface-container": "#1e1b2e",
+                    "surface-container-low": "#151320",
+                    "surface-container-lowest": "#100e1a",
+                    "on-surface": "#f1f5f9",
+                    "on-surface-variant": "#a4a1b5",
+                    "outline": "#343047",
+                    "outline-variant": "#232034",
+                    "error": "#ef4444",
+                    "warning": "#f59e0b",
+                    "success": "#10b981"
+                },
+                fontFamily: {
+                    "body-md": ["Inter", "sans-serif"],
+                    "headline-lg": ["Geist", "sans-serif"],
+                    "headline-md": ["Geist", "sans-serif"],
+                    "label-sm": ["Geist", "sans-serif"],
+                    "display-hero": ["Geist", "sans-serif"]
+                }
+            }
+        }
+    };
+</script>
+<style>
+    body {
+        background-color: #0d0b14;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif;
+    }
+    .card-dark {
+        background: #181626;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .box-dark {
+        background: #1e1b2e;
+        border: 1px solid #2a273f;
+    }
+    .border-dark {
+        border-color: #29263a;
+    }
+    /* Detail panel animation */
+    #detail-panel {
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        background: #151322;
+        border-left: 1px solid #2a273f;
+    }
+    #detail-panel.open {
+        transform: translateX(0);
+    }
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0d0b14;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #2a273f;
+        border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #6D54E8;
+    }
+</style>
+</head>
+<body class="bg-[#0d0b14] text-[#f1f5f9] font-body-md antialiased flex h-screen overflow-hidden">
+
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col h-screen sticky top-0 left-0 overflow-y-auto bg-[#13111e] border-r border-[#29263a] w-64 flex-shrink-0 select-none">
+    <div class="px-6 py-6 border-b border-[#29263a]/60">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#6D54E8] to-[#0EA5A0] flex items-center justify-center text-white font-bold text-sm shadow-md shadow-[#6D54E8]/30">
+                AI
+            </div>
+            <h1 class="font-display-hero text-xl font-bold tracking-tight text-white">AI-ChainID</h1>
+        </div>
+        <p class="text-xs text-[#a4a1b5] mt-1 font-medium tracking-wide">Enterprise Zero-Trust</p>
+    </div>
+
+    <div class="px-5 pt-5 pb-3">
+        <button onclick="window.location.href='/static/access-requests.html'" class="w-full bg-[#6D54E8] hover:bg-[#7c64f5] text-white py-2.5 px-4 rounded-lg font-label-sm text-xs font-semibold tracking-wide transition-all shadow-md shadow-[#6D54E8]/25 flex items-center justify-center gap-2 cursor-pointer">
+            <span class="material-symbols-outlined text-sm font-bold">add</span> New Access Request
+        </button>
+    </div>
+
+    <ul class="flex-1 flex flex-col gap-1.5 px-3 mt-3">
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/dashboard.html">
+                <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                <span>Overview</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-white font-semibold rounded-lg bg-[#221e38] border border-[#6D54E8]/30 text-sm transition-all shadow-sm" href="/static/people.html">
+                <span class="material-symbols-outlined text-[#6D54E8] text-[20px]" style="font-variation-settings: 'FILL' 1;">badge</span>
+                <span>People & DID</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/access-requests.html">
+                <span class="material-symbols-outlined text-[20px]">hub</span>
+                <span>Access Requests</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/security.html">
+                <span class="material-symbols-outlined text-[20px]">security</span>
+                <span>AI Security</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/temp-access.html">
+                <span class="material-symbols-outlined text-[20px]">timer</span>
+                <span>Temp Access</span>
+            </a>
+        </li>
+        <li>
+            <a class="flex items-center gap-3 py-2.5 px-3.5 text-[#a4a1b5] hover:text-white hover:bg-white/5 rounded-lg transition-all text-sm font-medium" href="/static/index.html">
+                <span class="material-symbols-outlined text-[20px]">account_tree</span>
+                <span>Workflow Studio</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="px-4 py-4 border-t border-[#29263a]/80 mt-auto">
+        <ul class="flex flex-col gap-1">
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#ef4444] hover:bg-[#ef4444]/10 rounded-lg transition-all cursor-pointer text-xs font-semibold" onclick="Auth.clear(); window.location.href='/static/login.html';">
+                    <span class="material-symbols-outlined text-[18px]">logout</span>
+                    <span>Sign Out</span>
+                </a>
+            </li>
+            <li>
+                <a class="flex items-center gap-3 py-2 px-3 text-[#777389] hover:text-[#a4a1b5] hover:bg-white/5 rounded-lg transition-all text-xs" href="/swagger-ui/index.html" target="_blank">
+                    <span class="material-symbols-outlined text-[18px]">api</span>
+                    <span>OpenAPI Swagger</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col h-full overflow-hidden relative bg-[#0d0b14]">
+    <!-- Header -->
+    <header class="flex-shrink-0 px-8 py-7 border-b border-[#29263a] bg-[#13111e]/90 backdrop-blur-md z-10 flex justify-between items-end">
+        <div>
+            <div class="flex items-center gap-2 text-xs text-[#a4a1b5] mb-1">
+                <span>Governance</span>
+                <span class="material-symbols-outlined text-[12px]">chevron_right</span>
+                <span class="text-[#6D54E8] font-medium">Decentralized Identities</span>
+            </div>
+            <h2 class="text-2xl font-bold text-white tracking-tight">People & DID Registry</h2>
+            <p class="text-xs text-[#a4a1b5] mt-1">Manage verifiable credentials, cryptographic DIDs, and adaptive roles.</p>
+        </div>
+        <div>
+            <button onclick="window.location.href='/static/index.html#step-onboard'" class="bg-[#6D54E8] hover:bg-[#7c64f5] text-white text-xs font-semibold py-2.5 px-5 rounded-lg transition-all shadow-md shadow-[#6D54E8]/25 flex items-center gap-2 cursor-pointer">
+                <span class="material-symbols-outlined text-sm font-bold">add</span>
+                Onboard Employee
+            </button>
+        </div>
+    </header>
+
+    <!-- Content Canvas -->
+    <div class="flex-grow overflow-y-auto p-8 bg-[#0d0b14]">
+        <div class="max-w-[1400px] mx-auto">
+            
+            <!-- Table Container -->
+            <div class="card-dark rounded-xl overflow-hidden shadow-xl shadow-black/40">
+                <!-- Table Actions/Filters -->
+                <div class="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 border-b border-[#29263a] bg-[#1e1b2e]/60">
+                    <div class="relative w-full sm:w-72">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#64748b] text-[18px]">search</span>
+                        <input class="w-full pl-9 pr-4 py-2 bg-[#151322] border border-[#343047] rounded-lg text-xs text-white placeholder:text-[#64748b] focus:outline-none focus:border-[#6D54E8] transition-colors" placeholder="Filter by name, role or DID..." type="text"/>
+                    </div>
+                    <div class="flex gap-2 w-full sm:w-auto justify-end">
+                        <span class="text-xs text-[#a4a1b5] self-center mr-2">Status: All Active (5)</span>
+                        <button class="bg-[#232034] hover:bg-[#2e2a44] border border-[#343047] px-3 py-1.5 rounded-lg text-xs font-medium text-white transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <span class="material-symbols-outlined text-[16px] text-[#6D54E8]">download</span>
+                            Export DID Keys
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="border-b border-[#29263a] bg-[#181626] text-[#a4a1b5] font-semibold uppercase tracking-wider">
+                                <th class="py-3.5 px-6">Identity & Contact</th>
+                                <th class="py-3.5 px-6">Role</th>
+                                <th class="py-3.5 px-6">Department</th>
+                                <th class="py-3.5 px-6">Decentralized ID (DID)</th>
+                                <th class="py-3.5 px-6">Status</th>
+                                <th class="py-3.5 px-6 text-right">Verification</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#29263a]/70 text-[#f1f5f9] cursor-pointer" id="employee-table-body">
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-white/5 transition-colors group" onclick="openDetailPanel('Rahul Sharma', 'Senior Engineer', 'Engineering', 'did:chainid:8f72a91c3e4b5d6a', 'Active')">
+                                <td class="py-4 px-6 flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-full bg-[#2a2448] border border-[#6D54E8]/40 flex items-center justify-center font-bold text-xs text-white">
+                                        RS
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-white group-hover:text-[#6D54E8] transition-colors">Rahul Sharma</div>
+                                        <div class="text-[11px] text-[#a4a1b5]">rahul.s@aichainid.org</div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 font-medium">Senior Software Engineer</td>
+                                <td class="py-4 px-6 text-[#a4a1b5]">Engineering</td>
+                                <td class="py-4 px-6 font-mono text-[11px] text-[#0EA5A0]">did:chainid:8f72a9...</td>
+                                <td class="py-4 px-6">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#10b981]/15 text-[#10b981] font-semibold text-[11px] border border-[#10b981]/30">
+                                        Active
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 text-right text-[#a4a1b5]">Verified · 2h ago</td>
+                            </tr>
+
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-white/5 transition-colors group" onclick="openDetailPanel('Elena Rostova', 'Product Lead', 'Product', 'did:chainid:3b99c24e7a8f1b2c', 'Active')">
+                                <td class="py-4 px-6 flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-full bg-[#1f2d3d] border border-[#0EA5A0]/40 flex items-center justify-center font-bold text-xs text-[#0EA5A0]">
+                                        ER
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-white group-hover:text-[#6D54E8] transition-colors">Elena Rostova</div>
+                                        <div class="text-[11px] text-[#a4a1b5]">elena.r@aichainid.org</div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 font-medium">Lead Product Manager</td>
+                                <td class="py-4 px-6 text-[#a4a1b5]">Product</td>
+                                <td class="py-4 px-6 font-mono text-[11px] text-[#0EA5A0]">did:chainid:3b99c2...</td>
+                                <td class="py-4 px-6">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#10b981]/15 text-[#10b981] font-semibold text-[11px] border border-[#10b981]/30">
+                                        Active
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 text-right text-[#a4a1b5]">Verified · 1d ago</td>
+                            </tr>
+
+                            <!-- Row 3 -->
+                            <tr class="hover:bg-white/5 transition-colors group" onclick="openDetailPanel('Marcus Thorne', 'Security Analyst', 'Security', 'did:chainid:9a11c88d2e3f4b5a', 'Pending')">
+                                <td class="py-4 px-6 flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-full bg-[#33221b] border border-[#f59e0b]/40 flex items-center justify-center font-bold text-xs text-[#f59e0b]">
+                                        MT
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-white group-hover:text-[#6D54E8] transition-colors">Marcus Thorne</div>
+                                        <div class="text-[11px] text-[#a4a1b5]">marcus.t@aichainid.org</div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 font-medium">Senior Security Analyst</td>
+                                <td class="py-4 px-6 text-[#a4a1b5]">Cyber Defense</td>
+                                <td class="py-4 px-6 font-mono text-[11px] text-[#f59e0b]">did:chainid:pending</td>
+                                <td class="py-4 px-6">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#f59e0b]/15 text-[#f59e0b] font-semibold text-[11px] border border-[#f59e0b]/30">
+                                        Pending Verify
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 text-right text-[#a4a1b5]">Awaiting CA</td>
+                            </tr>
+
+                            <!-- Row 4 -->
+                            <tr class="hover:bg-white/5 transition-colors group" onclick="openDetailPanel('Sarah Jenkins', 'DevOps Engineer', 'Infrastructure', 'did:chainid:7f11e55a4b3c2d1e', 'Active')">
+                                <td class="py-4 px-6 flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-full bg-[#2a2448] border border-[#6D54E8]/40 flex items-center justify-center font-bold text-xs text-white">
+                                        SJ
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold text-white group-hover:text-[#6D54E8] transition-colors">Sarah Jenkins</div>
+                                        <div class="text-[11px] text-[#a4a1b5]">sarah.j@aichainid.org</div>
+                                    </div>
+                                </td>
+                                <td class="py-4 px-6 font-medium">Principal Cloud Architect</td>
+                                <td class="py-4 px-6 text-[#a4a1b5]">Infrastructure</td>
+                                <td class="py-4 px-6 font-mono text-[11px] text-[#0EA5A0]">did:chainid:7f11e5...</td>
+                                <td class="py-4 px-6">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#10b981]/15 text-[#10b981] font-semibold text-[11px] border border-[#10b981]/30">
+                                        Active
+                                    </span>
+                                </td>
+                                <td class="py-4 px-6 text-right text-[#a4a1b5]">Verified · 3d ago</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="border-t border-[#29263a] bg-[#181626] p-4 flex items-center justify-between text-xs text-[#a4a1b5]">
+                    <span>Displaying registered DID ledger entities</span>
+                    <div class="flex items-center gap-2">
+                        <button class="px-3 py-1.5 rounded-lg border border-[#2a273f] bg-[#1e1b2e] text-white">1</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Right Detail Panel (Off-canvas) -->
+    <div class="absolute top-0 right-0 h-full w-full sm:w-[480px] shadow-2xl z-50 flex flex-col text-white" id="detail-panel">
+        <!-- Panel Header -->
+        <div class="flex justify-between items-center p-6 border-b border-[#29263a] bg-[#181626]">
+            <div>
+                <h3 class="text-lg font-bold text-white">Identity Credentials & DID</h3>
+                <p class="text-xs text-[#a4a1b5] mt-0.5">W3C Verifiable Credential Dossier</p>
+            </div>
+            <button class="text-[#a4a1b5] hover:text-white p-1 rounded-lg hover:bg-white/5 transition-colors" onclick="closeDetailPanel()">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
+
+        <!-- Panel Content -->
+        <div class="flex-grow overflow-y-auto p-6 bg-[#151322] space-y-6 text-xs">
+            <!-- Profile Header -->
+            <div class="flex items-center gap-4 p-4 card-dark rounded-xl">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-tr from-[#6D54E8] to-[#0EA5A0] flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-[#6D54E8]/20" id="panel-avatar">
+                    RS
+                </div>
+                <div>
+                    <h4 class="text-base font-bold text-white mb-0.5" id="panel-name">Rahul Sharma</h4>
+                    <p class="text-xs text-[#a4a1b5] mb-2" id="panel-role-dept">Senior Software Engineer • Engineering</p>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#10b981]/15 text-[#10b981] text-[11px] font-semibold border border-[#10b981]/30" id="panel-status">
+                        Active & Cryptographically Bound
+                    </span>
+                </div>
+            </div>
+
+            <!-- Decentralized ID Section -->
+            <div>
+                <h5 class="text-xs font-semibold text-[#a4a1b5] uppercase tracking-wider mb-2">Decentralized Identifier (DID)</h5>
+                <div class="box-dark rounded-lg p-3.5 flex justify-between items-center group">
+                    <code class="font-mono text-[11px] text-[#0EA5A0] break-all" id="panel-did">did:chainid:8F72A91c3E4b5D6a7F8e9D0c1B2a3F4e5D6</code>
+                    <button class="text-[#a4a1b5] hover:text-white p-1" onclick="showToast('DID copied to clipboard', 'info')">
+                        <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Issued Credentials -->
+            <div>
+                <h5 class="text-xs font-semibold text-[#a4a1b5] uppercase tracking-wider mb-2">Issued Verifiable Credentials</h5>
+                <div class="space-y-2.5">
+                    <div class="box-dark p-3.5 rounded-lg flex gap-3 items-start">
+                        <div class="w-8 h-8 rounded-lg bg-[#6D54E8]/20 border border-[#6D54E8]/40 flex items-center justify-center flex-shrink-0 text-[#a594fd]">
+                            <span class="material-symbols-outlined text-[18px]">verified</span>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-0.5">
+                                <span class="font-semibold text-white">Engineering Developer Credential</span>
+                                <span class="text-[#10b981] font-semibold text-[11px]">Valid</span>
+                            </div>
+                            <div class="text-[11px] text-[#a4a1b5]">Issuer: VIT CA Root Authority</div>
+                            <div class="text-[10px] text-[#777389] mt-1">Expires: 2027-01-01 · Cryptographic Signature: RSA-SHA256</div>
+                        </div>
+                    </div>
+
+                    <div class="box-dark p-3.5 rounded-lg flex gap-3 items-start">
+                        <div class="w-8 h-8 rounded-lg bg-[#0EA5A0]/20 border border-[#0EA5A0]/40 flex items-center justify-center flex-shrink-0 text-[#0EA5A0]">
+                            <span class="material-symbols-outlined text-[18px]">shield</span>
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex justify-between items-start mb-0.5">
+                                <span class="font-semibold text-white">Zero-Trust L3 Security Clearance</span>
+                                <span class="text-[#10b981] font-semibold text-[11px]">Valid</span>
+                            </div>
+                            <div class="text-[11px] text-[#a4a1b5]">Issuer: InfoSec Automated Compliance Engine</div>
+                            <div class="text-[10px] text-[#777389] mt-1">Status: Continuous ML Re-Evaluation</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Permissions -->
+            <div>
+                <h5 class="text-xs font-semibold text-[#a4a1b5] uppercase tracking-wider mb-2">Active Authorized Resources</h5>
+                <div class="card-dark rounded-lg overflow-hidden divide-y divide-[#29263a]">
+                    <div class="px-3.5 py-2.5 flex justify-between items-center">
+                        <span class="font-medium text-white">SourceCodeRepository</span>
+                        <span class="material-symbols-outlined text-[#10b981] text-[18px]">check_circle</span>
+                    </div>
+                    <div class="px-3.5 py-2.5 flex justify-between items-center">
+                        <span class="font-medium text-white">DevelopmentCluster</span>
+                        <span class="material-symbols-outlined text-[#10b981] text-[18px]">check_circle</span>
+                    </div>
+                    <div class="px-3.5 py-2.5 flex justify-between items-center">
+                        <span class="font-medium text-white">ProductionDatabase</span>
+                        <span class="material-symbols-outlined text-[#ef4444] text-[18px]">block</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Footer Actions -->
+        <div class="p-4 border-t border-[#29263a] bg-[#181626] flex gap-3 justify-end">
+            <button onclick="showToast('Access revoked and recorded on ledger', 'error'); closeDetailPanel();" class="px-4 py-2 border border-[#ef4444]/40 bg-[#ef4444]/15 hover:bg-[#ef4444]/25 text-[#f87171] rounded-lg font-semibold text-xs transition-colors cursor-pointer">
+                Revoke Credentials
+            </button>
+            <button onclick="window.location.href='/static/index.html#step-role-change'" class="px-4 py-2 bg-[#6D54E8] hover:bg-[#7c64f5] text-white rounded-lg font-semibold text-xs transition-colors shadow-md shadow-[#6D54E8]/25 cursor-pointer">
+                AI Role Re-Analysis
+            </button>
+        </div>
+    </div>
+
+    <!-- Overlay for panel -->
+    <div class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 hidden transition-opacity opacity-0" id="panel-overlay" onclick="closeDetailPanel()"></div>
+</main>
+
+<script>
+    const detailPanel = document.getElementById('detail-panel');
+    const panelOverlay = document.getElementById('panel-overlay');
+
+    function openDetailPanel(name, role, dept, did, status) {
+        document.getElementById('panel-name').textContent = name || 'Employee Identity';
+        document.getElementById('panel-role-dept').textContent = `${role || 'Role'} • ${dept || 'Department'}`;
+        document.getElementById('panel-did').textContent = did || 'did:chainid:random';
+        
+        const initials = (name || 'RS').split(' ').map(n => n[0]).join('').substring(0, 2);
+        document.getElementById('panel-avatar').textContent = initials;
+
+        panelOverlay.classList.remove('hidden');
+        setTimeout(() => {
+            panelOverlay.classList.remove('opacity-0');
+            detailPanel.classList.add('open');
+        }, 10);
+    }
+
+    function closeDetailPanel() {
+        detailPanel.classList.remove('open');
+        panelOverlay.classList.add('opacity-0');
+        setTimeout(() => {
+            panelOverlay.classList.add('hidden');
+        }, 300);
+    }
+</script>
+<script src="/static/api.js"></script>
+<script>
+    Auth.requireAuth();
+</script>
+</body>
+</html>
