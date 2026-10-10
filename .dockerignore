@@ -1,0 +1,11 @@
+.git
+.vscode
+.idea
+target/
+**/target/
+__pycache__/
+**/__pycache__/
+*.log
+*.pdf
+*.bat
+*.ps1
